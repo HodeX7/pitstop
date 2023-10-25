@@ -14,7 +14,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const EventForm = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const playAsTeams = FORM_OPTIONS.ParticipationType.filter(
     (item) => item.value != "1vs1" && item.value != "2vs2"
@@ -101,7 +101,7 @@ const EventForm = () => {
           alert(
             "Your Tournament request was received. Wait for confirmation from pitstop"
           );
-          navigate('/')
+          navigate("/");
         }
       })
       .catch((res) => {
@@ -150,7 +150,7 @@ const EventForm = () => {
                   type="text"
                   id="title"
                   name="title"
-                  placeholder="Event Title"
+                  placeholder="Event Title *"
                 />
               </div>
               <ErrorMessage
@@ -189,7 +189,7 @@ const EventForm = () => {
               <div className="bg-gray-100 flex p-3 rounded-lg items-center">
                 <FmdGoodOutlinedIcon className="text-gray-600 mr-2" />
                 <Field
-                  placeholder="Venue"
+                  placeholder="Venue *"
                   className="outline-none flex-1 bg-gray-100"
                   type="text"
                   id="venue"
@@ -306,17 +306,11 @@ const EventForm = () => {
                 <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
                 <Field
                   className="outline-none flex-1 bg-gray-100"
-                  as="select"
+                  type="number"
                   id="maxNumOfTeams"
                   name="maxNumOfTeams"
-                >
-                  <option value="">Maximum number of teams</option>
-                  {maxNumOfTeamsOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </Field>
+                  placeholder="Max no. of Teams"
+                />
               </div>
               <ErrorMessage
                 className="error text-red-500"
@@ -379,7 +373,7 @@ const EventForm = () => {
                   name="ageGroup"
                   options={ageOptions}
                   component={CustomSelect}
-                  placeholder="Select Age Group"
+                  placeholder="Select Age Group *"
                   isMulti={true}
                 />
               </div>
@@ -411,7 +405,7 @@ const EventForm = () => {
               <div className="bg-gray-100 flex p-3 rounded-lg items-center">
                 <CurrencyRupeeIcon className="text-gray-600 mr-2" />
                 <Field
-                  placeholder="Team Registration Fees"
+                  placeholder="Team Registration Fees *"
                   className="outline-none flex-1 bg-gray-100"
                   type="number"
                   id="teamRegistrationFees"
@@ -427,9 +421,12 @@ const EventForm = () => {
 
             {/* QR CODE OF HOST */}
             <div className="mt-5">
-              <div className="bg-gray-100 flex p-3 rounded-lg items-center">
-                <label htmlFor="host_QRCode" className="text-gray-600 mr-2">
-                  Upload QR Code
+              <div className="bg-gray-100 flex flex-col p-3 rounded-lg ">
+                <label
+                  htmlFor="host_QRCode"
+                  className="text-gray-600 mr-2 mb-3"
+                >
+                  Upload Payment QR Code *
                 </label>
                 <input
                   type="file"
@@ -465,9 +462,13 @@ const EventForm = () => {
               />
             </div>
 
+            <div className="mt-6 flex justify-center items-center text-xs cursor-pointer mb-2 text-blue-400">
+              Terms and Conditions *
+            </div>
+
             <button
               type="submit"
-              className="bg-orange-500 text-white flex p-3 rounded-lg mt-6 w-full justify-center"
+              className="bg-orange-500 text-white flex p-3 rounded-lg w-full justify-center"
               disabled={isSubmitting}
             >
               Submit Details
