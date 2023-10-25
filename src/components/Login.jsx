@@ -10,7 +10,7 @@ import { UserAPI } from "../services/api.service";
 import { useNavigate } from "react-router-dom";
 import EventCompletion from "./EventCompletion";
 import Shimmer from "./Shimmer";
-import TestFixture from "./testFixtures";
+import TestFixture from "./TestFixtures";
 
 const UserLoginView = () => {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const UserLoginView = () => {
   const handleSubmit = (values, { setSubmitting }) => {
     UserAPI.login(values)
       .then((res) => {
-        console.log(res) 
+        console.log(res);
         if (res.status == 200 && res.data.success) {
           let uid = res.data.data.id;
           const state = { uid: uid, contact_number: values.contact_number };
