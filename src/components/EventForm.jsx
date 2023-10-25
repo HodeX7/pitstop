@@ -170,7 +170,7 @@ const EventForm = () => {
                   name="sport"
                   placeholder="Select a sport"
                 >
-                  <option value="">Select a sport</option>
+                  <option value="">Select a sport *</option>
                   {FORM_OPTIONS.Sports.map((sport) => (
                     <option key={sport.value} value={sport.value}>
                       {sport.label}
@@ -282,7 +282,7 @@ const EventForm = () => {
                   id="participationType"
                   name="participationType"
                 >
-                  <option value="">Participation Type</option>
+                  <option value="">Participation Type *</option>
                   {ref.current &&
                     ref.current.values.sport &&
                     participationTypeOptions[ref.current.values.sport]?.map(
@@ -309,7 +309,7 @@ const EventForm = () => {
                   type="number"
                   id="maxNumOfTeams"
                   name="maxNumOfTeams"
-                  placeholder="Max no. of Teams"
+                  placeholder="Max no. of Teams *"
                 />
               </div>
               <ErrorMessage
@@ -328,7 +328,7 @@ const EventForm = () => {
                   id="numOfPlayersPerTeam"
                   name="numOfPlayersPerTeam"
                 >
-                  <option value="">Maximum number of team members</option>
+                  <option value="">Maximum number of team members *</option>
                   {numOfPlayersPerTeamOptions.map((option) => (
                     <option key={option} value={option}>
                       {option}
@@ -352,7 +352,7 @@ const EventForm = () => {
                   id="gender"
                   name="gender"
                 >
-                  <option value="">Gender</option>
+                  <option value="">Gender *</option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                   <option value="all">All Genders</option>
@@ -377,7 +377,7 @@ const EventForm = () => {
                   isMulti={true}
                 />
               </div>
-              <div>
+              <div className="flex gap-10 justify-between mt-2">
                 <input
                   type="text"
                   className="outline-none flex-1 focus:outline-none border-2 p-1"
