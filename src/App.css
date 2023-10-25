@@ -1,0 +1,35 @@
+/* For larger screens (e.g., desktop) */
+@media (min-width: 768px) {
+  /* Set the body background to blank */
+  body {
+    background: none;
+  }
+}
+
+/* For smaller screens (e.g., mobile) */
+@media (max-width: 767px) {
+  /* Set the body background to a specific color or image for mobile view */
+  body {
+    background: #f2f2f2;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+.bottom-menu {
+  animation: slideUp 0.5s ease-in-out;
+  transform: translateY(100%);
+}
+
+.bottom-menu-open {
+  animation: slideUp 0.5s ease-in-out;
+  transform: translateY(0);
+}

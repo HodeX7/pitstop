@@ -1,0 +1,122 @@
+{
+  "myEvents": [
+    {
+      "title": "Inter Society League",
+      "sport": "Football",
+      "startDate": "June 23",
+      "endDate": "June 31",
+      "status": "Hosted",
+      "noOfParticipants": "12",
+      "totalParticipants": "20",
+      "gender": "All Gender",
+      "age": "Under 14",
+      "id": 1
+    },
+    {
+      "title": "Junior Pro Tournament",
+      "sport": "Basketball",
+      "startDate": "June 23",
+      "endDate": "June 31",
+      "status": "Pending",
+      "noOfParticipants": "12",
+      "totalParticipants": "20",
+      "gender": "All Gender",
+      "age": "Under 14",
+      "id": 2
+    },
+    {
+      "title": "Inter Society League",
+      "sport": "Football",
+      "startDate": "June 23",
+      "endDate": "June 31",
+      "status": "Requested",
+      "noOfParticipants": "12",
+      "totalParticipants": "20",
+      "gender": "All Gender",
+      "age": "Under 14",
+      "id": 3
+    },
+    {
+      "title": "Pune Selection League",
+      "sport": "Cricket",
+      "startDate": "June 23",
+      "endDate": "June 31",
+      "status": "Participation",
+      "noOfParticipants": "12",
+      "totalParticipants": "20",
+      "gender": "All Gender",
+      "age": "Under 14",
+      "id": 4
+    }
+  ],
+  "hotTournaments": [
+    {
+      "title": "Inter Society League",
+      "sport": "Football",
+      "startDate": "June 23",
+      "endDate": "June 31",
+      "noOfParticipants": "12",
+      "totalParticipants": "20",
+      "gender": "All Gender",
+      "age": "Under 14",
+      "id": 1
+    },
+    {
+      "title": "Junior Pro Tournament",
+      "sport": "Basketball",
+      "startDate": "June 23",
+      "endDate": "June 31",
+      "noOfParticipants": "12",
+      "totalParticipants": "20",
+      "gender": "All Gender",
+      "age": "Under 14",
+      "id": 2
+    },
+    {
+      "title": "Pune Selection League",
+      "sport": "Cricket",
+      "startDate": "June 23",
+      "endDate": "June 31",
+      "noOfParticipants": "12",
+      "totalParticipants": "20",
+      "gender": "All Gender",
+      "age": "Under 14",
+      "id": 3
+    }
+  ],
+  "upComing": [
+    {
+      "title": "Inter Society League",
+      "sport": "Table tennis",
+      "startDate": "June 23",
+      "endDate": "June 31",
+      "noOfParticipants": "12",
+      "totalParticipants": "20",
+      "gender": "All Gender",
+      "age": "Under 14",
+      "id": 1
+    },
+    {
+      "title": "Inter Society League",
+      "sport": "Hockey",
+      "startDate": "June 23",
+      "endDate": "June 31",
+      "noOfParticipants": "12",
+      "totalParticipants": "20",
+      "gender": "All Gender",
+      "age": "Under 14",
+      "id": 2
+    },
+    {
+      "title": "Inter Society League",
+      "sport": "Football",
+      "startDate": "June 23",
+      "endDate": "June 31",
+      "noOfParticipants": "12",
+      "totalParticipants": "20",
+      "gender": "All Gender",
+      "age": "Under 14",
+      "id": 3
+    }
+  ]
+}

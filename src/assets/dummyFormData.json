@@ -1,0 +1,166 @@
+{
+  "status": "pending",
+  "image": "../assets/formDataImage.png",
+  "eventTitle": "Inter Society League",
+  "sport": "Football",
+  "tournamentSchedule": "June 23 - June 27, 3PM onwards",
+  "participationType": "5 vs 5",
+  "ageGroup": "Under 10",
+  "gender": "All",
+  "description": "This is a celebratory party to rejoice with fellow football fans for the victory of National team against Germany",
+  "venue": {
+    "name": "NSA Hotfut",
+    "address": "47th East Street, San Diego, California 44551455"
+  },
+  "host": {
+    "name": "John Doe (host)",
+    "age": "24",
+    "gender": "Male",
+    "rating": "4",
+    "reviews": "24"
+  },
+  "participants": {
+    "pending": [
+      {
+        "teamName": "Galacticos",
+        "status": "Pending",
+        "numberOfPlayers": "4",
+        "submissionDate": "Jan 24 2022",
+        "leader": "Dane John",
+        "phoneNumber": "+91 9384810182",
+        "emailId": "dummy@gmail.com",
+        "participants": [
+          {
+            "name": "Alfredo Bergson",
+            "gender": "Male",
+            "age": "16",
+            "isVerified": "false"
+          },
+          {
+            "name": "Jaydon Schleifer",
+            "gender": "Male",
+            "age": "15",
+            "isVerified": "true"
+          },
+          {
+            "name": "Ruben Siphron",
+            "gender": "Male",
+            "age": "17",
+            "isVerified": "true"
+          },
+          {
+            "name": "Mira Carder",
+            "gender": "Male",
+            "age": "16",
+            "isVerified": "false"
+          },
+          {
+            "name": "Paityn Aminoff",
+            "gender": "Male",
+            "age": "17",
+            "isVerified": "false"
+          }
+        ]
+      },
+      {
+        "teamName": "Stallion 8",
+        "status": "Pending",
+        "numberOfPlayers": "4",
+        "submissionDate": "Jan 24 2022"
+      },
+      {
+        "teamName": "Sigma 6",
+        "status": "Pending",
+        "numberOfPlayers": "4",
+        "submissionDate": "Jan 24 2022"
+      }
+    ],
+    "accepted": [
+      {
+        "teamName": "All Stars",
+        "status": "Accepted",
+        "numberOfPlayers": "4",
+        "submissionDate": "Jan 24 2022",
+        "leader": "Dane John",
+        "phoneNumber": "+91 9384810182",
+        "emailId": "dummy@gmail.com",
+        "participants": [
+          {
+            "name": "Alfredo Bergson",
+            "gender": "Male",
+            "age": "16",
+            "isVerified": "false"
+          },
+          {
+            "name": "Jaydon Schleifer",
+            "gender": "Male",
+            "age": "15",
+            "isVerified": "true"
+          },
+          {
+            "name": "Ruben Siphron",
+            "gender": "Male",
+            "age": "17",
+            "isVerified": "true"
+          },
+          {
+            "name": "Mira Carder",
+            "gender": "Male",
+            "age": "16",
+            "isVerified": "false"
+          },
+          {
+            "name": "Paityn Aminoff",
+            "gender": "Male",
+            "age": "17",
+            "isVerified": "false"
+          }
+        ]
+      },
+      {
+        "teamName": "Valhalla FC",
+        "status": "Accepted",
+        "numberOfPlayers": "4",
+        "submissionDate": "Jan 24 2022"
+      },
+      {
+        "teamName": "STWD",
+        "status": "Accepted",
+        "numberOfPlayers": "4",
+        "submissionDate": "Jan 24 2022"
+      },
+      {
+        "teamName": "Judes Club",
+        "status": "Accepted",
+        "numberOfPlayers": "4",
+        "submissionDate": "Jan 24 2022"
+      }
+    ],
+    "rejected": [
+      {
+        "teamName": "Mira Carder",
+        "status": "Rejected",
+        "numberOfPlayers": "4",
+        "submissionDate": "Jan 24 2022"
+      },
+      {
+        "teamName": "Paityn Aminoff",
+        "status": "Rejected",
+        "numberOfPlayers": "4",
+        "submissionDate": "Jan 24 2022"
+      },
+      {
+        "teamName": "Alfredo Bergson",
+        "status": "Rejected",
+        "numberOfPlayers": "4",
+        "submissionDate": "Jan 24 2022"
+      },
+      {
+        "teamName": "Alfredo Bergson 2",
+        "status": "Rejected",
+        "numberOfPlayers": "4",
+        "submissionDate": "Jan 24 2022"
+      }
+    ]
+  }
+}
