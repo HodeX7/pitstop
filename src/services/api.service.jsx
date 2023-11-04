@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 
-import { CapacitorHttp } from '@capacitor/core';
+import { CapacitorHttp } from "@capacitor/core";
 
 // export const API_MEDIA = "http://127.0.0.1:8000";
 // export const API_URL = "http://127.0.0.1:8000/api/";
@@ -11,9 +11,8 @@ import { CapacitorHttp } from '@capacitor/core';
 // export const API_URL = "https://pitstop-api.vercel.app/api/";
 // export const API_MEDIA = "https://pitstop-api.vercel.app";
 
-export const API_URL = "http://65.2.2.165/api/";
-export const API_MEDIA = "http://65.2.2.165/";
-
+export const API_URL = "https://ourpitstop.in";
+export const API_MEDIA = "https://ourpitstop.in";
 
 export const useAxios = (configParams) => {
   const [resData, setResData] = useState(null);
@@ -25,7 +24,7 @@ export const useAxios = (configParams) => {
       baseURL: API_URL,
       withCredentials: false,
       headers: {
-        Authorization: `Bearer ${accessToken ? accessToken : ''}`,
+        Authorization: `Bearer ${accessToken ? accessToken : ""}`,
       },
     });
 
@@ -41,13 +40,13 @@ export const useAxios = (configParams) => {
 
   useEffect(() => {
     // Retrieve the access token from storage
-    Storage.get({ key: 'access_token' })
+    Storage.get({ key: "access_token" })
       .then((result) => {
         const accessToken = result.value;
         fetchDataUsingAxios(accessToken);
       })
       .catch((err) => {
-        console.error('Error retrieving access token:', err);
+        console.error("Error retrieving access token:", err);
         setIsLoaded(true);
       });
   }, []);
@@ -59,7 +58,7 @@ const signup = (data) => {
   return CapacitorHttp.post({
     url: API_URL + "user/",
     data: data,
-    headers: {'Content-Type': 'application/json'}
+    headers: { "Content-Type": "application/json" },
   });
   // return axios.post(API_URL + "user/", data);
 };
@@ -68,7 +67,7 @@ const login = (data) => {
   return CapacitorHttp.post({
     url: API_URL + "user/login/",
     data: data,
-    headers: {'Content-Type': 'application/json'}
+    headers: { "Content-Type": "application/json" },
   });
   // return axios.post(API_URL + "user/login/", data);
 };
@@ -76,8 +75,8 @@ const login = (data) => {
 const authenticateOTP = (id, otp) => {
   return CapacitorHttp.post({
     url: API_URL + `user/${id}/authenticate_otp/`,
-    data: {otp: otp},
-    headers: {'Content-Type': 'application/json'}
+    data: { otp: otp },
+    headers: { "Content-Type": "application/json" },
   });
   // return axios.post(API_URL + `user/${id}/authenticate_otp/`, { otp: otp });
 };
@@ -96,10 +95,10 @@ export const UserLogout = () => {
   const handleLogout = async () => {
     await Storage.clear();
     await Storage.set({
-      key: 'isLoggedIN',
-      value: 'no'
+      key: "isLoggedIN",
+      value: "no",
     });
-  }
+  };
 
   useEffect(() => {
     handleLogout();
@@ -116,7 +115,7 @@ export const UserLogout = () => {
 
 export const axiosAuthorized = async () => {
   try {
-    const result = await Storage.get({ key: 'access_token' });
+    const result = await Storage.get({ key: "access_token" });
     const token = result.value;
 
     if (token) {
@@ -130,31 +129,33 @@ export const axiosAuthorized = async () => {
 
       return instance;
     } else {
-      console.error('Token not found in storage.');
+      console.error("Token not found in storage.");
       return null;
     }
   } catch (error) {
-    console.error('Error retrieving token:', error);
+    console.error("Error retrieving token:", error);
     return null;
   }
 };
 
 export const capacitorHTTPClient = async (url, req_params, sendingMedia) => {
-  const result = await Storage.get({ key: 'access_token' });
-  
+  const result = await Storage.get({ key: "access_token" });
+
   if (result.value != null) {
     return CapacitorHttp.request({
       url: API_URL + url,
       ...req_params,
       headers: {
         Authorization: `Bearer ${result.value}`,
-        'Content-Type': (sendingMedia) ? "multipart/form-data" : 'application/json'
-      }   
+        "Content-Type": sendingMedia
+          ? "multipart/form-data"
+          : "application/json",
+      },
     });
   } else {
-    return <Navigate to="/logout" />
+    return <Navigate to="/logout" />;
   }
-} 
+};
 
 const getUser = (id) => {
   // const id = parseInt(localStorage.getItem("uid"));
@@ -210,15 +211,19 @@ const getTournamentHistory = () => {
 };
 
 const addTournament = (data) => {
-  return capacitorHTTPClient("tournament/", {
-    method: 'post',
-    data: data
-  }, true);
+  return capacitorHTTPClient(
+    "tournament/",
+    {
+      method: "post",
+      data: data,
+    },
+    true
+  );
 };
 
 const updateTournament = (id, data) => {
   return capacitorHTTPClient(`tournament/${id}/`, {
-    method: 'put',
+    method: "put",
     data: data,
   });
   // return axiosAuthorized().put(`tournament/${id}/`, data);
@@ -226,7 +231,7 @@ const updateTournament = (id, data) => {
 
 const deleteTournament = (id) => {
   return capacitorHTTPClient(`tournament/${id}/`, {
-    method: 'delete'
+    method: "delete",
   });
   // return axiosAuthorized().delete(`tournament/${id}/`);
 };
@@ -250,10 +255,14 @@ const getTeam = (id) => {
 };
 
 const addTeam = (data) => {
-  return capacitorHTTPClient('team/', {
-    method: 'post',
-    data: data
-  }, true);
+  return capacitorHTTPClient(
+    "team/",
+    {
+      method: "post",
+      data: data,
+    },
+    true
+  );
   // return axiosAuthorized().post(`team/`, data, {
   //   headers: {
   //     ...axiosAuthorized.defaults.headers,
@@ -264,29 +273,29 @@ const addTeam = (data) => {
 
 const updateTeam = (id, data) => {
   return capacitorHTTPClient(`team/${id}`, {
-    method: 'put',
-    data: data
+    method: "put",
+    data: data,
   });
   // return axiosAuthorized().put(`team/${id}/`, data);
 };
 
 const deleteTeam = (id) => {
   return capacitorHTTPClient(`team/${id}`, {
-    method: 'delete'
+    method: "delete",
   });
   // return axiosAuthorized().delete(`team/${id}/`);
 };
 
 const verifyParticipant = (id, data) => {
   return capacitorHTTPClient(`team/${id}/verify_participant/`, {
-    method: 'post',
+    method: "post",
     data: data,
   });
 };
 
 const changeTeamParticipationStatus = (id, data) => {
   return capacitorHTTPClient(`team/${id}/change_participation_status/`, {
-    method: 'post',
+    method: "post",
     data: data,
   });
 };
