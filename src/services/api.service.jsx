@@ -11,8 +11,8 @@ import { CapacitorHttp } from "@capacitor/core";
 // export const API_URL = "https://pitstop-api.vercel.app/api/";
 // export const API_MEDIA = "https://pitstop-api.vercel.app";
 
-export const API_URL = "https://ourpitstop.in/";
-export const API_MEDIA = "https://ourpitstop.in/";
+export const API_URL = "https://ourpitstop.in/api/";
+export const API_MEDIA = "https://ourpitstop.in";
 
 export const useAxios = (configParams) => {
   const [resData, setResData] = useState(null);
