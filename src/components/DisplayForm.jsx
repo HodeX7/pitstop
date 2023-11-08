@@ -119,7 +119,7 @@ const DisplayForm = () => {
 
   useEffect(() => {
     if (isReady) {
-      console.log(tournament)
+      console.log(tournament);
       setAgeGroup(tournament.additionalDetails[0]);
     }
   }, [isReady]);
@@ -130,6 +130,7 @@ const DisplayForm = () => {
 
   return (
     <>
+      <NavigationHeaderComponent title={tournament?.title} />
       {isReady ? (
         <div>
           {!tournament?.allowTournament ? (
@@ -138,7 +139,6 @@ const DisplayForm = () => {
             </div>
           ) : (
             <>
-              <NavigationHeaderComponent title={tournament?.title} />
               <div className="flex p-3 pb-0 justify-around">
                 <h1
                   className={`cursor-pointer w-1/3 pb-1 flex justify-center ${
@@ -224,8 +224,8 @@ const DisplayForm = () => {
 
                 <h1 className="font-semibold ">Tournament Schedule</h1>
                 <h1 className="font-light mb-5">
-                  {formatDate(tournament?.fromDate)} - {" "}
-                  {formatDate(tournament?.toDate)}, {" "}
+                  {formatDate(tournament?.fromDate)} -{" "}
+                  {formatDate(tournament?.toDate)},{" "}
                   {formatTime(tournament?.fromTime)} onwards
                 </h1>
 
@@ -235,6 +235,7 @@ const DisplayForm = () => {
                 </h1>
 
                 <h1 className="font-semibold">Age Groups</h1>
+                {console.log(tournament)}
                 <h1 className="font-light mb-5">
                   {
                     /* 
@@ -264,7 +265,8 @@ const DisplayForm = () => {
                     {tournament?.venue?.split(",").slice(1).join(",").trim()}
                   </h1>
                   <a
-                    href={`https://maps.google.com/maps?search&q=${tournament?.venue?.split(",")
+                    href={`https://maps.google.com/maps?search&q=${tournament?.venue
+                      ?.split(",")
                       .slice(1)
                       .join("+")
                       .trim()}`}
@@ -309,7 +311,11 @@ const DisplayForm = () => {
                       <button
                         type="submit"
                         className="bg-white text-orange-500 border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
-                        onClick={() => navigate('cancel/', {state: { tournament_id: tournament?.id }})}
+                        onClick={() =>
+                          navigate("cancel/", {
+                            state: { tournament_id: tournament?.id },
+                          })
+                        }
                       >
                         Cancel
                       </button>
@@ -396,16 +402,24 @@ const DisplayForm = () => {
               ) : isDetail == "tourney_media" ? (
                 <>
                   {tournament?.user_is_host ? (
-                    <EventCompletion tournament_details_id={ageGroup?.id} 
-                      player_of_tourney={ageGroup?.player_of_tournament} 
-                      participants={ageGroup?.participatingTeams.map(item => item.participantsDetails)} fixtures={ageGroup?.fixtures} />
+                    <EventCompletion
+                      tournament_details_id={ageGroup?.id}
+                      player_of_tourney={ageGroup?.player_of_tournament}
+                      participants={ageGroup?.participatingTeams.map(
+                        (item) => item.participantsDetails
+                      )}
+                      fixtures={ageGroup?.fixtures}
+                    />
                   ) : (
                     <TournamentCard tournament_details_id={ageGroup?.id} />
                   )}
                 </>
-                  // <MediaPage />
-                ) : (
-                <FixturesComponent groupDetails={ageGroup} isHost={tournament?.user_is_host} />
+              ) : (
+                // <MediaPage />
+                <FixturesComponent
+                  groupDetails={ageGroup}
+                  isHost={tournament?.user_is_host}
+                />
               )}
             </>
           )}

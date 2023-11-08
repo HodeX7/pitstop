@@ -16,7 +16,9 @@ const UserLoginView = () => {
   const navigate = useNavigate();
 
   const validationSchema = Yup.object().shape({
-    contact_number: Yup.string().required("Contact number is required"),
+    contact_number: Yup.string()
+      .matches(/^[0-9]{10}$/, "Mobile number must be exactly 10 digits")
+      .required("Mobile number is required"),
   });
 
   const initialValues = {
@@ -24,12 +26,17 @@ const UserLoginView = () => {
   };
 
   const handleSubmit = (values, { setSubmitting }) => {
-    UserAPI.login(values)
+    UserAPI.login({
+      contact_number: "+91" + values.contact_number,
+    })
       .then((res) => {
         console.log(res);
         if (res.status == 200 && res.data.success) {
           let uid = res.data.data.id;
-          const state = { uid: uid, contact_number: values.contact_number };
+          const state = {
+            uid: uid,
+            contact_number: "+91" + values.contact_number,
+          };
           navigate("/verify", { state: state });
         }
       })
@@ -61,13 +68,16 @@ const UserLoginView = () => {
               <div className="mt-2">
                 <div className="bg-gray-100 flex p-3 rounded-lg items-center ">
                   <PhoneOutlinedIcon className="text-gray-600 mr-2" />
-                  <Field
-                    className="outline-none bg-gray-100 flex-1"
-                    placeholder="Mobile Number"
-                    type="text"
-                    id="contact_number"
-                    name="contact_number"
-                  />
+                  <div className="gap-1 flex">
+                    <div>+91</div>
+                    <Field
+                      className="outline-none bg-gray-100 flex-1"
+                      placeholder="Mobile Number"
+                      type="text"
+                      id="contact_number"
+                      name="contact_number"
+                    />
+                  </div>
                 </div>
                 <ErrorMessage
                   name="contact_number"

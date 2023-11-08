@@ -44,6 +44,7 @@ const AGE_GROUP = {
 const PARTICIPATION = {
   "1vs1": "Singles",
   "2vs2": "Doubles",
+  "3vs3": "Both",
   "5vs5": "5 vs 5",
   "7vs7": "7 vs 7",
   "9vs9": "9 vs 9",
@@ -103,6 +104,7 @@ const Sports = [
 const ParticipationType = [
   { value: "1vs1", label: "Singles" },
   { value: "2vs2", label: "Doubles" },
+  { value: "3vs3", label: "Both" },
   { value: "5vs5", label: "5 vs 5" },
   { value: "7vs7", label: "7 vs 7" },
   { value: "9vs9", label: "9 vs 9" },
