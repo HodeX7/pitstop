@@ -11,6 +11,7 @@ import HomePage from "./HomePage";
 import { useNavigate } from "react-router-dom";
 import { NavigationHeaderComponent } from "../services/header.service";
 import { Add, Create } from "@mui/icons-material";
+import LOGO from "../assets/pitstoplogo.png";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const Home = () => {
         </div>
       ) : currentPage === "events" ? (
         <>
-          <NavigationHeaderComponent title={"PITSTOP LOGO"} />
+          <NavigationHeaderComponent img={LOGO} />
           <div className="p-6 flex justify-start flex-col">
             <EventsPage />
           </div>
