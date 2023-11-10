@@ -6,7 +6,7 @@ import DirectionsRunRoundedIcon from "@mui/icons-material/DirectionsRunRounded";
 import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import { FORM_OPTIONS } from "../services/misc.services";
+import { FORM_OPTIONS, playerFees } from "../services/misc.services";
 import { TournamentAPI } from "../services/api.service";
 import { NavigationHeaderComponent } from "../services/header.service";
 import CustomSelect from "../utils/CustomSelect";
@@ -109,7 +109,11 @@ const EventForm = () => {
   });
 
   const handleSubmit = (values, { setSubmitting }) => {
-    TournamentAPI.addTournament(values)
+    const toSend = {
+      ...values,
+      player_register_fees: playerFees(values.sport, values.participationType),
+    };
+    TournamentAPI.addTournament(toSend)
       .then((res) => {
         if (res.status == 201) {
           alert(

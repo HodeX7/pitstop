@@ -56,6 +56,7 @@ const PlayerPaymentPage = ({ tournament, continueNextPage, form, setForm }) => {
 
   return (
     <div className="p-6">
+      {console.log(tournament)}
       <div className="flex flex-col items-center justify-center">
         <div className="flex justify-center mb-3">
           <img src={QR} alt="QR Code" className="w-3/4 " />

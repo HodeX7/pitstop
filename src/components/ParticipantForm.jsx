@@ -50,8 +50,8 @@ const ParticipantForm = ({
 
   const [participantsDetails, setParticipantsDetails] = useState(
     Array.from({ length: numberOfCards }, () => ({
-      name: "dhruv",
-      gender: "male",
+      name: "a",
+      gender: "Male",
       age: "12",
       id_proof: {},
     }))
@@ -63,7 +63,7 @@ const ParticipantForm = ({
     participantsDetails: participantsDetails,
   };
 
-  const handleSubmit = (values, { setSubmitting }) => {
+  const handleSubmit = (values) => {
     setTimeout(() => {
       // dispatch(update({ data: values }));
       setForm((prevState) => ({
@@ -71,7 +71,7 @@ const ParticipantForm = ({
         data: values,
       }));
       continueNextPage("player_pay");
-      setSubmitting(false);
+      // setSubmitting(false);
     }, 500);
   };
 
@@ -81,9 +81,9 @@ const ParticipantForm = ({
 
   const handleFileUpload = (event, index, setFieldValue) => {
     const file = event.currentTarget.files[0];
-    const fileURL = URL.createObjectURL(file);
-    const fileName = file.name;
-    const fileType = file.type;
+    // const fileURL = URL.createObjectURL(file);
+    // const fileName = file.name;
+    // const fileType = file.type;
     const fileObj = file;
 
     const updatedParticipants = participantsDetails.map((participant, i) =>
@@ -117,7 +117,7 @@ const ParticipantForm = ({
                   type="text"
                   id="name"
                   name="name"
-                  placeholder="Team Name"
+                  placeholder="Team Name *"
                 />
               </div>
               <ErrorMessage
@@ -127,34 +127,38 @@ const ParticipantForm = ({
               />
             </div>
 
-            <div className="mt-5">
-              <div className="bg-gray-100 flex p-3 rounded-lg items-center">
-                <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
-                <Field
-                  className="outline-none flex-1 bg-gray-100"
-                  as="select"
-                  id="ageGroup"
+            {ageGroups === null && (
+              <div className="mt-5">
+                <div className="bg-gray-100 flex p-3 rounded-lg items-center">
+                  <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
+                  <Field
+                    className="outline-none flex-1 bg-gray-100"
+                    as="select"
+                    id="ageGroup"
+                    name="ageGroup"
+                    placeholder="Age Group"
+                  >
+                    {ageGroups?.map((group, index) => (
+                      <option key={index} value={group}>
+                        {group}
+                      </option>
+                    ))}
+                    {/* <option value="Under 14">Under 14</option> */}
+                  </Field>
+                </div>
+                <ErrorMessage
+                  className="error text-red-500"
                   name="ageGroup"
-                >
-                  {ageGroups?.map((group, index) => (
-                    <option key={index} value={group}>
-                      {group}
-                    </option>
-                  ))}
-                  {/* <option value="Under 14">Under 14</option> */}
-                </Field>
+                  component="div"
+                />
               </div>
-              <ErrorMessage
-                className="error text-red-500"
-                name="ageGroup"
-                component="div"
-              />
-            </div>
+            )}
 
             <div className="flex mt-7 pl-0 justify-between items-center">
               <h1 className="text-md font-[600]">
                 Enter Participant Details ({cards})
               </h1>
+              {/* This would be only visible for team sports. New state isTeam -> boolean. Need to make an API call onComponentMount */}
               <button
                 className="border-2 border-orange-500 rounded-lg p-2"
                 type="button"
@@ -167,7 +171,7 @@ const ParticipantForm = ({
               {() => (
                 <>
                   {cards > 0 &&
-                    Array.from({ length: numberOfCards }).map((_, index) => (
+                    Array.from({ length: cards }).map((_, index) => (
                       <div
                         key={index}
                         className="border rounded-md p-4 border-gray-200 mb-3"
@@ -180,7 +184,7 @@ const ParticipantForm = ({
                               <Field
                                 name={`participantsDetails[${index}].name`}
                                 type="text"
-                                placeholder="Name"
+                                placeholder="Name *"
                                 className="outline-none bg-gray-100"
                               />
                             </div>
@@ -198,6 +202,7 @@ const ParticipantForm = ({
                               <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
                               <Field
                                 as="select"
+                                placeholder="Gender *"
                                 className="outline-none bg-gray-100 md:w-28 w-[4.5rem] flex-1"
                                 id={`participantsDetails[${index}].gender`}
                                 name={`participantsDetails[${index}].gender`}
@@ -220,7 +225,7 @@ const ParticipantForm = ({
                               <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
                               <Field
                                 className="outline-none bg-gray-100 md:w-28 w-[4rem] flex-1"
-                                placeholder="Age"
+                                placeholder="Age *"
                                 type="number"
                                 id="age"
                                 name={`participantsDetails[${index}].age`}
@@ -236,6 +241,10 @@ const ParticipantForm = ({
 
                         {/* This needs refactoring, placeholder should be displayed, upload pdf file logic, changing upin and cross button on toggle the file  */}
                         <div className="mt-3">
+                          <label>
+                            ID Proof<span className="text-red-500"> *</span>{" "}
+                            <span className="text-xs">(Aadhar/Passport)</span>
+                          </label>
                           <div className="bg-gray-100 flex p-3 rounded-lg flex-col">
                             <input
                               type="file"

@@ -152,3 +152,22 @@ export const rounds = [
     ],
   },
 ];
+
+export function playerFees(sport, ParticipationType) {
+  switch (sport.toLowerCase()) {
+    case "football":
+    case "basketball":
+    case "cricket":
+      return 100;
+    case "badminton":
+      return ParticipationType === "Doubles" ? 350 : 200;
+    case "table tennis":
+      return ParticipationType === "Doubles" ? 350 : 200;
+    case "skating":
+    case "snooker":
+    case "swimming":
+      return 200;
+    default:
+      return null;
+  }
+}
