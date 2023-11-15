@@ -74,10 +74,10 @@ const EventForm = () => {
     toTime: formattedTime,
 
     participationType: "",
-    maxNumOfTeams: "",
-    numOfPlayersPerTeam: "",
+    maxNumOfTeams: null,
+    numOfPlayersPerTeam: null,
 
-    teamRegistrationFees: "",
+    teamRegistrationFees: null,
     host_QRCode: null,
   };
 
@@ -98,8 +98,8 @@ const EventForm = () => {
     toTime: Yup.string().required("End Time is required"),
 
     participationType: Yup.string().required("Participation Type is required"),
-    maxNumOfTeams: Yup.string().required("Maximum number of teams is required"),
-    numOfPlayersPerTeam: Yup.string().required(
+    maxNumOfTeams: Yup.number().positive("This field must be positive").required("Maximum number of teams is required"),
+    numOfPlayersPerTeam: Yup.number().positive("This field must be positive").required(
       "Maximum number of team members is required"
     ),
     teamRegistrationFees: Yup.number()
@@ -120,13 +120,10 @@ const EventForm = () => {
             "Your Tournament request was received. Wait for confirmation from pitstop"
           );
           navigate("/");
-        } else {
-          navigate("/login");
         }
       })
       .catch((res) => {
-        console.log(values);
-        console.error(res);
+        alert('Something went wrong. Try again with correct values')
       });
     setSubmitting(false);
   };
@@ -442,6 +439,7 @@ const EventForm = () => {
                   type="number"
                   id="teamRegistrationFees"
                   name="teamRegistrationFees"
+                  
                 />
               </div>
               <ErrorMessage
