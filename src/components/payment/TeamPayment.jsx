@@ -5,59 +5,64 @@ import PropTypes from "prop-types";
 
 import { TeamAPI } from "../../services/api.service";
 import { useNavigate } from "react-router-dom";
+import useCamera from "../../utils/useCamera";
+import FileInput, { base64ToBlob } from "../../utils/FileInput";
+import { Toast } from "@capacitor/toast";
 
 const TeamPaymentPage = ({ tournament, form, setForm }) => {
   // const dispatch = useDispatch();
   // const form = useSelector((state) => state.form);
   const navigate = useNavigate();
 
-  const [file, setFile] = useState(null);
+  const [picture, error, takePicture, removePicture] = useCamera({ filename: "teamPayment", type: "image" })
 
   let toPay = tournament?.teamRegistrationFees;
 
-  const handleFileUpload = (event) => {
-    const uploadedFile = event.target.files[0];
-    const paymentKey = "teamPayment";
+  const handleSubmit = async () => {
 
-    // const fileURL = URL.createObjectURL(uploadedFile);
-
-    setFile(uploadedFile);
-
-    // dispatch(update({ [paymentKey]: { blob: fileURL, name: uploadedFile.name, type: uploadedFile.type } }));
     setForm((prevState) => ({
       ...prevState,
-      [paymentKey]: uploadedFile,
+      teamPayment: picture,
     }));
-  };
 
-  const handleSubmit = async () => {
     if (form.data && form.playerPayment && form.teamPayment) {
       // Create a new FormData object
       const formData = new FormData();
 
       // Append fields and their values to the FormData object
-      formData.append('parent_tournament', tournament?.id);
-      formData.append('name', form.data.name);
-      formData.append('ageGroup', form.data.ageGroup);
+      formData.set('parent_tournament', tournament?.id);
+      formData.set('name', form.data.name);
+      formData.set('ageGroup', form.data.ageGroup);
 
       // Append arrays using a loop
       form.data.participantsDetails.forEach((obj, index) => {
-        formData.append(`participantsName[]`, obj.name);
-        formData.append(`participantsGender[]`, obj.gender);
-        formData.append(`participantsAge[]`, obj.age);
-        formData.append(`participantsIDProof[]`, obj.id_proof);
+        formData.set(`participantsName[]`, obj.name);
+        formData.set(`participantsGender[]`, obj.gender);
+        formData.set(`participantsAge[]`, obj.age);
+
+        if (obj.id_proof.blob) {
+          formData.append('participantsIDProof[]', obj.id_proof.blob, obj.id_proof.name);
+        } else {
+          let blob = base64ToBlob(obj.id_proof.data, obj.id_proof.mimeType);
+          formData.append('participantsIDProof[]', blob, obj.id_proof.name);
+        }
       });
 
       // Append payment proofs
-      formData.append('paymentProof', form.teamPayment);
-      formData.append('playerPaymentProof', form.playerPayment);
+      const playerBlob = await fetch(form.playerPayment.imageUrl);
+      formData.append("playerPaymentProof", await playerBlob.blob(), form.playerPayment.name);
+
+      const teamBlob = await fetch(form.teamPayment.imageUrl);
+      formData.append("paymentProof", await teamBlob.blob(), form.teamPayment.name);
 
       const response = await TeamAPI.addTeam(formData);
       if (response) {
-        alert("Wait for the host to accept your participation.");
-        navigate('/');
+        Toast.show({
+          text: "Request was sent! Wait for the host to accept your participation.",
+          duration: "long"
+        })
+        navigate(`/tournament/${tournament?.id}`);
       }
-      console.log(data);
     }
   };
 
@@ -82,16 +87,11 @@ const TeamPaymentPage = ({ tournament, form, setForm }) => {
         </h1>
         <div className="mt-3">
           <div className="bg-gray-100 flex p-3 rounded-lg flex-col mt-5 mb-10">
-            <input
-              name={`identityProof`}
-              type="file"
-              placeholder="Upload Payment Screenshot"
-              className="outline-none bg-gray-100 flex-1"
-              onChange={handleFileUpload}
-            />
+            <h1>Upload your payment screenshot here</h1>
+            <FileInput picture={picture} error={error} takePicture={takePicture} removePicture={removePicture} />
           </div>
         </div>
-        {file ? (
+        {picture ? (
           <button
             type="submit"
             className="bg-orange-500 cursor-pointer text-white flex p-3 rounded-lg mt-6 w-full justify-center"

@@ -7,6 +7,10 @@ import FileCopyIcon from "@mui/icons-material/FileCopy";
 import { TeamAPI } from "../../services/api.service";
 import { data } from "autoprefixer";
 import { useNavigate } from "react-router-dom";
+import useCamera from "../../utils/useCamera";
+import FileInput from "../../utils/FileInput";
+import { Clipboard } from "@capacitor/clipboard";
+import { Toast } from "@capacitor/toast";
 
 const PlayerPaymentPage = ({ tournament, continueNextPage, form, setForm }) => {
   // const dispatch = useDispatch();
@@ -14,49 +18,43 @@ const PlayerPaymentPage = ({ tournament, continueNextPage, form, setForm }) => {
   // const form = useSelector((state) => state.form);
 
   const [file, setFile] = useState(null);
+  const [picture, error, takePicture, removePicture] = useCamera({ filename: "teamPayment", type: "image" })
 
   let toPay =
     parseInt(tournament?.numOfPlayersPerTeam) *
     parseInt(tournament?.player_register_fees);
 
-  const handleFileUpload = (event) => {
-    const uploadedFile = event.target.files[0];
-    const paymentKey = "playerPayment";
+  const handleContinue = () => {
+    if (picture) {
+      setForm((prevState) => ({
+        ...prevState,
+        playerPayment: picture,
+      }));
+      continueNextPage("team_pay")
+    }
+  }
 
-    //BLOB code
-    // const fileURL = URL.createObjectURL(uploadedFile);
-
-    setFile(uploadedFile);
-
-    // dispatch(update({ [paymentKey]: {blob: fileURL, name: uploadedFile.name, type: uploadedFile.type} }));
-
-    //the new state contains the property "file" instead of "blob" - to Dhruv
-    setForm((prevState) => ({
-      ...prevState,
-      [paymentKey]: uploadedFile,
-    }));
-  };
-
-  // const blobUrlToFile = async (proof) => {
-  //   const response = await fetch(proof.blob);
-  //   const blob = await response.blob();
-
-  //   const file = new File([blob], proof.name, { type: proof.type });
-  //   return file;
-  // };
-
-  const handleCopy = () => {
+  const handleCopy = async () => {
     const textToCopy = "pitstopapp@ybl";
-    navigator.clipboard.writeText(textToCopy).then(() => {
-      alert("Copied to clipboard!");
-    });
+    try {
+      await Clipboard.write({
+        string: textToCopy
+      })
+    } catch (err) {
+      Toast.show({
+        text: "Something went wrong: " + err,
+        duration: "long"
+      })
+    }
+    // navigator.clipboard.writeText(textToCopy).then(() => {
+    //   alert("Copied to clipboard!");
+    // });
   };
 
   const [isCopied, setIsCopied] = useState(false);
 
   return (
     <div className="p-6">
-      {console.log(tournament)}
       <div className="flex flex-col items-center justify-center">
         <div className="flex justify-center mb-3">
           <img src={QR} alt="QR Code" className="w-3/4 " />
@@ -88,20 +86,22 @@ const PlayerPaymentPage = ({ tournament, continueNextPage, form, setForm }) => {
         </h1>
         <div className="mt-3">
           <div className="bg-gray-100 flex p-3 rounded-lg flex-col mt-5 mb-10">
-            <input
+            <h1>Upload your payment screenshot here</h1>
+            <FileInput picture={picture} error={error} takePicture={takePicture} removePicture={removePicture} />
+            {/* <input
               name={`identityProof`}
               type="file"
               placeholder="Upload Payment Screenshot"
               className="outline-none bg-gray-100 flex-1"
               onChange={handleFileUpload}
-            />
+            /> */}
           </div>
         </div>
-        {file ? (
+        {picture ? (
           <button
             type="submit"
             className="bg-orange-500 cursor-pointer text-white flex p-3 rounded-lg mt-6 w-full justify-center"
-            onClick={() => continueNextPage("team_pay")}
+            onClick={() => handleContinue()}
           >
             Continue
           </button>

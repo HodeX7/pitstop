@@ -1,0 +1,7 @@
+{
+  "name": "Pitstop",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}

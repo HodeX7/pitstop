@@ -5,14 +5,16 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 import { CapacitorHttp } from "@capacitor/core";
 
-// export const API_MEDIA = "http://127.0.0.1:8000";
-// export const API_URL = "http://127.0.0.1:8000/api/";
+export const SITE_URL = "https://pitstop-nine.vercel.app/"
+
+export const API_MEDIA = "http://192.168.1.7:8000";
+export const API_URL = "http://192.168.1.7:8000/api/";
 
 // export const API_URL = "https://pitstop-api.vercel.app/api/";
 // export const API_MEDIA = "https://pitstop-api.vercel.app";
 
-export const API_URL = "https://ourpitstop.in/api/";
-export const API_MEDIA = "https://ourpitstop.in";
+// export const API_URL = "https://ourpitstop.in/api/";
+// export const API_MEDIA = "https://ourpitstop.in";
 
 export const useAxios = (configParams) => {
   const [resData, setResData] = useState(null);
@@ -53,6 +55,23 @@ export const useAxios = (configParams) => {
 
   return [resData, isLoaded];
 };
+
+export const axiosAuthRequest = async (url, req_params, sendingMedia) => {
+  const result = await Storage.get({ key: 'access_token' });
+
+  if (result.value != null) {
+    return axios.request({
+      url: API_URL + url,
+      ...req_params,
+      headers: {
+        Authorization: `Bearer ${result.value}`,
+        'Content-Type': (sendingMedia) ? "multipart/form-data" : 'application/json'
+      }
+    });
+  } else {
+    return <Navigate to="/logout" />
+  }
+}
 
 const signup = (data) => {
   return CapacitorHttp.post({
@@ -255,7 +274,7 @@ const getTeam = (id) => {
 };
 
 const addTeam = (data) => {
-  return capacitorHTTPClient(
+  return axiosAuthRequest(
     "team/",
     {
       method: "post",
@@ -263,12 +282,6 @@ const addTeam = (data) => {
     },
     true
   );
-  // return axiosAuthorized().post(`team/`, data, {
-  //   headers: {
-  //     ...axiosAuthorized.defaults.headers,
-  //     "Content-Type": "multipart/form-data",
-  //   },
-  // });
 };
 
 const updateTeam = (id, data) => {

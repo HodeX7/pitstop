@@ -9,6 +9,25 @@ export const NavigationHeaderComponent = ({ title, shareLink, img }) => {
   const exitCurrentScreen = () => navigate("/");
   const backButton = () => navigate(-1);
 
+  const shareTournament = async (url) => {
+    const canShare = await Share.canShare();
+    if (canShare.value) {
+      await Share.share({
+        title: 'Checkout this Tournament at Pitstop!',
+        url: url,
+        dialogTitle: 'Share with buddies',
+      });
+    } else {
+      await Clipboard.write({
+        string: url
+      });
+      Toast.show({
+        text: "Tournament URL was copied to clipboard.",
+        duration: "long"
+      });
+    }
+  }
+
   return (
     <div className="flex items-center justify-between px-4 py-5 font-bold">
       <div className="flex items-center gap-4">
@@ -19,10 +38,7 @@ export const NavigationHeaderComponent = ({ title, shareLink, img }) => {
       {shareLink ? (
         <Share
           className="cursor-pointer"
-          onClick={() => {
-            navigator.clipboard.writeText(shareLink);
-            alert("Link Copied");
-          }}
+          onClick={() => shareTournament(shareLink)}
         />
       ) : (
         <CloseIcon className="cursor-pointer" onClick={exitCurrentScreen} />

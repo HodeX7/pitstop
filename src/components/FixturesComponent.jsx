@@ -5,6 +5,9 @@ import "../App.css";
 import DoneIcon from "@mui/icons-material/Done";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { capacitorHTTPClient } from "../services/api.service";
+import { Toast } from "@capacitor/toast";
+import { Device } from "@capacitor/device";
+
 
 const Menu = ({ seed, isMenuVisible, setMenuVisibility, menuPage, group, refreshRounds }) => {
   const [type, setType] = useState(menuPage ? "menu" : "edit");
@@ -14,7 +17,7 @@ const Menu = ({ seed, isMenuVisible, setMenuVisibility, menuPage, group, refresh
   const [selectedDate, setSelectedDate] = useState();
   const [selectedTime, setSelectedTime] = useState();
   const [selectedTeams, setSelectedTeams] = useState({
-    team1: "", // Initialize with empty strings
+    team1: "",
     team2: "",
   });
 
@@ -46,13 +49,12 @@ const Menu = ({ seed, isMenuVisible, setMenuVisibility, menuPage, group, refresh
     });
 
     if (res) {
-      console.log(winner)
-      alert('Winner was updated.');
+      Toast.show({
+        text: "Winner was updated successfully.",
+        duration: "long"
+      });
       refreshRounds();
     }
-    // axiosAuthorized.post('tournament/update_winner/', {seed_id: seed.id, details: group.id, winner: winner})
-    //   .then((res) => {
-    //   })
   };
 
   const handleEditFixtureSubmit = async () => {
@@ -67,15 +69,12 @@ const Menu = ({ seed, isMenuVisible, setMenuVisibility, menuPage, group, refresh
     })
 
     if (res) {
-      alert('Fixture was updated.');
+      Toast.show({
+        text: "Fixture was updated.",
+        duration: "long"
+      })
       refreshRounds();
     }
-
-    // axiosAuthorized.post('tournament/update_seed/', {seed_id: seed.id, details: group.id, updated_fixture: data})
-    //   .then((res) => {
-    //     alert('updated the fixture')
-    //     refreshRounds()
-    //   })
   }
 
   useEffect(() => {
@@ -305,8 +304,7 @@ const CustomSeed = ({
           </SeedTeam>
 
           <div>
-            <span className="text-sm">June 23</span>{" "}
-            <span className="text-sm">3:30 PM</span>
+            <span className="text-sm">{seed.date}</span>
           </div>
         </div>
       </SeedItem>
@@ -319,14 +317,16 @@ const FixturesComponent = ({ groupDetails, isHost }) => {
   const [seed, setSeed] = useState(false);
   const [rounds, setRounds] = useState(false)
   const [tabIndex, setTabIndex] = useState(0);
+  const [isHandset, setisHandset] = useState();
 
-  const handleTabIndexChange = (index) => () => {
-    setTabIndex(index);
-  };
+  const handleTabIndexChange = (index) => () => setTabIndex(index);
 
-  const handleSwipeChange = (index) => {
-    setTabIndex(index);
-  };
+  const handleSwipeChange = (index) => setTabIndex(index);
+
+  const isMobile = async () => {
+    const info = await Device.getInfo();
+    setisHandset(info.platform === "android" || info.platform === "ios" || (info.platform === "web" && window.innerWidth < 995) )
+  }
 
   const refreshRounds = async () => {
     const res = await capacitorHTTPClient(`tourney_details/${groupDetails?.id}/`, {
@@ -336,11 +336,11 @@ const FixturesComponent = ({ groupDetails, isHost }) => {
     if (res) {
       setRounds(res.data.fixtures);
       setMenuVisibility(false)
-      console.log(res.data.fixtures)
     }
   }
 
   useEffect(() => {
+    isMobile();
     refreshRounds();
     setTabIndex(0);
     document.addEventListener('click', () => {
@@ -368,11 +368,14 @@ const FixturesComponent = ({ groupDetails, isHost }) => {
       <div className="h-screen overflow-x-auto py-8 flex">
         {rounds?.length > 0 || rounds?.seeds?.length > 0 ? (
           <div className="App flex justify-center items-center flex-col w-full">
-            <div className="tabs">
-              {Array.from({length: rounds.length}).map((_, index) => (
-                <button className="mx-4 border border-black p-2 mb-10" onClick={handleTabIndexChange(index)}>Round {index+1}</button>
-              ))}
-            </div>
+            
+            {isHandset ? (
+              <div className="tabs">
+                {Array.from({length: rounds.length}).map((_, index) => (
+                  <button className="mx-4 border border-black p-2 mb-10" onClick={handleTabIndexChange(index)}>Round {index+1}</button>
+                ))}
+              </div>
+            ) : (null)}
             <Bracket
               rounds={rounds ? rounds : groupDetails?.fixtures}
               renderSeedComponent={(props) => (
