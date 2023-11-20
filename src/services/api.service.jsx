@@ -5,16 +5,16 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 import { CapacitorHttp } from "@capacitor/core";
 
-export const SITE_URL = "https://pitstop-nine.vercel.app/"
+export const SITE_URL = "https://app.ourpitstop.in/"
 
-export const API_MEDIA = "http://192.168.1.7:8000";
-export const API_URL = "http://192.168.1.7:8000/api/";
+// export const API_MEDIA = "http://192.168.1.7:8000";
+// export const API_URL = "http://192.168.1.7:8000/api/";
 
 // export const API_URL = "https://pitstop-api.vercel.app/api/";
 // export const API_MEDIA = "https://pitstop-api.vercel.app";
 
-// export const API_URL = "https://ourpitstop.in/api/";
-// export const API_MEDIA = "https://ourpitstop.in";
+export const API_URL = "https://api.ourpitstop.in/api/";
+export const API_MEDIA = "https://api.ourpitstop.in";
 
 export const useAxios = (configParams) => {
   const [resData, setResData] = useState(null);
