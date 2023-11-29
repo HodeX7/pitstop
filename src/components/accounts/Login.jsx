@@ -1,16 +1,10 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
-import AlternateEmailOutlinedIcon from "@mui/icons-material/AlternateEmailOutlined";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import logo from "../../assets/HostFormLogo.png";
 import { UserAPI } from "../../services/api.service";
 
 import { useNavigate } from "react-router-dom";
-import EventCompletion from "../tournament/EventCompletion";
-import Shimmer from "../Shimmer";
-import TestFixture from "../TestFixtures";
 
 const UserLoginView = () => {
   const navigate = useNavigate();
@@ -25,12 +19,12 @@ const UserLoginView = () => {
     contact_number: "",
   };
 
-  const handleSubmit = (values, { setSubmitting }) => {
+  const handleSubmit = (values) => {
     UserAPI.login({
       contact_number: "+91" + values.contact_number,
     })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.status == 200 && res.data.success) {
           let uid = res.data.data.id;
           const state = {
@@ -38,6 +32,9 @@ const UserLoginView = () => {
             contact_number: "+91" + values.contact_number,
           };
           navigate("/verify", { state: state });
+        } else {
+          alert("Mobile not Registered please register!");
+          window.location.reload();
         }
       })
       .catch((err) => {
@@ -98,7 +95,7 @@ const UserLoginView = () => {
         </Formik>
         <div className="flex items-center justify-center mt-5">
           <h1 className="text-blue">
-            Don't have an account?
+            {`Don't have an account?`}
             <span
               onClick={() => navigate("/signup")}
               className="text-blue-500 ml-2 cursor-pointer"
@@ -108,37 +105,6 @@ const UserLoginView = () => {
           </h1>
         </div>
       </div>
-      {/* <EventCompletion /> */}
-      {/* <Shimmer /> */}
-      {/* <TestFixture
-        rounds={[
-          {
-            title: "Round one",
-            seeds: [
-              {
-                id: 1,
-                date: new Date().toDateString(),
-                teams: [{ name: "Team A" }, { name: "Team B" }],
-              },
-              {
-                id: 2,
-                date: new Date().toDateString(),
-                teams: [{ name: "Team C" }, { name: "Team D" }],
-              },
-            ],
-          },
-          {
-            title: "Round one",
-            seeds: [
-              {
-                id: 3,
-                date: new Date().toDateString(),
-                teams: [{ name: "Team A" }, { name: "Team C" }],
-              },
-            ],
-          },
-        ]}
-      /> */}
     </>
   );
 };

@@ -38,7 +38,7 @@ const ParticipantTab = ({
             tournamentID={tournamentID}
           />
         </div>
-      ) : (null)}
+      ) : null}
 
       <div className="mb-8">
         <h1 className="font-semibold mb-3">
@@ -62,7 +62,7 @@ const ParticipantTab = ({
             tournamentID={tournamentID}
           />
         </div>
-      ) : (null)}
+      ) : null}
     </div>
   );
 };
@@ -74,34 +74,34 @@ const Teams = ({ teams, status, tournamentID }) => {
     <>
       {teams && teams.length != 0
         ? teams.map((team) => {
-          return (
-            <div
-              key={team.id}
-              className="bg-gray-100 p-4 rounded-lg mb-5 flex justify-between"
-            >
-              <div>
-                <h1 className="font-semibold text-lg">{team.name}</h1>
-                <h1 className="text-gray-400 font-extralight">{status}</h1>
-              </div>
-              <div className="items-center flex">
-                <div className="mr-3">
-                  <h1 className=" text-md flex justify-end items-center">
-                    {team.participantsDetails.length} Players
-                  </h1>
-                  <h1 className="text-gray-400 font-extralight">
-                    {formatDateTime(team.submissionDate)}
-                  </h1>
+            return (
+              <div
+                key={team.id}
+                className="bg-gray-100 p-4 rounded-lg mb-5 flex justify-between"
+              >
+                <div>
+                  <h1 className="font-semibold text-lg">{team.name}</h1>
+                  <h1 className="text-gray-400 font-extralight">{status}</h1>
                 </div>
-                <ChevronRightOutlinedIcon
-                  className="cursor-pointer"
-                  onClick={() =>
-                    navigate(`/tournament/${tournamentID}/team/${team.id}`)
-                  }
-                />
+                <div className="items-center flex">
+                  <div className="mr-3">
+                    <h1 className=" text-md flex justify-end items-center">
+                      {team.participantsDetails.length} Players
+                    </h1>
+                    <h1 className="text-gray-400 font-extralight">
+                      {formatDateTime(team.submissionDate)}
+                    </h1>
+                  </div>
+                  <ChevronRightOutlinedIcon
+                    className="cursor-pointer"
+                    onClick={() =>
+                      navigate(`/tournament/${tournamentID}/team/${team.id}`)
+                    }
+                  />
+                </div>
               </div>
-            </div>
-          );
-        })
+            );
+          })
         : "Any teams falling under this category will be shown here."}
     </>
   );
@@ -133,7 +133,11 @@ const DisplayForm = () => {
 
   return (
     <>
-      <NavigationHeaderComponent title={tournament?.title} shareLink={SITE_URL + `tournament/${tournament?.id}`} />
+      {console.log(tournament)}
+      <NavigationHeaderComponent
+        title={tournament?.title}
+        shareLink={SITE_URL + `tournament/${tournament?.id}`}
+      />
       {isReady ? (
         <div>
           {!tournament?.allowTournament ? (
@@ -144,10 +148,11 @@ const DisplayForm = () => {
             <>
               <div className="flex p-3 pb-0 justify-around">
                 <h1
-                  className={`cursor-pointer w-1/3 pb-1 flex justify-center ${isDetail == "details"
+                  className={`cursor-pointer w-1/3 pb-1 flex justify-center ${
+                    isDetail == "details"
                       ? " border-b-2 border-orange-500"
                       : "border-b-2 border-gray-200"
-                    }`}
+                  }`}
                   onClick={() => setIsDetail("details")}
                 >
                   Details
@@ -155,16 +160,17 @@ const DisplayForm = () => {
                 {tournament.user_status != "None" || tournament.user_is_host ? (
                   <>
                     <h1
-                      className={`cursor-pointer w-1/3 pb-1 flex justify-center ${isDetail == "participants"
+                      className={`cursor-pointer w-1/3 pb-1 flex justify-center ${
+                        isDetail == "participants"
                           ? " border-b-2 border-orange-500"
                           : "border-b-2 border-gray-200"
-                        }`}
+                      }`}
                       onClick={() =>
                         tournament.user_is_host
                           ? setIsDetail("participants")
                           : navigate(
-                            `/tournament/${id}/team/${tournament.team_id}`
-                          )
+                              `/tournament/${id}/team/${tournament.team_id}`
+                            )
                       }
                     >
                       Participants
@@ -173,12 +179,13 @@ const DisplayForm = () => {
                 ) : null}
                 {(tournament.user_is_host ||
                   tournament.user_status == "Participating") &&
-                  (tournament.isLive || tournament.isOver) ? (
+                (tournament.isLive || tournament.isOver) ? (
                   <h1
-                    className={`cursor-pointer w-1/3 pb-1 flex justify-center ${isDetail == "fixtures"
+                    className={`cursor-pointer w-1/3 pb-1 flex justify-center ${
+                      isDetail == "fixtures"
                         ? " border-b-2 border-orange-500"
                         : "border-b-2 border-gray-200"
-                      }`}
+                    }`}
                     onClick={() => setIsDetail("fixtures")}
                   >
                     Fixtures
@@ -186,10 +193,11 @@ const DisplayForm = () => {
                 ) : null}
                 {tournament.isOver ? (
                   <h1
-                    className={`cursor-pointer w-1/3 pb-1 flex justify-center ${isDetail == "tourney_media"
+                    className={`cursor-pointer w-1/3 pb-1 flex justify-center ${
+                      isDetail == "tourney_media"
                         ? " border-b-2 border-orange-500"
                         : "border-b-2 border-gray-200"
-                      }`}
+                    }`}
                     onClick={() => setIsDetail("tourney_media")}
                   >
                     Media
@@ -235,11 +243,9 @@ const DisplayForm = () => {
 
                 <h1 className="font-semibold">Age Groups</h1>
                 <h1 className="font-light mb-5">
-                  {
-                    tournament?.additionalDetails.map((tour) => (
-                      <li key={tour.id}>{tour.ageGroup}</li>
-                    ))
-                  }
+                  {tournament?.additionalDetails.map((tour) => (
+                    <li key={tour.id}>{tour.ageGroup}</li>
+                  ))}
                 </h1>
 
                 <h1 className="font-semibold ">Participants Gender</h1>
@@ -375,9 +381,10 @@ const DisplayForm = () => {
                   <h1
                     key={group.id}
                     className={`cursor-pointer w-1/3 pb-1 flex justify-center 
-                      ${ageGroup?.ageGroup == group.ageGroup
-                        ? "border-b-2 border-orange-500"
-                        : "border-b-2 border-gray-200"
+                      ${
+                        ageGroup?.ageGroup == group.ageGroup
+                          ? "border-b-2 border-orange-500"
+                          : "border-b-2 border-gray-200"
                       }`}
                     onClick={() => setAgeGroup(group)}
                   >

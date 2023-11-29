@@ -27,8 +27,8 @@ const Events = ({ tournaments, loaded, isHistory }) => {
   const pastStatus = {
     Participating: "Participated",
     Pending: "Request was pending",
-    Rejected: "Rejected"
-  }
+    Rejected: "Rejected",
+  };
 
   const getRange = (ranges) => {
     return ranges
@@ -56,7 +56,9 @@ const Events = ({ tournaments, loaded, isHistory }) => {
                 <div className="flex justify-between items-center mb-2">
                   <h1 className="font-semibold capitalize ">{event.title}</h1>
                   <h1 className="text-gray-500 text-sm capitalize">
-                    {isHistory ? pastStatus[event.tournamentStatus] : event.tournamentStatus}
+                    {isHistory
+                      ? pastStatus[event.tournamentStatus]
+                      : event.tournamentStatus}
                   </h1>
                 </div>
                 <div className="flex justify-between items-center mb-2">
@@ -111,25 +113,25 @@ const EventsPage = () => {
   });
 
   const sports = [
+    "Badminton",
     "Football",
     "Cricket",
     "Table tennis",
     "Hockey",
     "Swimming",
     "Basketball",
-    "Badminton",
     "Skating",
     "Snooker",
   ];
 
   const sportImages = [
+    Badminton,
     Football,
     Cricket,
     TableTennis,
     Hockey,
     Swimming,
     Basketball,
-    Badminton,
     Skating,
     Snooker,
   ];
@@ -169,7 +171,11 @@ const EventsPage = () => {
             <h1>View History</h1>
             <ChevronRightOutlinedIcon />
           </div>
-          <Events tournaments={tournamentHistory} loaded={thLoaded} isHistory={true} />
+          <Events
+            tournaments={tournamentHistory}
+            loaded={thLoaded}
+            isHistory={true}
+          />
         </div>
       ) : (
         <div className="overflow-y-scroll maxh hide-scrollbar">
