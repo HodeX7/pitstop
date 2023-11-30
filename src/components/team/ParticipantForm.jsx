@@ -22,14 +22,13 @@ const validationSchema = Yup.object().shape({
 });
 
 const ParticipantForm = ({
+  tournament,
   numberOfCards,
   ageGroups,
   continueNextPage,
   form,
   setForm,
 }) => {
-  // const dispatch = useDispatch();
-  // const form = useSelector((state) => state.form);
   const { id } = useParams();
 
   const [cards, setCards] = useState(0);
@@ -53,18 +52,23 @@ const ParticipantForm = ({
     participantsDetails: participantsDetails,
   };
 
-  const [pictures, setPictures] = useState({})
-  const acceptingFileTypes = ['image/png', 'image/jpeg', 'image/jpg', 'application/pdf']
+  const [pictures, setPictures] = useState({});
+  const acceptingFileTypes = [
+    "image/png",
+    "image/jpeg",
+    "image/jpg",
+    "application/pdf",
+  ];
 
   const handleSetPictures = async (index, setFieldValue) => {
     const res = await FilePicker.pickFiles({
       types: acceptingFileTypes,
       multiple: false,
-      readData: true
+      readData: true,
     });
     const fileObj = res.files[0];
 
-    setPictures((prev) => ({ ...prev, [index]: fileObj }))
+    setPictures((prev) => ({ ...prev, [index]: fileObj }));
     const updatedParticipants = participantsDetails.map((participant, i) =>
       i === index ? { ...participant, id_proof: fileObj } : participant
     );
@@ -72,10 +76,10 @@ const ParticipantForm = ({
     setParticipantsDetails(updatedParticipants);
 
     setFieldValue(`participantsDetails[${index}].id_proof`, fileObj);
-  }
+  };
 
   const handleSubmit = (values) => {
-    console.log(values) // idhar pe pura values bara bar aara
+    console.log(values); // idhar pe pura values bara bar aara
     setTimeout(() => {
       // dispatch(update({ data: values }));
       setForm((prevState) => ({
@@ -98,6 +102,7 @@ const ParticipantForm = ({
   return (
     <div className="p-6">
       <img src={logo} alt="" />
+      {console.log(tournament)}
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -122,8 +127,7 @@ const ParticipantForm = ({
                 className="error text-red-500"
               />
             </div>
-
-            {ageGroups !== null && (
+            {ageGroups.length !== 0 && (
               <div className="mt-5">
                 <div className="bg-gray-100 flex p-3 rounded-lg items-center">
                   <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
@@ -154,13 +158,17 @@ const ParticipantForm = ({
                 Enter Participant Details ({cards})
               </h1>
               {/* This would be only visible for team sports. New state isTeam -> boolean. Need to make an API call onComponentMount */}
-              <button
-                className="border-2 border-orange-500 rounded-lg p-2"
-                type="button"
-                onClick={addParticipant}
-              >
-                Add
-              </button>
+              {tournament.participationType !== "1vs1" ||
+              tournament.participationType !== "2vs2" ||
+              tournament.participationType !== "both" ? (
+                <button
+                  className="border-2 border-orange-500 rounded-lg p-2"
+                  type="button"
+                  onClick={addParticipant}
+                >
+                  Add
+                </button>
+              ) : null}
             </div>
             <FieldArray name="participantsDetails">
               {() => (
@@ -245,14 +253,36 @@ const ParticipantForm = ({
                               <div className="mb-4">
                                 {pictures[index] ? (
                                   <>
-                                    {["application/pdf"].includes(pictures[index].mimeType) ? (
-                                      <h1> <strong>Uploaded PDF:</strong> {pictures[index].name}</h1>
+                                    {["application/pdf"].includes(
+                                      pictures[index].mimeType
+                                    ) ? (
+                                      <h1>
+                                        {" "}
+                                        <strong>Uploaded PDF:</strong>{" "}
+                                        {pictures[index].name}
+                                      </h1>
                                     ) : (
-                                      <img src={loadAndDisplayImage(pictures[index])} alt="Uploaded" className="w-64 h-64 object-cover" />
+                                      <img
+                                        src={loadAndDisplayImage(
+                                          pictures[index]
+                                        )}
+                                        alt="Uploaded"
+                                        className="w-64 h-64 object-cover"
+                                      />
                                     )}
                                   </>
-                                ) : (null)}
-                                <button type="button" onClick={() => handleSetPictures(index, setFieldValue, errors)} className="bg-blue-500 text-white py-1 px-4 rounded">
+                                ) : null}
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    handleSetPictures(
+                                      index,
+                                      setFieldValue,
+                                      errors
+                                    )
+                                  }
+                                  className="cursor-pointer bg-orange-500 text-white py-1 px-4 mt-4 ml-10 rounded"
+                                >
                                   Upload Image / PDF
                                 </button>
                               </div>
@@ -281,10 +311,11 @@ const ParticipantForm = ({
 
             <button
               type="submit"
-              className={`text-white flex p-3 rounded-lg mt-6 w-full justify-center ${isSubmitting || !isValid || !dirty
-                ? "cursor-not-allowed bg-orange-200"
-                : "cursor-pointer bg-orange-500"
-                }`}
+              className={`text-white flex p-3 rounded-lg mt-6 w-full justify-center ${
+                isSubmitting || !isValid || !dirty
+                  ? "cursor-not-allowed bg-orange-200"
+                  : "cursor-pointer bg-orange-500"
+              }`}
               disabled={isSubmitting || !isValid || !dirty}
               onClick={handleSubmit}
             >
@@ -297,6 +328,7 @@ const ParticipantForm = ({
   );
 };
 ParticipantForm.propTypes = {
+  tournament: PropTypes.object.isRequired,
   numberOfCards: PropTypes.number.isRequired,
   ageGroups: PropTypes.array.isRequired,
   continueNextPage: PropTypes.func.isRequired,

@@ -28,7 +28,7 @@ const EventForm = () => {
   );
   const playAsBoth = FORM_OPTIONS.ParticipationType.filter(
     (item) =>
-      item.value === "1vs1" || item.value === "2vs2" || item.value === "3vs3"
+      item.value === "1vs1" || item.value === "2vs2" || item.value === "both"
   );
 
   const participationTypeOptions = {
@@ -91,48 +91,61 @@ const EventForm = () => {
     toTime: Yup.string().required("End Time is required"),
 
     participationType: Yup.string().required("Participation Type is required"),
-    maxNumOfTeams: Yup.number().positive("This field must be positive").required("Maximum number of teams is required"),
-    numOfPlayersPerTeam: Yup.number().positive("This field must be positive").required(
-      "Maximum number of team members is required"
-    ),
+    maxNumOfTeams: Yup.number()
+      .positive("This field must be positive")
+      .required("Maximum number of teams is required"),
+    numOfPlayersPerTeam: Yup.number()
+      .positive("This field must be positive")
+      .required("Maximum number of team members is required"),
     teamRegistrationFees: Yup.number()
       .positive("Fees must be positive")
       .required("Team Registration Fees is required."),
   });
 
-  const [hostQR, error, takePicture, removePicture] = useCamera({ filename: "host_QRCode", type: "image" })
+  const [hostQR, error, takePicture, removePicture] = useCamera({
+    filename: "host_QRCode",
+    type: "image",
+  });
 
   const handleSubmit = async (values, { setSubmitting }) => {
     const formData = new FormData();
 
     Object.keys(values).map((item, i) => {
       formData.set(item, values[item]);
-    })
-    
+    });
+
     if (hostQR) {
       const imageBlob = await fetch(hostQR.imageUrl);
       formData.append("host_QRCode", await imageBlob.blob(), hostQR.name);
 
-      const res = await axiosAuthRequest("tournament/", {
-        method: "post",
-        data: formData
-      }, true);
+      // for (const [key, value] of formData.entries()) {
+      //   console.log(`${key}: ${value}`);
+      // }
+
+      const res = await axiosAuthRequest(
+        "tournament/",
+        {
+          method: "post",
+          data: formData,
+        },
+        true
+      );
 
       if (res.status == 201) {
         Toast.show({
           text: "Your Tournament request was received. Wait for confirmation from pitstop",
-          duration: "long"
+          duration: "long",
         });
 
-        navigate('/');
+        navigate("/");
       } else {
-        alert(JSON.stringify("error", res))
+        alert(JSON.stringify("error", res));
       }
     } else {
       Toast.show({
         text: "Please upload a qr code as well",
-        duration: "long"
-      })
+        duration: "long",
+      });
     }
 
     setSubmitting(false);
@@ -179,7 +192,7 @@ const EventForm = () => {
         onSubmit={handleSubmit}
         innerRef={ref}
       >
-        {({ isSubmitting, setFieldValue }) => (
+        {({ isSubmitting }) => (
           <Form>
             <div className="mt-5">
               <div className="bg-gray-100 flex p-3 rounded-lg items-center">
@@ -449,7 +462,6 @@ const EventForm = () => {
                   type="number"
                   id="teamRegistrationFees"
                   name="teamRegistrationFees"
-
                 />
               </div>
               <ErrorMessage
@@ -461,12 +473,15 @@ const EventForm = () => {
 
             <div className="mt-5">
               <div className="bg-gray-100 flex flex-col p-3 rounded-lg ">
-                <label
-                  className="text-gray-600 mr-2 mb-3"
-                >
+                <label className="text-gray-600 mr-2 mb-3">
                   Upload Payment QR Code *
                 </label>
-                <FileInput picture={hostQR} error={error} takePicture={takePicture} removePicture={removePicture} />
+                <FileInput
+                  picture={hostQR}
+                  error={error}
+                  takePicture={takePicture}
+                  removePicture={removePicture}
+                />
               </div>
             </div>
 

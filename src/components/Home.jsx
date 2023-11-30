@@ -11,7 +11,7 @@ import HomePage from "./HomePage";
 import { useNavigate } from "react-router-dom";
 import { NavigationHeaderComponent } from "../services/header.service";
 import { Add, Create } from "@mui/icons-material";
-import LOGO from "../assets/pitstoplogo.png";
+import LOGO from "../assets/pitstopHeader.png";
 
 const Home = () => {
   const navigate = useNavigate();
