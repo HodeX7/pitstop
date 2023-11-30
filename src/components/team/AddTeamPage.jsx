@@ -62,7 +62,7 @@ const AddTeamPage = () => {
                 }`}
                 onClick={() => handleTabClick("team_form")}
               >
-                Team Form
+                Team Details
               </h1>
               <h1
                 className={`cursor-pointer w-1/3 pb-1 flex justify-center ${
@@ -87,6 +87,7 @@ const AddTeamPage = () => {
             </div>
             {currentPage == "team_form" ? (
               <ParticipantForm
+                tournament={tournament}
                 numberOfCards={tournament?.numOfPlayersPerTeam}
                 ageGroups={tournament?.additionalDetails.map(
                   (item) => item.ageGroup

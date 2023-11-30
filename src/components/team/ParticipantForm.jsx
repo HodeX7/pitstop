@@ -22,14 +22,13 @@ const validationSchema = Yup.object().shape({
 });
 
 const ParticipantForm = ({
+  tournament,
   numberOfCards,
   ageGroups,
   continueNextPage,
   form,
   setForm,
 }) => {
-  // const dispatch = useDispatch();
-  // const form = useSelector((state) => state.form);
   const { id } = useParams();
 
   const [cards, setCards] = useState(0);
@@ -103,6 +102,7 @@ const ParticipantForm = ({
   return (
     <div className="p-6">
       <img src={logo} alt="" />
+      {console.log(tournament)}
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -127,8 +127,7 @@ const ParticipantForm = ({
                 className="error text-red-500"
               />
             </div>
-
-            {ageGroups !== null && (
+            {ageGroups.length !== 0 && (
               <div className="mt-5">
                 <div className="bg-gray-100 flex p-3 rounded-lg items-center">
                   <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
@@ -159,13 +158,17 @@ const ParticipantForm = ({
                 Enter Participant Details ({cards})
               </h1>
               {/* This would be only visible for team sports. New state isTeam -> boolean. Need to make an API call onComponentMount */}
-              <button
-                className="border-2 border-orange-500 rounded-lg p-2"
-                type="button"
-                onClick={addParticipant}
-              >
-                Add
-              </button>
+              {tournament.participationType !== "1vs1" ||
+              tournament.participationType !== "2vs2" ||
+              tournament.participationType !== "both" ? (
+                <button
+                  className="border-2 border-orange-500 rounded-lg p-2"
+                  type="button"
+                  onClick={addParticipant}
+                >
+                  Add
+                </button>
+              ) : null}
             </div>
             <FieldArray name="participantsDetails">
               {() => (
@@ -325,6 +328,7 @@ const ParticipantForm = ({
   );
 };
 ParticipantForm.propTypes = {
+  tournament: PropTypes.object.isRequired,
   numberOfCards: PropTypes.number.isRequired,
   ageGroups: PropTypes.array.isRequired,
   continueNextPage: PropTypes.func.isRequired,

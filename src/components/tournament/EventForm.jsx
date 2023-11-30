@@ -28,7 +28,7 @@ const EventForm = () => {
   );
   const playAsBoth = FORM_OPTIONS.ParticipationType.filter(
     (item) =>
-      item.value === "1vs1" || item.value === "2vs2" || item.value === "3vs3"
+      item.value === "1vs1" || item.value === "2vs2" || item.value === "both"
   );
 
   const participationTypeOptions = {
