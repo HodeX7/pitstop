@@ -33,6 +33,12 @@ const ParticipantForm = ({
 
   const [cards, setCards] = useState(0);
 
+  // useEffect(() => {
+  //   if (values.participationType === "2v2") {
+  //     setCards(2);
+  //   } 
+  // }, [])
+
   useEffect(() => {
     setCards(numberOfCards);
   }, [numberOfCards]);
@@ -49,6 +55,7 @@ const ParticipantForm = ({
   const initialValues = {
     name: form.data.name,
     ageGroup: form.data.ageGroup, // Add the age group dropdown to select from user
+    participationType: form.data.participationType,
     participantsDetails: participantsDetails,
   };
 
@@ -78,6 +85,32 @@ const ParticipantForm = ({
     setFieldValue(`participantsDetails[${index}].id_proof`, fileObj);
   };
 
+  const handleCardsChange = (e, setFieldValue) => {
+    const val = e.target.value;
+
+    if (val === "2v2") {
+      setFieldValue("participationType", "2v2");
+      setCards(2)
+      setParticipantsDetails(
+        Array.from({ length: 2 }, () => ({
+          name: "",
+          gender: "",
+          age: "",
+          id_proof: {},
+        })))
+    } else {
+      setFieldValue("participationType", "1v1");
+      setCards(1)
+      setParticipantsDetails(
+        Array.from({ length: 1 }, () => ({
+          name: "",
+          gender: "",
+          age: "",
+          id_proof: {},
+        })))
+    }
+  }
+
   const handleSubmit = (values) => {
     console.log(values); // idhar pe pura values bara bar aara
     setTimeout(() => {
@@ -102,7 +135,6 @@ const ParticipantForm = ({
   return (
     <div className="p-6">
       <img src={logo} alt="" />
-      {console.log(tournament)}
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -127,6 +159,7 @@ const ParticipantForm = ({
                 className="error text-red-500"
               />
             </div>
+
             {ageGroups.length !== 0 && (
               <div className="mt-5">
                 <div className="bg-gray-100 flex p-3 rounded-lg items-center">
@@ -153,14 +186,40 @@ const ParticipantForm = ({
               </div>
             )}
 
+            <div className="mt-5">
+              <div className="bg-gray-100 flex p-3 rounded-lg items-center">
+                <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
+                <select
+                  className="outline-none flex-1 bg-gray-100"
+                  // as="select"
+                  id="participationType"
+                  name="participationType"
+                  placeholder="Select Your Participation Type"
+                  onChange={(e) => handleCardsChange(e, setFieldValue)}
+                >
+                  <option value={'1v1'}>
+                    Singles
+                  </option>
+                  <option value={'2v2'}>
+                    Doubles
+                  </option>
+                </select>
+              </div>
+              <ErrorMessage
+                className="error text-red-500"
+                name="ageGroup"
+                component="div"
+              />
+            </div>
+
             <div className="flex mt-7 pl-0 justify-between items-center">
               <h1 className="text-md font-[600]">
                 Enter Participant Details ({cards})
               </h1>
               {/* This would be only visible for team sports. New state isTeam -> boolean. Need to make an API call onComponentMount */}
-              {tournament.participationType !== "1vs1" ||
-              tournament.participationType !== "2vs2" ||
-              tournament.participationType !== "both" ? (
+              {(tournament?.participationType !== "1vs1" &&
+                tournament?.participationType !== "2vs2" &&
+                tournament?.participationType !== "both") ? (
                 <button
                   className="border-2 border-orange-500 rounded-lg p-2"
                   type="button"
@@ -311,11 +370,10 @@ const ParticipantForm = ({
 
             <button
               type="submit"
-              className={`text-white flex p-3 rounded-lg mt-6 w-full justify-center ${
-                isSubmitting || !isValid || !dirty
-                  ? "cursor-not-allowed bg-orange-200"
-                  : "cursor-pointer bg-orange-500"
-              }`}
+              className={`text-white flex p-3 rounded-lg mt-6 w-full justify-center ${isSubmitting || !isValid || !dirty
+                ? "cursor-not-allowed bg-orange-200"
+                : "cursor-pointer bg-orange-500"
+                }`}
               disabled={isSubmitting || !isValid || !dirty}
               onClick={handleSubmit}
             >

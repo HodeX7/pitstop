@@ -20,31 +20,28 @@ const UserLoginView = () => {
     contact_number: "",
   };
 
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (values, { setSubmitting, setFieldValue }) => {
 
     const res = await UserAPI.login({
       contact_number: "+91" + values.contact_number,
     })
-      .then((res) => {
-        console.log(res);
-        if (res.status == 200 && res.data.success) {
-          let uid = res.data.data.id;
-          const state = {
-            uid: uid,
-            contact_number: "+91" + values.contact_number,
-          };
-          navigate("/verify", { state: state });
-        }
+
+    if (res.status === 200) {
+      let uid = res.data.data.id;
+      const state = {
+        uid: uid,
+        contact_number: "+91" + values.contact_number,
+      };
+      navigate("/verify", { state: state });
+    } else {
+      Toast.show({
+        text: res.data.message,
+        duration: "long"
       })
-      .catch((err) => {
-        console.error(err);
-        if (err.response.status != 500) {
-          Object.keys(err.response.data).forEach((key) => {
-            const value = err.response.data[key];
-            alert(`${key}: ${value[0]}`);
-          });
-        }
-      });
+      setFieldValue("contact_number", "");
+    }
+
+    setSubmitting(false)
   };
 
   return (

@@ -28,6 +28,7 @@ const useCamera = ({ filename, type }) => {
       }
     } catch (error) {
       console.error('Error taking picture:', error);
+      setPicture({})
       setError(error);
     }
   };

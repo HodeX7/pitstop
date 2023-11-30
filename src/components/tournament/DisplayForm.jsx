@@ -25,10 +25,10 @@ const ParticipantTab = ({
 }) => {
   return (
     <div className="p-6">
-      {pendingTeams.length > 0 ? (
+      {pendingTeams?.length > 0 ? (
         <div className="mb-8">
           <h1 className="font-semibold mb-3">
-            {pendingTeams.length} Pending Requests
+            {pendingTeams?.length} Pending Requests
           </h1>
           <Teams
             teams={pendingTeams}
@@ -40,7 +40,7 @@ const ParticipantTab = ({
 
       <div className="mb-8">
         <h1 className="font-semibold mb-3">
-          {participatingTeams.length} Participants
+          {participatingTeams?.length} Participants
         </h1>
         <Teams
           teams={participatingTeams}
@@ -49,10 +49,10 @@ const ParticipantTab = ({
         />
       </div>
 
-      {rejectedTeams.length > 0 ? (
+      {rejectedTeams?.length > 0 ? (
         <div className="mb-8">
           <h1 className="font-semibold mb-3">
-            {rejectedTeams.length} Rejected Requests
+            {rejectedTeams?.length} Rejected Requests
           </h1>
           <Teams
             teams={rejectedTeams}
@@ -131,7 +131,6 @@ const DisplayForm = () => {
 
   return (
     <>
-      {console.log(tournament)}
       <NavigationHeaderComponent
         title={tournament?.title}
         shareLink={SITE_URL + `tournament/${tournament?.id}`}
@@ -215,7 +214,6 @@ const DisplayForm = () => {
           ) : null}
           {isDetail == "details" ? (
             <>
-              {/* {console.log(tournament)} */}
               <img src={tournament?.banner} className="w-full" alt="" />
               <div className="p-6">
                 <h1 className="font-semibold text-xl mb-6">
