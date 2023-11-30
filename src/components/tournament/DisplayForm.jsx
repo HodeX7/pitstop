@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import data from "../../assets/dummyFormData.json";
-import pic from "../../assets/formDataImage.png";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import { useNavigate, useParams } from "react-router-dom";
-import { SITE_URL, TournamentAPI, useAxios } from "../../services/api.service";
+import { API_MEDIA, SITE_URL, TournamentAPI, useAxios } from "../../services/api.service";
 import {
   CONSTANTS,
   formatDate,
@@ -16,8 +15,7 @@ import FixturesComponent from "../FixturesComponent";
 import EventCompletion from "./EventCompletion";
 import { NavigationHeaderComponent } from "../../services/header.service";
 import TournamentCard from "../TournamentCard";
-import Shimmer from "../Shimmer";
-import MediaPage from "../MediaPage";
+import Shimmer from "../Shimmer"; 
 
 const ParticipantTab = ({
   pendingTeams,

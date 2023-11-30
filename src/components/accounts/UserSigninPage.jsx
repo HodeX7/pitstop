@@ -9,6 +9,8 @@ import { UserAPI } from "../../services/api.service";
 
 import { useNavigate } from "react-router-dom";
 
+import { Toast } from "@capacitor/toast";
+
 const UserSigninView = () => {
     const navigate = useNavigate();
 
@@ -24,29 +26,36 @@ const UserSigninView = () => {
     });
 
     const initialValues = {
-        name: "Dummy Name",
+        name: "",
         contact_number: "",
-        email: "dummy@gmail.com",
-        age: "18",
+        email: "",
+        age: "",
         gender: "male",
     };
 
-    const handleSubmit = (values, { setSubmitting }) => {
-        UserAPI.signup(values)
-            .then(res => {
-                if (res.status == 201) {
-                    let uid = res.data.data.id
+    const handleSubmit = async (values, { setSubmitting }) => {
 
-                    const state = { uid: uid, contact_number: values.contact_number };
-                    navigate('/verify', { state: state });
-                }
-            })
-            .catch(err => {
-                Object.keys(err.response.data).forEach((key) => {
-                    const value = err.response.data[key];
-                    alert(`${key}: ${value[0]}`)
+        if (!values.contact_number.startsWith("+91")) {
+            values["contact_number"] = "+91" + values.contact_number
+        }
+
+        const res = await UserAPI.signup(values);
+
+        if (res.status === 201) {
+            let uid = res.data.data.id
+
+            const state = { uid: uid, contact_number: values.contact_number };
+            navigate('/verify', { state: state });
+        } else if (res.status === 400) {
+            Object.keys(res.data).map(key => {
+                Toast.show({
+                    text: res.data[key][0],
+                    duration: "long"
                 });
             })
+        }
+
+        setSubmitting(false)
     };
 
     return (
@@ -85,7 +94,7 @@ const UserSigninView = () => {
                                 <PhoneOutlinedIcon className="text-gray-600 mr-2" />
                                 <Field
                                     className="outline-none bg-gray-100 flex-1"
-                                    placeholder="Mobile Number"
+                                    placeholder="Mobile Number (without +91)"
                                     type="text"
                                     id="contact_number"
                                     name="contact_number"

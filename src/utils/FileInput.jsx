@@ -9,12 +9,12 @@ const FileInput = ({ picture, error, takePicture, removePicture }) => {
       {picture ? (
         <div className="mb-4">
           <img src={picture.imageUrl} alt="Uploaded" className="w-64 h-64 object-cover" />
-          <button onClick={() => removePicture()} className="mt-2 bg-red-500 text-white py-1 px-4 rounded">
+          <button type='button' onClick={() => removePicture()} className="mt-2 bg-red-500 text-white py-1 px-4 rounded">
             Remove Image
           </button>
         </div>
       ) : (
-        <button onClick={() => takePicture()} className="bg-blue-500 text-white py-1 px-4 rounded">
+        <button type='button' onClick={() => takePicture()} className="bg-blue-500 text-white py-1 px-4 rounded">
           Upload Image
         </button>
       )}

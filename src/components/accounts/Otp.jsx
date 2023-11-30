@@ -1,8 +1,9 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import logo from "../../assets/OTPLogo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UserAPI } from "../../services/api.service";
 import { Storage } from "@capacitor/storage";
+import { Toast } from "@capacitor/toast";
 
 
 const VerifyMobileOTP = () => {
@@ -29,10 +30,6 @@ const VerifyMobileOTP = () => {
     setInputIndex(index);
   };
 
-  const handleResendOTP = () => {
-    // Logic to resend OTP
-  };
-
   const handleAccessToken = async (token, uid) => {
     await Storage.set({
       key: 'access_token',
@@ -47,21 +44,6 @@ const VerifyMobileOTP = () => {
       value: 'yes',
     });
   }
-
-  const submitOTP = () => {
-    const enteredOTP = parseInt(otp.join(""))
-    UserAPI.authenticateOTP(uid, enteredOTP)
-      .then(res => {
-        if (res) {
-          handleAccessToken(res.data.accessToken, res.data.uid.toString());
-
-          navigate('/', {replace: true});
-        }
-      })
-      .catch(err => {
-        console.error(err)
-      })
-  };
 
   const handleKeypadClick = (number) => {
     if (number === "Enter") {
@@ -79,6 +61,24 @@ const VerifyMobileOTP = () => {
       if (inputIndex === 4 && !otp.includes("")) {
         submitOTP();
       }
+    }
+  };
+
+  const handleResendOTP = () => {}
+
+  const submitOTP = async () => {
+    const enteredOTP = parseInt(otp.join(""))
+
+    const res = await UserAPI.authenticateOTP(uid, enteredOTP);
+    if (res.status === 200) {
+      await handleAccessToken(res.data.accessToken, res.data.uid.toString());
+  
+      navigate('/', {replace: true});
+    } else {
+      Toast.show({
+        text: "Something went wrong. Try again.",
+        duration: "long"
+      });
     }
   };
 

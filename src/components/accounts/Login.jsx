@@ -1,16 +1,11 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
-import AlternateEmailOutlinedIcon from "@mui/icons-material/AlternateEmailOutlined";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import logo from "../../assets/HostFormLogo.png";
 import { UserAPI } from "../../services/api.service";
 
 import { useNavigate } from "react-router-dom";
-import EventCompletion from "../tournament/EventCompletion";
-import Shimmer from "../Shimmer";
-import TestFixture from "../TestFixtures";
+import { Toast } from "@capacitor/toast";
 
 const UserLoginView = () => {
   const navigate = useNavigate();
@@ -25,30 +20,27 @@ const UserLoginView = () => {
     contact_number: "",
   };
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    UserAPI.login({
+  const handleSubmit = async (values, { setSubmitting }) => {
+
+    const res = await UserAPI.login({
       contact_number: "+91" + values.contact_number,
-    })
-      .then((res) => {
-        console.log(res);
-        if (res.status == 200 && res.data.success) {
-          let uid = res.data.data.id;
-          const state = {
-            uid: uid,
-            contact_number: "+91" + values.contact_number,
-          };
-          navigate("/verify", { state: state });
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        if (err.response.status != 500) {
-          Object.keys(err.response.data).forEach((key) => {
-            const value = err.response.data[key];
-            alert(`${key}: ${value[0]}`);
-          });
-        }
+    });
+
+    if (res.status === 200) {
+      let uid = res.data.data.id;
+      const state = {
+        uid: uid,
+        contact_number: "+91" + values.contact_number,
+      };
+      navigate("/verify", { state: state });
+    } else if (res.status === 400) {
+      Toast.show({
+        text: res.data.message,
+        duration: "long"
       });
+    }
+
+    setSubmitting(false)
   };
 
   return (
@@ -69,11 +61,12 @@ const UserLoginView = () => {
                 <div className="bg-gray-100 flex p-3 rounded-lg items-center ">
                   <PhoneOutlinedIcon className="text-gray-600 mr-2" />
                   <div className="gap-1 flex">
-                    <div>+91</div>
+                    <span className="mr-2">+91</span>
                     <Field
                       className="outline-none bg-gray-100 flex-1"
                       placeholder="Mobile Number"
                       type="text"
+                      maxLength={10}
                       id="contact_number"
                       name="contact_number"
                     />

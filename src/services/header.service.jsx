@@ -1,6 +1,9 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import { Share as ShareAPI } from "@capacitor/share";
+import { Clipboard } from "@capacitor/clipboard";
+import { Toast } from "@capacitor/toast";
 import { Share } from "@mui/icons-material";
 
 export const NavigationHeaderComponent = ({ title, shareLink, img }) => {
@@ -10,9 +13,9 @@ export const NavigationHeaderComponent = ({ title, shareLink, img }) => {
   const backButton = () => navigate(-1);
 
   const shareTournament = async (url) => {
-    const canShare = await Share.canShare();
+    const canShare = await ShareAPI.canShare();
     if (canShare.value) {
-      await Share.share({
+      await ShareAPI.share({
         title: 'Checkout this Tournament at Pitstop!',
         url: url,
         dialogTitle: 'Share with buddies',

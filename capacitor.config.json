@@ -3,8 +3,7 @@
   "appName": "pitstop",
   "webDir": "dist",
   "server": {
-    "androidScheme": "https",
-    "url": "http://192.168.1.7:8100/"
+    "androidScheme": "https"
   },
   "plugins": {
     "CapacitorHttp": {
