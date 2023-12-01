@@ -83,14 +83,17 @@ function App() {
                 <Route path="/login" element={<UserLoginView />}></Route>
                 <Route path="/logout" element={<UserLogout />}></Route>
 
-                <Route exact path="/" element={<Home />} />
+                <Route exact path="/" element={
+                  <RequireAuth>
+                    <Home />
+                  </RequireAuth>
+                } />
                 <Route
                   exact
                   path="/tournament/:id"
                   element={
                     <RequireAuth>
-                      {" "}
-                      <DisplayForm />{" "}
+                      <DisplayForm />
                     </RequireAuth>
                   }
                 />
@@ -99,7 +102,11 @@ function App() {
                   path="/tournament/:tournament_id/cancel"
                   element={<EventCancellation />}
                 />
-                <Route exact path="/tournament/add" element={<EventForm />} />
+                <Route exact path="/tournament/add" element={
+                  <RequireAuth>
+                    <EventForm />
+                  </RequireAuth>
+                } />
                 <Route
                   exact
                   path="/tournament/edit/:id"
@@ -139,7 +146,11 @@ function App() {
                 />
                 {/* <Route exact path="/tournament/:tournament_id/team/:team_id/edit" element={ <ParticipantForm /> } /> */}
 
-                <Route exact path="/profile" element={<Profile />} />
+                <Route exact path="/profile" element={
+                  <RequireAuth>
+                    <Profile />
+                  </RequireAuth>
+                } />
               </Routes>
             </Router>
           </div>
