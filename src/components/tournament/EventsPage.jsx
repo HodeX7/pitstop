@@ -166,16 +166,22 @@ const EventsPage = () => {
       </div>
       {explore ? (
         <div className="mt-3">
-          <Events tournaments={myTournaments} loaded={mtLoaded} />
-          <div className="flex justify-between  mt-7 font-semibold items-center mb-2">
+          <div style={{ maxHeight: "30vh", overflowY: "auto" }}>
+            <Events tournaments={myTournaments} loaded={mtLoaded} />
+          </div>
+
+          <div className="flex justify-between mt-7 font-semibold items-center mb-2">
             <h1>View History</h1>
             <ChevronRightOutlinedIcon />
           </div>
-          <Events
-            tournaments={tournamentHistory}
-            loaded={thLoaded}
-            isHistory={true}
-          />
+
+          <div style={{ maxHeight: "30vh", overflowY: "auto" }}>
+            <Events
+              tournaments={tournamentHistory}
+              loaded={thLoaded}
+              isHistory={true}
+            />
+          </div>
         </div>
       ) : (
         <div className="overflow-y-scroll maxh hide-scrollbar">

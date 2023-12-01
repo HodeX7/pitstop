@@ -4,7 +4,12 @@ import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import { useNavigate, useParams } from "react-router-dom";
-import { API_MEDIA, SITE_URL, TournamentAPI, useAxios } from "../../services/api.service";
+import {
+  API_MEDIA,
+  SITE_URL,
+  TournamentAPI,
+  useAxios,
+} from "../../services/api.service";
 import {
   CONSTANTS,
   formatDate,
@@ -15,7 +20,7 @@ import FixturesComponent from "../FixturesComponent";
 import EventCompletion from "./EventCompletion";
 import { NavigationHeaderComponent } from "../../services/header.service";
 import TournamentCard from "../TournamentCard";
-import Shimmer from "../Shimmer"; 
+import Shimmer from "../Shimmer";
 
 const ParticipantTab = ({
   pendingTeams,
@@ -228,7 +233,7 @@ const DisplayForm = () => {
                 <h1 className="font-semibold ">Tournament Schedule</h1>
                 <h1 className="font-light mb-5">
                   {formatDate(tournament?.fromDate)} -{" "}
-                  {formatDate(tournament?.toDate)},{" "}
+                  {formatDate(tournament?.toDate)}, {console.log(tournament)}
                   {formatTime(tournament?.fromTime)} onwards
                 </h1>
 
