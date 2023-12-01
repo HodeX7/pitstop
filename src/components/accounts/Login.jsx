@@ -12,7 +12,10 @@ const UserLoginView = () => {
 
   const validationSchema = Yup.object().shape({
     contact_number: Yup.string()
-      .matches(/^[0-9]{10}$/, "Mobile number must be exactly 10 digits")
+      .matches(
+        /^[0-9]{10}$/,
+        "Mobile number must be exactly 10 digits and should have valid digits"
+      )
       .required("Mobile number is required"),
   });
 
@@ -21,10 +24,9 @@ const UserLoginView = () => {
   };
 
   const handleSubmit = async (values, { setSubmitting, setFieldValue }) => {
-
     const res = await UserAPI.login({
       contact_number: "+91" + values.contact_number,
-    })
+    });
 
     if (res.status === 200) {
       let uid = res.data.data.id;
@@ -36,12 +38,12 @@ const UserLoginView = () => {
     } else {
       Toast.show({
         text: res.data.message,
-        duration: "long"
-      })
+        duration: "long",
+      });
       setFieldValue("contact_number", "");
     }
 
-    setSubmitting(false)
+    setSubmitting(false);
   };
 
   return (
@@ -61,11 +63,11 @@ const UserLoginView = () => {
               <div className="mt-2">
                 <div className="bg-gray-100 flex p-3 rounded-lg items-center ">
                   <PhoneOutlinedIcon className="text-gray-600 mr-2" />
-                  <div className="gap-1 flex">
+                  <div className="gap-1 flex w-full">
                     <span className="mr-2">+91</span>
                     <Field
-                      className="outline-none bg-gray-100 flex-1"
-                      placeholder="Mobile Number"
+                      className="outline-none bg-gray-100 flex-1 w-full"
+                      placeholder="Mobile Number (without +91)"
                       type="text"
                       maxLength={10}
                       id="contact_number"

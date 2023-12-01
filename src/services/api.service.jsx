@@ -5,16 +5,16 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 import { CapacitorHttp } from "@capacitor/core";
 
-export const SITE_URL = "https://app.ourpitstop.in/"
+export const SITE_URL = "https://app.ourpitstop.in/";
 
 // export const API_MEDIA = "http://192.168.1.7:8000";
 // export const API_URL = "http://192.168.1.7:8000/api/";
 
-export const API_URL = "http://127.0.0.1:8000/api/";
-export const API_MEDIA = "http://127.0.0.1:8000";
+// export const API_URL = "http://127.0.0.1:8000/api/";
+// export const API_MEDIA = "http://127.0.0.1:8000";
 
-// export const API_URL = "https://api.ourpitstop.in/api/";
-// export const API_MEDIA = "https://api.ourpitstop.in";
+export const API_URL = "https://api.ourpitstop.in/api/";
+export const API_MEDIA = "https://api.ourpitstop.in";
 
 export const useAxios = (configParams) => {
   const [resData, setResData] = useState(null);
@@ -57,7 +57,7 @@ export const useAxios = (configParams) => {
 };
 
 export const axiosAuthRequest = async (url, req_params, sendingMedia) => {
-  const result = await Storage.get({ key: 'access_token' });
+  const result = await Storage.get({ key: "access_token" });
 
   if (result.value != null) {
     return axios.request({
@@ -65,13 +65,15 @@ export const axiosAuthRequest = async (url, req_params, sendingMedia) => {
       ...req_params,
       headers: {
         Authorization: `Bearer ${result.value}`,
-        'Content-Type': (sendingMedia) ? "multipart/form-data" : 'application/json'
-      }
+        "Content-Type": sendingMedia
+          ? "multipart/form-data"
+          : "application/json",
+      },
     });
   } else {
-    return <Navigate to="/logout" />
+    return <Navigate to="/logout" />;
   }
-}
+};
 
 const signup = (data) => {
   return CapacitorHttp.post({

@@ -17,7 +17,10 @@ const UserSigninView = () => {
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     contact_number: Yup.string()
-      .matches(/^[0-9]{10}$/, "Mobile number must be exactly 10 digits")
+      .matches(
+        /^[0-9]{10}$/,
+        "Mobile number must be exactly 10 digits and should have valid digits"
+      )
       .required("Mobile number is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
     age: Yup.number()
@@ -27,38 +30,42 @@ const UserSigninView = () => {
     gender: Yup.string().required("Gender is required"),
   });
 
-    const initialValues = {
-        name: "",
-        contact_number: "",
-        email: "",
-        age: "",
-        gender: "male",
+  const initialValues = {
+    name: "",
+    contact_number: "",
+    email: "",
+    age: "",
+    gender: "male",
+  };
+
+  const handleSubmit = async (values, { setSubmitting }) => {
+    const modified_values = {
+      ...values,
+      contact_number: values.contact_number.startsWith("+91")
+        ? values.contact_number
+        : "+91" + values.contact_number,
     };
 
-    const handleSubmit = async (values, { setSubmitting }) => {
+    const res = await UserAPI.signup(modified_values);
 
-        if (!values.contact_number.startsWith("+91")) {
-            values["contact_number"] = "+91" + values.contact_number
-        }
+    if (res.status === 201) {
+      let uid = res.data.data.id;
+      const state = {
+        uid: uid,
+        contact_number: modified_values.contact_number,
+      };
+      navigate("/verify", { state: state });
+    } else if (res.status === 400) {
+      Object.keys(res.data).map((key) => {
+        Toast.show({
+          text: res.data[key][0],
+          duration: "long",
+        });
+      });
+    }
 
-        const res = await UserAPI.signup(values);
-
-        if (res.status === 201) {
-            let uid = res.data.data.id
-
-            const state = { uid: uid, contact_number: values.contact_number };
-            navigate('/verify', { state: state });
-        } else if (res.status === 400) {
-            Object.keys(res.data).map(key => {
-                Toast.show({
-                    text: res.data[key][0],
-                    duration: "long"
-                });
-            })
-        }
-
-        setSubmitting(false)
-    };
+    setSubmitting(false);
+  };
 
   return (
     <div className="flex flex-col p-6">
@@ -91,23 +98,23 @@ const UserSigninView = () => {
               />
             </div>
 
-                        <div className="mt-2">
-                            <div className="bg-gray-100 flex p-3 rounded-lg items-center ">
-                                <PhoneOutlinedIcon className="text-gray-600 mr-2" />
-                                <Field
-                                    className="outline-none bg-gray-100 flex-1"
-                                    placeholder="Mobile Number (without +91)"
-                                    type="text"
-                                    id="contact_number"
-                                    name="contact_number"
-                                />
-                            </div>
-                            <ErrorMessage
-                                name="contact_number"
-                                component="div"
-                                className="error text-red-500"
-                            />
-                        </div>
+            <div className="mt-2">
+              <div className="bg-gray-100 flex p-3 rounded-lg items-center ">
+                <PhoneOutlinedIcon className="text-gray-600 mr-2" />
+                <Field
+                  className="outline-none bg-gray-100 flex-1"
+                  placeholder="Mobile Number (without +91)"
+                  type="text"
+                  id="contact_number"
+                  name="contact_number"
+                />
+              </div>
+              <ErrorMessage
+                name="contact_number"
+                component="div"
+                className="error text-red-500"
+              />
+            </div>
 
             <div className="mt-2">
               <div className="bg-gray-100 flex p-3 rounded-lg items-center">
