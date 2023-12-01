@@ -34,7 +34,7 @@ const PlayerPaymentPage = ({ tournament, continueNextPage, form, setForm }) => {
   };
 
   const handleCopy = async () => {
-    const textToCopy = "pitstopapp@ybl";
+    const textToCopy = "kartiknair8@okicici";
     try {
       await Clipboard.write({
         string: textToCopy,
