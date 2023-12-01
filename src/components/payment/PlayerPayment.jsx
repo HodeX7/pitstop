@@ -1,12 +1,7 @@
-import { useState, useEffect } from "react";
-import QR from "../../assets/dummyQR.webp";
+import { useState } from "react";
+import QR from "../../assets/pitstopQR.jpeg";
 import { IconButton, Tooltip } from "@mui/material";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
-// import { useDispatch, useSelector } from "react-redux";
-// import { update } from "../../features/formSlice";
-import { TeamAPI } from "../../services/api.service";
-import { data } from "autoprefixer";
-import { useNavigate } from "react-router-dom";
 import useCamera from "../../utils/useCamera";
 import FileInput from "../../utils/FileInput";
 import { Clipboard } from "@capacitor/clipboard";
@@ -18,7 +13,10 @@ const PlayerPaymentPage = ({ tournament, continueNextPage, form, setForm }) => {
   // const form = useSelector((state) => state.form);
 
   const [file, setFile] = useState(null);
-  const [picture, error, takePicture, removePicture] = useCamera({ filename: "teamPayment", type: "image" })
+  const [picture, error, takePicture, removePicture] = useCamera({
+    filename: "teamPayment",
+    type: "image",
+  });
 
   let toPay =
     parseInt(tournament?.numOfPlayersPerTeam) *
@@ -30,21 +28,21 @@ const PlayerPaymentPage = ({ tournament, continueNextPage, form, setForm }) => {
         ...prevState,
         playerPayment: picture,
       }));
-      continueNextPage("team_pay")
+      continueNextPage("team_pay");
     }
-  }
+  };
 
   const handleCopy = async () => {
     const textToCopy = "pitstopapp@ybl";
     try {
       await Clipboard.write({
-        string: textToCopy
-      })
+        string: textToCopy,
+      });
     } catch (err) {
       Toast.show({
         text: "Something went wrong: " + err,
-        duration: "long"
-      })
+        duration: "long",
+      });
     }
     // navigator.clipboard.writeText(textToCopy).then(() => {
     //   alert("Copied to clipboard!");
@@ -73,7 +71,10 @@ const PlayerPaymentPage = ({ tournament, continueNextPage, form, setForm }) => {
           ₹{toPay}
         </h1>
         <h1 className="tracking-tighter text-sm">
-          {(form.data.participationType === "2v2") ? 2 : tournament?.numOfPlayersPerTeam} Players x ₹
+          {form.data.participationType === "2v2"
+            ? 2
+            : tournament?.numOfPlayersPerTeam}{" "}
+          Players x ₹
           {tournament?.player_register_fees[form.data.participationType]}
         </h1>
 
@@ -87,7 +88,12 @@ const PlayerPaymentPage = ({ tournament, continueNextPage, form, setForm }) => {
         <div className="mt-3">
           <div className="bg-gray-100 flex p-3 rounded-lg flex-col mt-5 mb-10">
             <h1>Upload your payment screenshot here</h1>
-            <FileInput picture={picture} error={error} takePicture={takePicture} removePicture={removePicture} />
+            <FileInput
+              picture={picture}
+              error={error}
+              takePicture={takePicture}
+              removePicture={removePicture}
+            />
             {/* <input
               name={`identityProof`}
               type="file"

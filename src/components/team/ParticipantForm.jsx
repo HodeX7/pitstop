@@ -36,7 +36,7 @@ const ParticipantForm = ({
   // useEffect(() => {
   //   if (values.participationType === "2v2") {
   //     setCards(2);
-  //   } 
+  //   }
   // }, [])
 
   useEffect(() => {
@@ -54,8 +54,8 @@ const ParticipantForm = ({
 
   const initialValues = {
     name: form.data.name,
-    ageGroup: form.data.ageGroup, // Add the age group dropdown to select from user
-    participationType: form.data.participationType,
+    ageGroup: form.data.ageGroup,
+    participationType: form.data.participationType || "1v1",
     participantsDetails: participantsDetails,
   };
 
@@ -90,26 +90,28 @@ const ParticipantForm = ({
 
     if (val === "2v2") {
       setFieldValue("participationType", "2v2");
-      setCards(2)
+      setCards(2);
       setParticipantsDetails(
         Array.from({ length: 2 }, () => ({
           name: "",
           gender: "",
           age: "",
           id_proof: {},
-        })))
+        }))
+      );
     } else {
       setFieldValue("participationType", "1v1");
-      setCards(1)
+      setCards(1);
       setParticipantsDetails(
         Array.from({ length: 1 }, () => ({
           name: "",
           gender: "",
           age: "",
           id_proof: {},
-        })))
+        }))
+      );
     }
-  }
+  };
 
   const handleSubmit = (values) => {
     console.log(values); // idhar pe pura values bara bar aara
@@ -196,13 +198,10 @@ const ParticipantForm = ({
                   name="participationType"
                   placeholder="Select Your Participation Type"
                   onChange={(e) => handleCardsChange(e, setFieldValue)}
+                  value={"1v1"}
                 >
-                  <option value={'1v1'}>
-                    Singles
-                  </option>
-                  <option value={'2v2'}>
-                    Doubles
-                  </option>
+                  <option value={"1v1"}>Singles</option>
+                  <option value={"2v2"}>Doubles</option>
                 </select>
               </div>
               <ErrorMessage
@@ -217,9 +216,9 @@ const ParticipantForm = ({
                 Enter Participant Details ({cards})
               </h1>
               {/* This would be only visible for team sports. New state isTeam -> boolean. Need to make an API call onComponentMount */}
-              {(tournament?.participationType !== "1vs1" &&
-                tournament?.participationType !== "2vs2" &&
-                tournament?.participationType !== "both") ? (
+              {tournament?.participationType !== "1vs1" &&
+              tournament?.participationType !== "2vs2" &&
+              tournament?.participationType !== "both" ? (
                 <button
                   className="border-2 border-orange-500 rounded-lg p-2"
                   type="button"
@@ -370,10 +369,11 @@ const ParticipantForm = ({
 
             <button
               type="submit"
-              className={`text-white flex p-3 rounded-lg mt-6 w-full justify-center ${isSubmitting || !isValid || !dirty
-                ? "cursor-not-allowed bg-orange-200"
-                : "cursor-pointer bg-orange-500"
-                }`}
+              className={`text-white flex p-3 rounded-lg mt-6 w-full justify-center ${
+                isSubmitting || !isValid || !dirty
+                  ? "cursor-not-allowed bg-orange-200"
+                  : "cursor-pointer bg-orange-500"
+              }`}
               disabled={isSubmitting || !isValid || !dirty}
               onClick={handleSubmit}
             >
