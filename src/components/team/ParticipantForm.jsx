@@ -54,7 +54,7 @@ const ParticipantForm = ({
 
   const initialValues = {
     name: form.data.name,
-    ageGroup: form.data.ageGroup,
+    ageGroup: ageGroups[0],
     participationType: form.data.participationType || "1v1",
     participantsDetails: participantsDetails,
   };
@@ -125,10 +125,6 @@ const ParticipantForm = ({
       // setSubmitting(false);
     }, 500);
   };
-
-  // useEffect(() => {
-  //   console.log("Updated Redux state:", form);
-  // }, [form]);
 
   const addParticipant = () => {
     setCards((prev) => prev + 1);
