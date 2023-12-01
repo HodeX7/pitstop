@@ -361,15 +361,25 @@ const DisplayForm = () => {
                     </>
                   ) : (
                     <>
-                      <button
-                        type="submit"
-                        className="bg-orange-500 text-white border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
-                        onClick={() =>
-                          navigate(`${location.pathname}/team/add`)
-                        }
-                      >
-                        Participate
-                      </button>
+                      {tournament?.user_status === "Participating" ? (
+                        <button
+                          type="button"
+                          disabled
+                          className="bg-orange-300 text-white border-orange-300 cursor-not-allowed border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
+                        >
+                          Already Participated
+                        </button>
+                      ) : (
+                        <button
+                          type="submit"
+                          className="bg-orange-500 text-white border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
+                          onClick={() =>
+                            navigate(`${location.pathname}/team/add`)
+                          }
+                        >
+                          Participate
+                        </button>
+                      )}
                     </>
                   )}
                 </div>

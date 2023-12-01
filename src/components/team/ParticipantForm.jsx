@@ -189,12 +189,10 @@ const ParticipantForm = ({
                 <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
                 <select
                   className="outline-none flex-1 bg-gray-100"
-                  // as="select"
                   id="participationType"
                   name="participationType"
                   placeholder="Select Your Participation Type"
                   onChange={(e) => handleCardsChange(e, setFieldValue)}
-                  value={"1v1"}
                 >
                   <option value={"1v1"}>Singles</option>
                   <option value={"2v2"}>Doubles</option>
