@@ -134,7 +134,7 @@ const HomePage = () => {
         </div>
       </div>
       <div className="mt-2 overflow-y-scroll maxh hide-scrollbar">
-        {filterMedia.length === null || filterMedia.length === 0 ? (
+        {filterMedia?.length === null || filterMedia?.length === 0 ? (
           <h1>Nothing to show currently</h1>
         ) : (
           <>
