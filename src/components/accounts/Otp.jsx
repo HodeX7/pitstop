@@ -5,13 +5,12 @@ import { UserAPI } from "../../services/api.service";
 import { Storage } from "@capacitor/storage";
 import { Toast } from "@capacitor/toast";
 
-
 const VerifyMobileOTP = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { uid, contact_number } = location.state;
 
-  const [otp, setOtp] = useState(new Array(5).fill(""));
+  const [otp, setOtp] = useState(new Array(6).fill(""));
   const [inputIndex, setInputIndex] = useState(0);
   const inputRefs = useRef([]);
 
@@ -23,27 +22,27 @@ const VerifyMobileOTP = () => {
     if (element.nextSibling) {
       element.nextSibling.focus();
     }
-    if (index === 4 && !otp.includes("")) {
+    if (index === 5 && !otp.includes("")) {
       submitOTP();
     }
-    
+
     setInputIndex(index);
   };
 
   const handleAccessToken = async (token, uid) => {
     await Storage.set({
-      key: 'access_token',
+      key: "access_token",
       value: token,
     });
     await Storage.set({
-      key: 'uid',
+      key: "uid",
       value: uid,
     });
     await Storage.set({
-      key: 'isLoggedIN',
-      value: 'yes',
+      key: "isLoggedIN",
+      value: "yes",
     });
-  }
+  };
 
   const handleKeypadClick = (number) => {
     if (number === "Enter") {
@@ -57,27 +56,27 @@ const VerifyMobileOTP = () => {
       setOtp([
         ...otp.map((element, idx) => (idx === inputIndex ? number : element)),
       ]);
-      if (inputIndex <= 3) inputRefs.current[inputIndex + 1].focus();
-      if (inputIndex === 4 && !otp.includes("")) {
+      if (inputIndex <= 4) inputRefs.current[inputIndex + 1].focus();
+      if (inputIndex === 5 && !otp.includes("")) {
         submitOTP();
       }
     }
   };
 
-  const handleResendOTP = () => {}
+  const handleResendOTP = () => {};
 
   const submitOTP = async () => {
-    const enteredOTP = parseInt(otp.join(""))
+    const enteredOTP = parseInt(otp.join(""));
 
     const res = await UserAPI.authenticateOTP(uid, enteredOTP);
     if (res.status === 200) {
       await handleAccessToken(res.data.accessToken, res.data.uid.toString());
-  
-      navigate('/', {replace: true});
+
+      navigate("/", { replace: true });
     } else {
       Toast.show({
         text: "Something went wrong. Try again.",
-        duration: "long"
+        duration: "long",
       });
     }
   };
@@ -91,7 +90,7 @@ const VerifyMobileOTP = () => {
             Verify your Mobile No. with OTP
           </h1>
           <h1 className="text-sm">
-            OTP sent to <span className="font-semibold">{ contact_number }</span>
+            OTP sent to <span className="font-semibold">{contact_number}</span>
           </h1>
         </div>
       </div>
