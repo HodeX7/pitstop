@@ -1,9 +1,21 @@
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, useEffect } from "react";
+
+import { Storage } from "@capacitor/storage";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(8);
+  const [user, setUser] = useState(false);
+
+  const isLoggedIn = async () => {
+    const result = await Storage.get({ key: "isLoggedIN" });
+
+    return result.value === "yes";
+  };
+
+  useEffect(() => {
+    setUser(isLoggedIn());
+  }, []);
 
   const login = (user) => {
     setUser(user);

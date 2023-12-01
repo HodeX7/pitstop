@@ -184,26 +184,28 @@ const ParticipantForm = ({
               </div>
             )}
 
-            <div className="mt-5">
-              <div className="bg-gray-100 flex p-3 rounded-lg items-center">
-                <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
-                <select
-                  className="outline-none flex-1 bg-gray-100"
-                  id="participationType"
-                  name="participationType"
-                  placeholder="Select Your Participation Type"
-                  onChange={(e) => handleCardsChange(e, setFieldValue)}
-                >
-                  <option value={"1v1"}>Singles</option>
-                  <option value={"2v2"}>Doubles</option>
-                </select>
+            {tournament.participationType === "both" ? (
+              <div className="mt-5">
+                <div className="bg-gray-100 flex p-3 rounded-lg items-center">
+                  <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
+                  <select
+                    className="outline-none flex-1 bg-gray-100"
+                    id="participationType"
+                    name="participationType"
+                    placeholder="Select Your Participation Type"
+                    onChange={(e) => handleCardsChange(e, setFieldValue)}
+                  >
+                    <option value={"1v1"}>Singles</option>
+                    <option value={"2v2"}>Doubles</option>
+                  </select>
+                </div>
+                <ErrorMessage
+                  className="error text-red-500"
+                  name="ageGroup"
+                  component="div"
+                />
               </div>
-              <ErrorMessage
-                className="error text-red-500"
-                name="ageGroup"
-                component="div"
-              />
-            </div>
+            ) : null}
 
             <div className="flex mt-7 pl-0 justify-between items-center">
               <h1 className="text-md font-[600]">
