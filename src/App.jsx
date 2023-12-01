@@ -26,6 +26,7 @@ import RejectParticipation from "./components/cancellation/RejectParticipation";
 import CancellationByParticipant from "./components/cancellation/ParticipationCancellation";
 
 import Home from "./components/Home";
+import pitstop_bg from "./assets/pitstop_bg.png";
 
 import { AuthProvider, useAuth } from "./utils/auth";
 import { RequireAuth } from "./utils/RequireAuth";
@@ -62,8 +63,8 @@ function App() {
     <Provider store={configureStore}>
       <AuthProvider>
         <div
-          className="flex justify-center items-center bg-black min-h-screen bg-cover"
-          style={{ backgroundImage: 'url("./assets/pitstop-bg.jpg")' }}
+          className="flex justify-center items-center bg-black min-h-screen bg-cover relative"
+          style={{ backgroundImage: `url("${pitstop_bg}")` }}
         >
           <div className="w-full max-w-md rounded-lg bg-white min-h-screen">
             {/* <Router>

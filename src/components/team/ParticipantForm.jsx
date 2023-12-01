@@ -132,7 +132,7 @@ const ParticipantForm = ({
 
   return (
     <div className="p-6">
-      <img src={logo} alt="" />
+      <img src={logo} alt="" className="mx-auto mb-4" />
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}

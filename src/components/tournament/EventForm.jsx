@@ -182,7 +182,7 @@ const EventForm = () => {
   return (
     <div className="p-6">
       <NavigationHeaderComponent title={"Start a Tournament"} />
-      <img src={logo} alt="" />
+      <img src={logo} alt="" className="mb-4 mx-auto" />
       <div className="flex justify-center">
         <h1 className="text-xl font-semibold">Enter Event Details</h1>
       </div>
