@@ -61,7 +61,10 @@ function App() {
   return (
     <Provider store={configureStore}>
       <AuthProvider>
-        <div className="flex justify-center items-center bg-secondary min-h-screen">
+        <div
+          className="flex justify-center items-center bg-black min-h-screen bg-cover"
+          style={{ backgroundImage: 'url("./assets/pitstop-bg.jpg")' }}
+        >
           <div className="w-full max-w-md rounded-lg bg-white min-h-screen">
             {/* <Router>
             <Routes>
