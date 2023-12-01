@@ -30,17 +30,18 @@ const HomePage = () => {
           },
           false
         );
+        // console.log(media);
         setMedia(media.data);
         setFilterMedia(media.data);
       } catch (error) {
         console.error("Error fetching media:", error);
       }
     };
-
     fetchData();
   }, []);
   return (
     <>
+      {console.log(filterMedia)}
       <div className="overflow-x-auto whitespace-nowrap flex hide-scrollbar ">
         <div
           className={`mr-2 ${
@@ -138,7 +139,7 @@ const HomePage = () => {
           <h1>Nothing to show currently</h1>
         ) : (
           <>
-            {filterMedia.map((media, item) => (
+            {filterMedia?.map((media, item) => (
               <div key={item} className="mb-5">
                 {media.media_type === "image" ? (
                   <img
