@@ -23,6 +23,7 @@ const PlayerPaymentPage = ({ tournament, continueNextPage, form, setForm }) => {
     parseInt(tournament?.player_register_fees[form.data.participationType]);
 
   const handleContinue = () => {
+    // console.log("form", form);
     if (picture) {
       setForm((prevState) => ({
         ...prevState,

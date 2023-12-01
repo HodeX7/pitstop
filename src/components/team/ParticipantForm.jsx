@@ -114,7 +114,7 @@ const ParticipantForm = ({
   };
 
   const handleSubmit = (values) => {
-    console.log(values); // idhar pe pura values bara bar aara
+    // console.log("form", form); // idhar pe pura values bara bar aara
     setTimeout(() => {
       // dispatch(update({ data: values }));
       setForm((prevState) => ({

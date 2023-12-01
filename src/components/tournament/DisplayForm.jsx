@@ -233,7 +233,7 @@ const DisplayForm = () => {
                 <h1 className="font-semibold ">Tournament Schedule</h1>
                 <h1 className="font-light mb-5">
                   {formatDate(tournament?.fromDate)} -{" "}
-                  {formatDate(tournament?.toDate)}, {console.log(tournament)}
+                  {formatDate(tournament?.toDate)},{" "}
                   {formatTime(tournament?.fromTime)} onwards
                 </h1>
 

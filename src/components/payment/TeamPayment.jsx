@@ -10,16 +10,17 @@ import FileInput, { base64ToBlob } from "../../utils/FileInput";
 import { Toast } from "@capacitor/toast";
 
 const TeamPaymentPage = ({ tournament, form, setForm }) => {
-  // const dispatch = useDispatch();
-  // const form = useSelector((state) => state.form);
   const navigate = useNavigate();
 
-  const [picture, error, takePicture, removePicture] = useCamera({ filename: "teamPayment", type: "image" })
+  const [picture, error, takePicture, removePicture] = useCamera({
+    filename: "teamPayment",
+    type: "image",
+  });
 
   let toPay = tournament?.teamRegistrationFees;
 
   const handleSubmit = async () => {
-
+    console.log(form.data);
     setForm((prevState) => ({
       ...prevState,
       teamPayment: picture,
@@ -30,37 +31,51 @@ const TeamPaymentPage = ({ tournament, form, setForm }) => {
       const formData = new FormData();
 
       // Append fields and their values to the FormData object
-      formData.set('parent_tournament', tournament?.id);
-      formData.set('name', form.data.name);
-      formData.set('ageGroup', form.data.ageGroup);
+      formData.set("parent_tournament", tournament?.id);
+      formData.set("name", form.data.name);
+      formData.set("ageGroup", form.data.ageGroup);
 
-      // Append arrays using a loop
-      form.data.participantsDetails.forEach((obj, index) => {
-        formData.set(`participantsName[]`, obj.name);
-        formData.set(`participantsGender[]`, obj.gender);
-        formData.set(`participantsAge[]`, obj.age);
+      form.data.participantsDetails.forEach((obj) => {
+        formData.append(`participantsName[]`, obj.name);
+        formData.append(`participantsGender[]`, obj.gender);
+        formData.append(`participantsAge[]`, obj.age);
 
         if (obj.id_proof.blob) {
-          formData.append('participantsIDProof[]', obj.id_proof.blob, obj.id_proof.name);
+          formData.append(
+            `participantsIDProof[]`,
+            obj.id_proof.blob,
+            obj.id_proof.name
+          );
         } else {
           let blob = base64ToBlob(obj.id_proof.data, obj.id_proof.mimeType);
-          formData.append('participantsIDProof[]', blob, obj.id_proof.name);
+          formData.append(`participantsIDProof[]`, blob, obj.id_proof.name);
         }
       });
 
       // Append payment proofs
       const playerBlob = await fetch(form.playerPayment.imageUrl);
-      formData.append("playerPaymentProof", await playerBlob.blob(), form.playerPayment.name);
+      formData.append(
+        "playerPaymentProof",
+        await playerBlob.blob(),
+        form.playerPayment.name
+      );
 
       const teamBlob = await fetch(form.teamPayment.imageUrl);
-      formData.append("paymentProof", await teamBlob.blob(), form.teamPayment.name);
-
+      formData.append(
+        "paymentProof",
+        await teamBlob.blob(),
+        form.teamPayment.name
+      );
+      // for (const pair of formData.entries()) {
+      //   console.log(pair[0] + ": ->" + pair[1]);
+      // }
+      // for(const i in formData.)
       const response = await TeamAPI.addTeam(formData);
       if (response) {
         Toast.show({
           text: "Request was sent! Wait for the host to accept your participation.",
-          duration: "long"
-        })
+          duration: "long",
+        });
         navigate(`/tournament/${tournament?.id}`);
       }
     }
@@ -88,7 +103,12 @@ const TeamPaymentPage = ({ tournament, form, setForm }) => {
         <div className="mt-3">
           <div className="bg-gray-100 flex p-3 rounded-lg flex-col mt-5 mb-10">
             <h1>Upload your payment screenshot here</h1>
-            <FileInput picture={picture} error={error} takePicture={takePicture} removePicture={removePicture} />
+            <FileInput
+              picture={picture}
+              error={error}
+              takePicture={takePicture}
+              removePicture={removePicture}
+            />
           </div>
         </div>
         {picture ? (
