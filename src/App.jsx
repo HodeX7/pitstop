@@ -80,18 +80,18 @@ function App() {
                   exact
                   path="/"
                   element={
-                    <RequireAuth>
-                      <Home />
-                    </RequireAuth>
+                    // <RequireAuth>
+                    <Home />
+                    // </RequireAuth>
                   }
                 />
                 <Route
                   exact
                   path="/tournament/:id"
                   element={
-                    <RequireAuth>
-                      <DisplayForm />
-                    </RequireAuth>
+                    // <RequireAuth>
+                    <DisplayForm />
+                    // </RequireAuth>
                   }
                 />
                 <Route
@@ -103,9 +103,9 @@ function App() {
                   exact
                   path="/tournament/add"
                   element={
-                    <RequireAuth>
-                      <EventForm />
-                    </RequireAuth>
+                    // <RequireAuth>
+                    <EventForm />
+                    // </RequireAuth>
                   }
                 />
                 <Route
@@ -151,9 +151,9 @@ function App() {
                   exact
                   path="/profile"
                   element={
-                    <RequireAuth>
-                      <Profile />
-                    </RequireAuth>
+                    // <RequireAuth>
+                    <Profile />
+                    // </RequireAuth>
                   }
                 />
               </Routes>
