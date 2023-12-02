@@ -5,17 +5,22 @@ import { Storage } from "@capacitor/storage";
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(false);
-
+  const [user, setUser] = useState(true);
   const isLoggedIn = async () => {
     const result = await Storage.get({ key: "isLoggedIN" });
-
-    return result.value === "yes";
+    const access_token = await Storage.get({ key: "access_token" });
+    return result.value === "yes" || access_token;
   };
 
   useEffect(() => {
-    setUser(isLoggedIn());
-  }, []);
+    const checkLoggedIn = async () => {
+      const val = await isLoggedIn();
+      console.log(val);
+      setUser(val);
+    };
+
+    checkLoggedIn();
+  }, [user]);
 
   const login = (user) => {
     setUser(user);
