@@ -5,7 +5,7 @@ import { Storage } from "@capacitor/storage";
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState(false);
   const isLoggedIn = async () => {
     const result = await Storage.get({ key: "isLoggedIN" });
     const access_token = await Storage.get({ key: "access_token" });
