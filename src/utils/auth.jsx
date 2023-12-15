@@ -9,18 +9,15 @@ export const AuthProvider = ({ children }) => {
   const isLoggedIn = async () => {
     const result = await Storage.get({ key: "isLoggedIN" });
     const access_token = await Storage.get({ key: "access_token" });
-    return result.value === "yes" || access_token;
+    setUser(result.value === "yes" || access_token);
   };
 
   useEffect(() => {
     const checkLoggedIn = async () => {
-      const val = await isLoggedIn();
-      console.log(val);
-      setUser(val);
+      await isLoggedIn();
     };
-
     checkLoggedIn();
-  }, [user]);
+  }, []);
 
   const login = (user) => {
     setUser(user);
@@ -32,7 +29,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>
-      {children}
+      {user ? children : null}
     </AuthContext.Provider>
   );
 };
