@@ -16,42 +16,18 @@ import AddTeamPage from "./components/team/AddTeamPage";
 import EventCancellation from "./components/cancellation/EventCancellation";
 import ParticipantCancellation from "./components/cancellation/ParticipantCancellation";
 import RejectParticipation from "./components/cancellation/RejectParticipation";
-import CancellationByParticipant from "./components/cancellation/ParticipationCancellation";
 
 import Home from "./components/Home";
 import pitstop_bg from "./assets/pitstop_bg.png";
 
-import { AuthProvider, useAuth } from "./utils/auth";
+import { AuthProvider } from "./utils/auth";
 import { RequireAuth } from "./utils/RequireAuth";
-import { UserAPI, UserLogout } from "./services/api.service";
-import { useEffect, useState } from "react";
+import { UserLogout } from "./services/api.service";
 import { Provider } from "react-redux";
 import configureStore from "./store/configureStore";
 import ParticipationCancellation from "./components/cancellation/ParticipationCancellation";
 
 function App() {
-  const loggedin = localStorage.getItem("isLoggedIN");
-  const [render, setRender] = useState(false);
-  // useEffect(() => {
-  //   if (loggedin == 'yes') {
-  //     UserAPI.checkTokenExpiry()
-  //       .then(res => {
-  //         console.log(res)
-  //         if (res.status === 200) {
-  //           pass
-  //         }
-  //       })
-  //       .catch(err => {
-  //         if (err.response.status == 401) {
-  //           setRender(true)
-  //           console.log("TOKEN FUCKED HAI BHAI")
-  //         }
-  //       })
-  //   } else {
-  //     setRender(true)
-  //   }
-  // }, [])
-
   return (
     <Provider store={configureStore}>
       <AuthProvider>
@@ -60,16 +36,7 @@ function App() {
           style={{ backgroundImage: `url("${pitstop_bg}")` }}
         >
           <div className="w-full max-w-md rounded-lg bg-white min-h-screen">
-            {/* <Router>
-            <Routes>
-              <Route path="/signup" element={<UserSigninView />}></Route>
-              <Route path="/verify" element={<VerifyMobileOTP />}></Route>
-              <Route path="/logout" element={<UserLogout />}></Route>
-            </Routes>
-          </Router> */}
-
             <Router>
-              {/* {render && <Navigate to='/login'/>} */}
               <Routes>
                 <Route path="/signup" element={<UserSigninView />}></Route>
                 <Route path="/verify" element={<VerifyMobileOTP />}></Route>
@@ -85,6 +52,7 @@ function App() {
                     </RequireAuth>
                   }
                 />
+
                 <Route
                   exact
                   path="/tournament/:id"

@@ -6,9 +6,22 @@ import { UserAPI } from "../../services/api.service";
 
 import { useNavigate } from "react-router-dom";
 import { Toast } from "@capacitor/toast";
+import { useEffect } from "react";
+import { Storage } from "@capacitor/storage";
 
 const UserLoginView = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const isLoggedIn = async () => {
+      const result = await Storage.get({ key: "isLoggedIN" });
+      // const access_token = await Storage.get({ key: "access_token" });
+      if (result.value === "yes") {
+        navigate("/");
+      }
+    };
+    isLoggedIn();
+  }, [navigate]);
 
   const validationSchema = Yup.object().shape({
     contact_number: Yup.string()

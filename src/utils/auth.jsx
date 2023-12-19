@@ -1,23 +1,22 @@
 import { useState, createContext, useContext, useEffect } from "react";
 
 import { Storage } from "@capacitor/storage";
+import { Navigate } from "react-router-dom";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(false);
-  const isLoggedIn = async () => {
-    const result = await Storage.get({ key: "isLoggedIN" });
-    const access_token = await Storage.get({ key: "access_token" });
-    setUser(result.value === "yes" || access_token);
-  };
 
   useEffect(() => {
-    const checkLoggedIn = async () => {
-      await isLoggedIn();
+    const isLoggedIn = async () => {
+      const result = await Storage.get({ key: "isLoggedIN" });
+      // const access_token = await Storage.get({ key: "access_token" });
+      setUser(result?.value === "yes");
     };
-    checkLoggedIn();
-  }, []);
+    isLoggedIn();
+    console.log(user);
+  }, [user]);
 
   const login = (user) => {
     setUser(user);
@@ -27,9 +26,15 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  useEffect(() => {
+    if (!user) {
+      <Navigate to="/login" />;
+    }
+  }, [user]);
+
   return (
     <AuthContext.Provider value={{ user, login, logout }}>
-      {user ? children : null}
+      {children}
     </AuthContext.Provider>
   );
 };
