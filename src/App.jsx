@@ -26,6 +26,8 @@ import { UserLogout } from "./services/api.service";
 import { Provider } from "react-redux";
 import configureStore from "./store/configureStore";
 import ParticipationCancellation from "./components/cancellation/ParticipationCancellation";
+import Test from "./Test";
+import TestSub from "./TestSub";
 
 function App() {
   return (
@@ -42,6 +44,8 @@ function App() {
                 <Route path="/verify" element={<VerifyMobileOTP />}></Route>
                 <Route path="/login" element={<UserLoginView />}></Route>
                 <Route path="/logout" element={<UserLogout />}></Route>
+                <Route path="/test" element={<Test />}></Route>
+                <Route path="/testSub" element={<TestSub />}></Route>
 
                 <Route
                   exact

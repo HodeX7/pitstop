@@ -6,8 +6,8 @@ import DirectionsRunRoundedIcon from "@mui/icons-material/DirectionsRunRounded";
 import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import { FORM_OPTIONS, playerFees } from "../../services/misc.services";
-import { TournamentAPI, axiosAuthRequest } from "../../services/api.service";
+import { FORM_OPTIONS } from "../../services/misc.services";
+import { axiosAuthRequest } from "../../services/api.service";
 import { NavigationHeaderComponent } from "../../services/header.service";
 import CustomSelect from "../../utils/CustomSelect";
 import { useState, useEffect } from "react";
@@ -21,7 +21,7 @@ const EventForm = () => {
 
   const playAsTeams = FORM_OPTIONS.ParticipationType.filter(
     (item) =>
-      item.value != "1vs1" && item.value != "2vs2" && item.value != "3vs3"
+      item.value != "1vs1" && item.value != "2vs2" && item.value != "both"
   );
   const playAsSingles = FORM_OPTIONS.ParticipationType.filter(
     (item) => item.value === "1vs1"
@@ -110,7 +110,7 @@ const EventForm = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     const formData = new FormData();
 
-    Object.keys(values).map((item, i) => {
+    Object.keys(values).map((item) => {
       formData.set(item, values[item]);
     });
 
@@ -154,6 +154,7 @@ const EventForm = () => {
   const [customAge, setCustomAge] = useState("");
   const [ageOptions, setAgeOptions] = useState(FORM_OPTIONS.ageGroup);
   const [added, setAdded] = useState(null);
+  const [modal, setModal] = useState(false);
 
   useEffect(() => {
     if (added) {
@@ -329,182 +330,196 @@ const EventForm = () => {
               </div>
             </div>
 
-            <div className="mt-5">
-              <div className="bg-gray-100 flex p-3 rounded-lg items-center">
-                <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
-                <Field
-                  className="outline-none flex-1 bg-gray-100 "
-                  placeholder="Participation Type"
-                  as="select"
-                  id="participationType"
-                  name="participationType"
-                >
-                  <option value="">Participation Type *</option>
-                  {ref.current &&
-                    ref.current.values.sport &&
-                    participationTypeOptions[ref.current.values.sport]?.map(
-                      (option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      )
-                    )}
-                </Field>
-              </div>
-              <ErrorMessage
-                className="error text-red-500"
-                name="participationType"
-                component="div"
-              />
-            </div>
+            <button
+              onClick={() => {
+                setModal(true);
+              }}
+              className="bg-white text-orange-500 flex p-3 rounded-lg w-full justify-center border-2 my-4 border-orange-500"
+            >
+              Add sub-tournament details
+            </button>
 
-            <div className="mt-5">
-              <div className="bg-gray-100 flex p-3 rounded-lg items-center">
-                <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
-                <Field
-                  className="outline-none flex-1 bg-gray-100"
-                  type="number"
-                  id="maxNumOfTeams"
-                  name="maxNumOfTeams"
-                  placeholder="Max no. of Teams *"
-                />
-              </div>
-              <ErrorMessage
-                className="error text-red-500"
-                name="maxNumOfTeams"
-                component="div"
-              />
-            </div>
+            {/* SUB TOURNAMENT */}
+            {modal && (
+              <div>
+                <div className="mt-5">
+                  <div className="bg-gray-100 flex p-3 rounded-lg items-center">
+                    <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
+                    <Field
+                      className="outline-none flex-1 bg-gray-100 "
+                      placeholder="Participation Type"
+                      as="select"
+                      id="participationType"
+                      name="participationType"
+                    >
+                      <option value="">Participation Type *</option>
+                      {ref.current &&
+                        ref.current.values.sport &&
+                        participationTypeOptions[ref.current.values.sport]?.map(
+                          (option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          )
+                        )}
+                    </Field>
+                  </div>
+                  <ErrorMessage
+                    className="error text-red-500"
+                    name="participationType"
+                    component="div"
+                  />
+                </div>
 
-            <div className="mt-5">
-              <div className="bg-gray-100 flex p-3 rounded-lg items-center">
-                <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
-                <Field
-                  className="outline-none flex-1 bg-gray-100 text-sm"
-                  type="number"
-                  id="numOfPlayersPerTeam"
-                  name="numOfPlayersPerTeam"
-                  placeholder="Max no. of Teams Members*"
-                />
-              </div>
-              <ErrorMessage
-                className="error text-red-500"
-                name="numOfPlayersPerTeam"
-                component="div"
-              />
-            </div>
+                <div className="mt-5">
+                  <div className="bg-gray-100 flex p-3 rounded-lg items-center">
+                    <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
+                    <Field
+                      className="outline-none flex-1 bg-gray-100"
+                      type="number"
+                      id="maxNumOfTeams"
+                      name="maxNumOfTeams"
+                      placeholder="Max no. of Teams *"
+                    />
+                  </div>
+                  <ErrorMessage
+                    className="error text-red-500"
+                    name="maxNumOfTeams"
+                    component="div"
+                  />
+                </div>
 
-            <div className="mt-5">
-              <div className="bg-gray-100 flex p-3 rounded-lg items-center">
-                <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
-                <Field
-                  className="outline-none flex-1 bg-gray-100"
-                  as="select"
-                  id="gender"
-                  name="gender"
-                >
-                  <option value="">Gender *</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="all">All Genders</option>
-                </Field>
-              </div>
-              <ErrorMessage
-                className="error text-red-500"
-                name="gender"
-                component="div"
-              />
-            </div>
+                <div className="mt-5">
+                  <div className="bg-gray-100 flex p-3 rounded-lg items-center">
+                    <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
+                    <Field
+                      className="outline-none flex-1 bg-gray-100 text-sm"
+                      type="number"
+                      id="numOfPlayersPerTeam"
+                      name="numOfPlayersPerTeam"
+                      placeholder="Max no. of Teams Members*"
+                    />
+                  </div>
+                  <ErrorMessage
+                    className="error text-red-500"
+                    name="numOfPlayersPerTeam"
+                    component="div"
+                  />
+                </div>
 
-            <div className="mt-5">
-              <div className="bg-gray-100 flex p-3 rounded-lg items-center">
-                <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
-                <Field
-                  className="outline-none flex-1 bg-gray-100 focus:outline-none"
-                  name="ageGroup"
-                  options={ageOptions}
-                  component={CustomSelect}
-                  placeholder="Select Age Group *"
-                  isMulti={true}
-                />
-              </div>
-              <div className="text-sm text-green-400">{added}</div>
-              <div className="flex gap-10 justify-between mt-2">
-                <input
-                  type="text"
-                  className="outline-none flex-1 focus:outline-none border-2 p-1"
-                  placeholder="Enter a custom age group..."
-                  value={customAge}
-                  onChange={(e) => setCustomAge(e.target.value)}
-                />
-                <button
-                  className="outline-none flex-1 focus:outline-none cursor-pointer bg-slate-100 hover:bg-slate-200 p-2"
-                  type="button"
-                  onClick={addCustomAge}
-                  disabled={!customAge}
-                >
-                  Add Age Group
-                </button>
-              </div>
-              <ErrorMessage
-                className="error text-red-500"
-                name="ageGroup"
-                component="div"
-              />
-            </div>
+                <div className="mt-5">
+                  <div className="bg-gray-100 flex p-3 rounded-lg items-center">
+                    <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
+                    <Field
+                      className="outline-none flex-1 bg-gray-100"
+                      as="select"
+                      id="gender"
+                      name="gender"
+                    >
+                      <option value="">Gender *</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                      <option value="all">All Genders</option>
+                    </Field>
+                  </div>
+                  <ErrorMessage
+                    className="error text-red-500"
+                    name="gender"
+                    component="div"
+                  />
+                </div>
 
-            <div className="mt-5">
-              <div className="bg-gray-100 flex p-3 rounded-lg items-center">
-                <CurrencyRupeeIcon className="text-gray-600 mr-2" />
-                <Field
-                  placeholder="Team Registration Fees *"
-                  className="outline-none flex-1 bg-gray-100"
-                  type="number"
-                  id="teamRegistrationFees"
-                  name="teamRegistrationFees"
-                />
-              </div>
-              <ErrorMessage
-                className="error text-red-500"
-                name="teamRegistrationFees"
-                component="div"
-              />
-            </div>
+                <div className="mt-5">
+                  <div className="bg-gray-100 flex p-3 rounded-lg items-center">
+                    <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
+                    <Field
+                      className="outline-none flex-1 bg-gray-100 focus:outline-none"
+                      name="ageGroup"
+                      options={ageOptions}
+                      component={CustomSelect}
+                      placeholder="Select Age Group *"
+                      isMulti={true}
+                    />
+                  </div>
+                  <div className="text-sm text-green-400">{added}</div>
+                  <div className="flex gap-10 justify-between mt-2">
+                    <input
+                      type="text"
+                      className="outline-none flex-1 focus:outline-none border-2 p-1"
+                      placeholder="Enter a custom age group..."
+                      value={customAge}
+                      onChange={(e) => setCustomAge(e.target.value)}
+                    />
+                    <button
+                      className="outline-none flex-1 focus:outline-none cursor-pointer bg-slate-100 hover:bg-slate-200 p-2"
+                      type="button"
+                      onClick={addCustomAge}
+                      disabled={!customAge}
+                    >
+                      Add Age Group
+                    </button>
+                  </div>
+                  <ErrorMessage
+                    className="error text-red-500"
+                    name="ageGroup"
+                    component="div"
+                  />
+                </div>
 
-            <div className="mt-5">
-              <div className="bg-gray-100 flex flex-col p-3 rounded-lg ">
-                <label className="text-gray-600 mr-2 mb-3">
-                  Upload Payment QR Code *
-                </label>
-                <FileInput
-                  picture={hostQR}
-                  error={error}
-                  takePicture={takePicture}
-                  removePicture={removePicture}
-                />
-              </div>
-            </div>
+                <div className="mt-5">
+                  <div className="bg-gray-100 flex p-3 rounded-lg items-center">
+                    <CurrencyRupeeIcon className="text-gray-600 mr-2" />
+                    <Field
+                      placeholder="Team Registration Fees *"
+                      className="outline-none flex-1 bg-gray-100"
+                      type="number"
+                      id="teamRegistrationFees"
+                      name="teamRegistrationFees"
+                    />
+                  </div>
+                  <ErrorMessage
+                    className="error text-red-500"
+                    name="teamRegistrationFees"
+                    component="div"
+                  />
+                </div>
 
-            <div className="mt-5">
-              <div className="bg-gray-100 flex p-3 rounded-lg items-center">
-                <Field
-                  className="outline-none h-28 flex-1 bg-gray-100"
-                  as="textarea"
-                  id="description"
-                  name="description"
-                  placeholder="Any additional information you’d like to share with Pitstop about the tournament"
-                />
-              </div>
-              <ErrorMessage
-                className="error text-red-500"
-                name="description"
-                component="div"
-              />
-            </div>
+                <div className="mt-5">
+                  <div className="bg-gray-100 flex flex-col p-3 rounded-lg ">
+                    <label className="text-gray-600 mr-2 mb-3">
+                      Upload Payment QR Code *
+                    </label>
+                    <FileInput
+                      picture={hostQR}
+                      error={error}
+                      takePicture={takePicture}
+                      removePicture={removePicture}
+                    />
+                  </div>
+                </div>
 
-            <div className="mt-6 flex justify-center items-center text-xs cursor-pointer mb-2 text-blue-400">
-              Terms and Conditions *
-            </div>
+                <div className="mt-5">
+                  <div className="bg-gray-100 flex p-3 rounded-lg items-center">
+                    <Field
+                      className="outline-none h-28 flex-1 bg-gray-100"
+                      as="textarea"
+                      id="description"
+                      name="description"
+                      placeholder="Any additional information you’d like to share with Pitstop about the tournament"
+                    />
+                  </div>
+                  <ErrorMessage
+                    className="error text-red-500"
+                    name="description"
+                    component="div"
+                  />
+                </div>
+
+                <div className="mt-6 flex justify-center items-center text-xs cursor-pointer mb-2 text-blue-400">
+                  Terms and Conditions *
+                </div>
+              </div>
+            )}
 
             <button
               type="submit"
