@@ -34,7 +34,7 @@ const PlayerPaymentPage = ({ tournament, continueNextPage, form, setForm }) => {
   };
 
   const handleCopy = async () => {
-    const textToCopy = "pitstopapp@ybl";
+    const textToCopy = "kartiknair8@okicici";
     try {
       await Clipboard.write({
         string: textToCopy,
@@ -54,19 +54,20 @@ const PlayerPaymentPage = ({ tournament, continueNextPage, form, setForm }) => {
 
   return (
     <div className="p-6">
+      {console.log(tournament)}
       <div className="flex flex-col items-center justify-center">
         <div className="flex justify-center mb-3">
           <img src={QR} alt="QR Code" className="w-3/4 " />
         </div>
         <div className="flex items-center">
-          <h1 className="font-semibold mb-1">pitstopapp@ybl</h1>
+          <h1 className="font-semibold mb-1">kartiknair8@okicici</h1>
           <Tooltip title={isCopied ? "Copied!" : "Copy"}>
             <IconButton onClick={handleCopy}>
               <FileCopyIcon />
             </IconButton>
           </Tooltip>
         </div>
-        <h1>+91 98989 98989</h1>
+        <h1>+91 73874 35929</h1>
 
         <h1 className="text-3xl space-x-2 tracking-wider font-semibold mt-10">
           ₹{toPay}

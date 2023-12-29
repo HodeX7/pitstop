@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { UserAPI } from "../../services/api.service";
 import { Storage } from "@capacitor/storage";
 import { Toast } from "@capacitor/toast";
+// import { useAuth } from "../../utils/auth";
 
 const VerifyMobileOTP = () => {
   const navigate = useNavigate();
@@ -64,14 +65,14 @@ const VerifyMobileOTP = () => {
   };
 
   const handleResendOTP = () => {};
-
+  // const auth = useAuth();
   const submitOTP = async () => {
     const enteredOTP = parseInt(otp.join(""));
 
     const res = await UserAPI.authenticateOTP(uid, enteredOTP);
     if (res.status === 200) {
       await handleAccessToken(res.data.accessToken, res.data.uid.toString());
-
+      // auth.user = true;
       navigate("/", { replace: true });
     } else {
       Toast.show({
