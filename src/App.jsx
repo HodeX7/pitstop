@@ -1,11 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-  Outlet,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import EventForm from "./components/tournament/EventForm";
 import DisplayForm from "./components/tournament/DisplayForm";
@@ -83,11 +76,15 @@ function App() {
                 <Route path="/login" element={<UserLoginView />}></Route>
                 <Route path="/logout" element={<UserLogout />}></Route>
 
-                <Route exact path="/" element={
-                  <RequireAuth>
-                    <Home />
-                  </RequireAuth>
-                } />
+                <Route
+                  exact
+                  path="/"
+                  element={
+                    <RequireAuth>
+                      <Home />
+                    </RequireAuth>
+                  }
+                />
                 <Route
                   exact
                   path="/tournament/:id"
@@ -102,11 +99,15 @@ function App() {
                   path="/tournament/:tournament_id/cancel"
                   element={<EventCancellation />}
                 />
-                <Route exact path="/tournament/add" element={
-                  <RequireAuth>
-                    <EventForm />
-                  </RequireAuth>
-                } />
+                <Route
+                  exact
+                  path="/tournament/add"
+                  element={
+                    <RequireAuth>
+                      <EventForm />
+                    </RequireAuth>
+                  }
+                />
                 <Route
                   exact
                   path="/tournament/edit/:id"
@@ -146,11 +147,15 @@ function App() {
                 />
                 {/* <Route exact path="/tournament/:tournament_id/team/:team_id/edit" element={ <ParticipantForm /> } /> */}
 
-                <Route exact path="/profile" element={
-                  <RequireAuth>
-                    <Profile />
-                  </RequireAuth>
-                } />
+                <Route
+                  exact
+                  path="/profile"
+                  element={
+                    <RequireAuth>
+                      <Profile />
+                    </RequireAuth>
+                  }
+                />
               </Routes>
             </Router>
           </div>

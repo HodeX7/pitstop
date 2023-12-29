@@ -10,12 +10,12 @@ export const AuthProvider = ({ children }) => {
   const isLoggedIn = async () => {
     const result = await Storage.get({ key: "isLoggedIN" });
 
-    return result.value === "yes"
-  }
+    return result.value === "yes";
+  };
 
   useEffect(() => {
     setUser(isLoggedIn());
-  }, [])
+  }, []);
 
   const login = (user) => {
     setUser(user);

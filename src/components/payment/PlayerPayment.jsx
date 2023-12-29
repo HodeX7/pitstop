@@ -20,7 +20,7 @@ const PlayerPaymentPage = ({ tournament, continueNextPage, form, setForm }) => {
 
   let toPay =
     parseInt(tournament?.numOfPlayersPerTeam) *
-    parseInt(tournament?.player_register_fees[form.data.participationType]);
+    parseInt(tournament?.player_register_fees);
 
   const handleContinue = () => {
     // console.log("form", form);
@@ -72,11 +72,8 @@ const PlayerPaymentPage = ({ tournament, continueNextPage, form, setForm }) => {
           ₹{toPay}
         </h1>
         <h1 className="tracking-tighter text-sm">
-          {form.data.participationType === "2v2"
-            ? 2
-            : tournament?.numOfPlayersPerTeam}{" "}
-          Players x ₹
-          {tournament?.player_register_fees[form.data.participationType]}
+          {tournament?.numOfPlayersPerTeam}
+          Players x ₹{tournament?.player_register_fees}
         </h1>
 
         <h1 className=" space-x-2 font-semibold mt-10">
