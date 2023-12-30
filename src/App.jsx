@@ -28,6 +28,9 @@ import configureStore from "./store/configureStore";
 import ParticipationCancellation from "./components/cancellation/ParticipationCancellation";
 import Test from "./Test";
 import TestSub from "./TestSub";
+import TournamentCategories from "./components/tournament/TournamentCategories";
+import AddTournament from "./components/tournament/AddTournament";
+import AddournamentCategories from "./components/tournament/AddournamentCategories";
 
 function App() {
   return (
@@ -56,7 +59,15 @@ function App() {
                     </RequireAuth>
                   }
                 />
-
+                <Route
+                  exact
+                  path="/tournament/wrapper/:id"
+                  element={
+                    <RequireAuth>
+                      <TournamentCategories />
+                    </RequireAuth>
+                  }
+                />
                 <Route
                   exact
                   path="/tournament/:id"
@@ -76,8 +87,17 @@ function App() {
                   path="/tournament/add"
                   element={
                     <RequireAuth>
-                      <EventForm />
+                      <AddTournament />
                     </RequireAuth>
+                  }
+                />
+                <Route
+                  exact
+                  path="/tournament/add/:id/categories"
+                  element={
+                    <AddournamentCategories />
+                    // <RequireAuth>
+                    // </RequireAuth>
                   }
                 />
                 <Route

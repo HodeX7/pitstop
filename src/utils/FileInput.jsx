@@ -12,6 +12,7 @@ const FileInput = ({ picture, error, takePicture, removePicture }) => {
             className="w-64 h-64 object-cover"
           />
           <button
+            type="button"
             onClick={() => removePicture()}
             className="mt-2 bg-red-500 text-white py-1 px-4 rounded"
           >
@@ -20,6 +21,7 @@ const FileInput = ({ picture, error, takePicture, removePicture }) => {
         </div>
       ) : (
         <button
+          type="button"
           onClick={() => takePicture()}
           className="cursor-pointer bg-orange-500 text-white py-1 px-4 rounded"
         >

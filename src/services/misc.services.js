@@ -11,21 +11,14 @@ export const formatDate = (dateString) => {
   return formattedDate;
 };
 
-export const formatTime = (time) => {
-  const [hours, minutes] = time.split(":");
-  let formattedTime = "";
-  let period = "";
+export const formatTime = (dateString) => {
+  const date = new Date(dateString);
+  console.log(date.getTime())
 
-  if (hours < 12) {
-    formattedTime = hours === "00" ? "12" : hours;
-    period = "AM";
-  } else {
-    formattedTime = hours === "12" ? "12" : String(Number(hours) - 12);
-    period = "PM";
-  }
-
-  formattedTime = `${formattedTime}:${minutes.padStart(2, "0")}`;
-  return `${formattedTime} ${period}`;
+  const formattedDate = date.toLocaleTimeString("en-US", {
+    hour12: true, hour: "2-digit", minute: "2-digit"
+  });
+  return formattedDate;
 };
 
 const GENDER = {

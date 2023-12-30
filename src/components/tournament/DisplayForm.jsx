@@ -115,7 +115,7 @@ const DisplayForm = () => {
   const navigate = useNavigate();
 
   const [tournament, isReady] = useAxios({
-    url: `tournament/${parseInt(id)}`,
+    url: `tournament/${parseInt(id)}/`,
     method: "get",
   });
 
@@ -137,12 +137,12 @@ const DisplayForm = () => {
   return (
     <>
       <NavigationHeaderComponent
-        title={tournament?.title}
+        title={tournament?.tournament_wrapper?.title}
         shareLink={SITE_URL + `tournament/${tournament?.id}`}
       />
       {isReady ? (
         <div>
-          {!tournament?.allowTournament ? (
+          {!tournament?.tournament_wrapper?.allowTournament ? (
             <div className="bg-gray-200 p-2 w-full flex justify-center">
               Request Pending
             </div>
@@ -219,22 +219,22 @@ const DisplayForm = () => {
           ) : null}
           {isDetail == "details" ? (
             <>
-              <img src={tournament?.banner} className="w-full" alt="" />
+              <img src={tournament?.tournament_wrapper?.banner} className="w-full" alt="" />
               <div className="p-6">
                 <h1 className="font-semibold text-xl mb-6">
-                  {tournament?.title}
+                  {tournament?.tournament_wrapper?.title}
                 </h1>
 
                 <h1 className="font-semibold ">Sport</h1>
                 <h1 className="font-semibold mb-5 text-orange-500 capitalize">
-                  {tournament?.sport}
+                  {tournament?.tournament_wrapper?.sport}
                 </h1>
 
                 <h1 className="font-semibold ">Tournament Schedule</h1>
                 <h1 className="font-light mb-5">
-                  {formatDate(tournament?.fromDate)} -{" "}
-                  {formatDate(tournament?.toDate)},{" "}
-                  {formatTime(tournament?.fromTime)} onwards
+                  {formatDate(tournament?.tournament_wrapper?.fromDate)} -{" "}
+                  {formatDate(tournament?.tournament_wrapper?.toDate)},{" "}
+                  {formatTime(tournament?.tournament_wrapper?.fromDate)} onwards
                 </h1>
 
                 <h1 className="font-semibold ">Participation Type</h1>
@@ -260,13 +260,13 @@ const DisplayForm = () => {
                 <h1 className="font-semibold mb-2">Venue</h1>
                 <div className="bg-gray-200 p-2 rounded-lg mb-5">
                   <h1 className="font-semibold">
-                    {tournament?.venue?.split(",")[0].trim()}
+                    {tournament?.tournament_wrapper?.venue?.split(",")[0].trim()}
                   </h1>
                   <h1 className="font-light">
-                    {tournament?.venue?.split(",").slice(1).join(",").trim()}
+                    {tournament?.tournament_wrapper?.venue?.split(",").slice(1).join(",").trim()}
                   </h1>
                   <a
-                    href={`https://maps.google.com/maps?search&q=${tournament?.venue
+                    href={`https://maps.google.com/maps?search&q=${tournament?.tournament_wrapper?.venue
                       ?.split(",")
                       .slice(1)
                       .join("+")
@@ -278,15 +278,15 @@ const DisplayForm = () => {
                   </a>
                 </div>
 
-                <h1 className="font-semibold mb-2">Host</h1>
+                <h1 className="font-semibold mb-2">Host Details</h1>
                 <div className="bg-gray-200 p-2 rounded-lg mb-5 flex justify-between">
                   <div>
-                    <h1 className="font-semibold">{tournament?.host?.name}</h1>
+                    <h1 className="font-semibold mb-2">{tournament?.tournament_wrapper?.host?.name}</h1>
                     <h1 className="font-light">
-                      {tournament?.host?.gender}, {tournament?.host?.age}
+                      {tournament?.tournament_wrapper?.host?.contact_number}
                     </h1>
                   </div>
-                  <div>
+                  {/* <div>
                     <h1>
                       <div>
                         {[...Array(filledStars)].map((_, index) => (
@@ -302,9 +302,9 @@ const DisplayForm = () => {
                       </div>
                     </h1>
                     <h1 className="font-light text-gray-500">
-                      {data.host.rating}/5
+                      {data.host.rating} / 5
                     </h1>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="flex justify-between ">
                   {tournament?.user_is_host ? (

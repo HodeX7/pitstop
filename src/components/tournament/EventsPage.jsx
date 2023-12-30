@@ -28,62 +28,52 @@ const Events = ({ tournaments, loaded, isHistory }) => {
     Participating: "Participated",
     Pending: "Request was pending",
     Rejected: "Rejected",
-  };
-
-  const getRange = (ranges) => {
-    return ranges
-      .map((range) =>
-        range
-          .split("-")
-          .sort((a, b) => a - b)
-          .join("-")
-      )
-      .join(", ");
+    Hosted: "Hosted",
   };
 
   return (
     <>
       {loaded & (tournaments?.length > 0)
         ? tournaments?.map((event) => {
-            return (
-              <div
-                key={event.id}
-                className={` p-3 mb-2 rounded-lg ${CONSTANTS.getSportsColor(
-                  event.sport
-                )} cursor-pointer`}
-                onClick={() => navigate(`/tournament/${event.id}`)}
-              >
-                <div className="flex justify-between items-center mb-2">
-                  <h1 className="font-semibold capitalize ">{event.title}</h1>
-                  <h1 className="text-gray-500 text-sm capitalize">
-                    {isHistory
-                      ? pastStatus[event.tournamentStatus]
-                      : event.tournamentStatus}
-                  </h1>
-                </div>
-                <div className="flex justify-between items-center mb-2">
-                  <h1 className="text-orange-500 font-semibold capitalize">
-                    {event.sport}
-                  </h1>
-                  <div className="flex items-center text-gray-500 text-sm ">
-                    <PeopleOutlinedIcon />
-                    <h1>Max Teams {event.maxNumOfTeams}</h1>
-                  </div>
-                </div>
-                <div className="flex justify-between items-center">
-                  <div className="flex text-gray-500 ">
-                    <CalendarTodayOutlinedIcon className="mr-2" />
-                    <h1>
-                      {formatDate(event.fromDate)} - {formatDate(event.toDate)}
-                    </h1>
-                  </div>
-                  <h1 className="text-gray-500 italic text-sm capitalize">
-                    {CONSTANTS.GENDER[event.gender]}
-                  </h1>
-                </div>
+          return (
+            <div
+              key={event.id}
+              className={` p-3 mb-2 rounded-lg ${CONSTANTS.getSportsColor(
+                event.sport
+              )} cursor-pointer`}
+              onClick={() => navigate(`/tournament/wrapper/${event.id}`)}
+            >
+              <div className="flex justify-between items-center mb-2">
+                <h1 className="font-semibold capitalize ">{event.title}</h1>
+                <h1 className="text-gray-500 text-sm capitalize">
+                  {event.categories} {event.categories === 1 ? "Category" : "Categories"}
+                </h1>
               </div>
-            );
-          })
+              <div className="flex justify-between items-center mb-2">
+                <h1 className="text-orange-500 font-semibold capitalize">
+                  {event.sport}
+                </h1>
+                <div className="flex text-gray-500 ">
+                  <CalendarTodayOutlinedIcon className="mr-2" />
+                  <h1>
+                    {formatDate(event.fromDate)} - {formatDate(event.toDate)}
+                  </h1>
+                </div>
+                {/* <div className="flex text-gray-500 ">
+                  <h1>{event.categories} {event.categories === 1 ? "Category" : "Categories"}</h1>
+                </div> */}
+              </div>
+              {/* <div className="flex justify-between items-center">
+                <div className="flex text-gray-500 ">
+                  <CalendarTodayOutlinedIcon className="mr-2" />
+                  <h1>
+                    {formatDate(event.fromDate)} - {formatDate(event.toDate)}
+                  </h1>
+                </div>
+              </div> */}
+            </div>
+          );
+        })
         : "No Tournaments Available."}
     </>
   );
@@ -93,22 +83,22 @@ const EventsPage = () => {
   const [explore, setExplore] = useState(true);
 
   const [myTournaments, mtLoaded] = useAxios({
-    url: "tournament/my_tournaments/",
+    url: "tournament/wrapper/my_tournaments/",
     method: "get",
   });
 
   const [hotTournaments, htLoaded] = useAxios({
-    url: "tournament/live/",
+    url: "tournament/wrapper/live/",
     method: "get",
   });
 
   const [upcomingTournaments, utLoaded] = useAxios({
-    url: "tournament/upcoming/",
+    url: "tournament/wrapper/upcoming/",
     method: "get",
   });
 
   const [tournamentHistory, thLoaded] = useAxios({
-    url: "tournament/history/",
+    url: "tournament/wrapper/history/",
     method: "get",
   });
 
@@ -144,21 +134,19 @@ const EventsPage = () => {
     <div>
       <div className="flex p-3 pb-0 justify-around">
         <h1
-          className={`cursor-pointer w-1/2 pb-1 flex justify-center ${
-            explore
-              ? " border-b-2 border-orange-500 text-orange-500"
-              : "border-b-2 border-gray-200 text-gray-500"
-          }`}
+          className={`cursor-pointer w-1/2 pb-1 flex justify-center ${explore
+            ? " border-b-2 border-orange-500 text-orange-500"
+            : "border-b-2 border-gray-200 text-gray-500"
+            }`}
           onClick={() => setExplore(true)}
         >
           My Events ({myTournaments?.length})
         </h1>
         <h1
-          className={`cursor-pointer w-1/2 pb-1 flex justify-center ${
-            !explore
-              ? " border-b-2 border-orange-500 text-orange-500"
-              : "border-b-2 border-gray-200 text-gray-500"
-          }`}
+          className={`cursor-pointer w-1/2 pb-1 flex justify-center ${!explore
+            ? " border-b-2 border-orange-500 text-orange-500"
+            : "border-b-2 border-gray-200 text-gray-500"
+            }`}
           onClick={() => setExplore(false)}
         >
           Explore
