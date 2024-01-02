@@ -11,7 +11,7 @@ import Shimmer from "../Shimmer";
 
 const AddTeamPage = () => {
   const { id } = useParams();
-  const [currentPage, setCurrentPage] = useState("team_form");
+  const [currentPage, setCurrentPage] = useState("team_pay");
   const [completedTabs, setCompletedTabs] = useState(["team_form"]);
   const [form, setForm] = useState({
     data: {

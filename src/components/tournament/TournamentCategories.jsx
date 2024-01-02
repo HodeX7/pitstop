@@ -5,6 +5,7 @@ import { NavigationHeaderComponent } from "../../services/header.service";
 import Shimmer from "../Shimmer";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import { CONSTANTS, FORM_OPTIONS, formatDate } from "../../services/misc.services";
+import { Add } from "@mui/icons-material";
 
 
 const Events = ({ tournaments, loaded }) => {
@@ -75,7 +76,13 @@ export default () => {
                 title={tournamentCategories[0]?.tournament_wrapper?.title}
             />
             <div className="overflow-y-scroll maxh hide-scrollbar px-5">
-                <h1 className="mt-7 mb-2 font-semibold">All Categories ( {tournamentCategories?.length ? tournamentCategories?.length : "0"} )</h1>
+                <div className="mt-7 mb-2 flex items-center justify-between">
+                    <h1 className="font-semibold">All Categories ( {tournamentCategories?.length ? tournamentCategories?.length : "0"} )</h1>
+                    <button className="text-orange-500 font-semibold space-x-2">
+                        Add More Categories
+                        <Add style={{verticalAlign: "bottom"}} />
+                    </button>
+                </div>
                 <hr className="w-full h-[1px] bg-[#000] mb-4" />
                 <Events tournaments={tournamentCategories} loaded={categoriesLoaded} />
             </div>

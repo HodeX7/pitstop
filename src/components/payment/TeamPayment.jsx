@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 // import { update } from "../../features/formSlice";
 import PropTypes from "prop-types";
 
-import { TeamAPI } from "../../services/api.service";
+import { API_MEDIA, TeamAPI } from "../../services/api.service";
 import { useNavigate } from "react-router-dom";
 import useCamera from "../../utils/useCamera";
 import FileInput, { base64ToBlob } from "../../utils/FileInput";
@@ -85,9 +85,9 @@ const TeamPaymentPage = ({ tournament, form, setForm }) => {
     <div className="p-6">
       <div className="flex flex-col items-center justify-center">
         <div className="flex justify-center mb-3">
-          <img src={tournament?.host_QRCode} alt="QR Code" className="w-3/4 " />
+          <img src={API_MEDIA + tournament?.tournament_wrapper?.host_QRCode} alt="QR Code" className="w-3/4 " />
         </div>
-        <h1>{tournament?.host.contact_number}</h1>
+        <h1>{tournament?.tournament_wrapper?.host.contact_number}</h1>
 
         <h1 className="text-3xl space-x-2 tracking-wider font-semibold mt-10">
           ₹{toPay}
