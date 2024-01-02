@@ -21,6 +21,7 @@ import EventCompletion from "./EventCompletion";
 import { NavigationHeaderComponent } from "../../services/header.service";
 import TournamentCard from "../TournamentCard";
 import Shimmer from "../Shimmer";
+import TournamentButton from "./TournamentButton";
 
 const ParticipantTab = ({
   pendingTeams,
@@ -302,87 +303,12 @@ const DisplayForm = () => {
                       </div>
                     </h1>
                     <h1 className="font-light text-gray-500">
-                      {data.host.rating} / 5
+                      {data.host.rating} / 5  
                     </h1>
                   </div> */}
                 </div>
-                <div className="flex justify-between ">
-                  {tournament?.user_is_host ? (
-                    <>
-                      <button
-                        type="submit"
-                        className="bg-white text-orange-500 border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
-                        onClick={() =>
-                          navigate("cancel/", {
-                            state: { tournament_id: tournament?.id },
-                          })
-                        }
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        type="submit"
-                        className="text-white bg-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
-                        onClick={() =>
-                          navigate(`/tournament/edit/${tournament?.id}/`)
-                        }
-                      >
-                        Edit
-                      </button>
-                    </>
-                  ) : tournament?.user_status == "Pending" ? (
-                    <>
-                      <button
-                        type="button"
-                        className="bg-white text-orange-500 border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
-                        disabled="true"
-                      >
-                        Request Pending
-                      </button>
-                    </>
-                  ) : tournament?.user_status == "Rejected" ? (
-                    <>
-                      <button
-                        type="button"
-                        className="bg-white text-orange-500 border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
-                        disabled="true"
-                      >
-                        Your request was rejected by the host.
-                      </button>
-                    </>
-                  ) : tournament?.isOver ? (
-                    <>
-                      <button
-                        type="button"
-                        className="bg-orange-500 text-white border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
-                      >
-                        Tournament has ended
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      {tournament?.user_status === "Participating" ? (
-                        <button
-                          type="button"
-                          disabled
-                          className="bg-orange-300 text-white border-orange-300 cursor-not-allowed border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
-                        >
-                          Already Participated
-                        </button>
-                      ) : (
-                        <button
-                          type="submit"
-                          className="bg-orange-500 text-white border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
-                          onClick={() =>
-                            navigate(`${location.pathname}/team/add`)
-                          }
-                        >
-                          Participate
-                        </button>
-                      )}
-                    </>
-                  )}
-                </div>
+
+                <TournamentButton is_host={tournament?.user_is_host} is_over={tournament?.isOver} status={tournament?.user_status} />
               </div>
             </>
           ) : (

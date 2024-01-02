@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Outlet, Navigate } from "react-router-dom";
 
 import EventForm from "./components/tournament/EventForm";
 import DisplayForm from "./components/tournament/DisplayForm";
@@ -20,7 +20,7 @@ import RejectParticipation from "./components/cancellation/RejectParticipation";
 import Home from "./components/Home";
 import pitstop_bg from "./assets/pitstop_bg.png";
 
-import { AuthProvider } from "./utils/auth";
+import { AuthProvider, useAuth } from "./utils/auth";
 import { RequireAuth } from "./utils/RequireAuth";
 import { UserLogout } from "./services/api.service";
 import { Provider } from "react-redux";
@@ -32,128 +32,66 @@ import TournamentCategories from "./components/tournament/TournamentCategories";
 import AddTournament from "./components/tournament/AddTournament";
 import AddournamentCategories from "./components/tournament/AddournamentCategories";
 
+const PrivateRoutes = () => {
+  let auth = useAuth();
+
+  return (
+    auth.user ? <Outlet /> : <Navigate to='/login' />
+  )
+}
+
 function App() {
+
+  const nonProtectedRoutes = [
+    { path: "/signup", component: UserSigninView },
+    { path: "/verify", component: VerifyMobileOTP },
+    { path: "/login", component: UserLoginView },
+    { path: "/logout", component: UserLogout },
+  ]
+
+  const protectedRoutes = [
+    { path: "/", component: Home },
+    { path: "/profile", component: Profile },
+
+    { path: "/tournament/:id", component: DisplayForm },
+    { path: "/tournament/add", component: AddTournament },
+    { path: "/tournament/add/:id/categories", component: AddournamentCategories },
+    { path: "/tournament/wrapper/:id", component: TournamentCategories },
+    { path: "/tournament/:tournament_id/cancel", component: EventCancellation },
+    { path: "/tournament/edit/:id", component: EditTournamentForm },
+    { path: "/tournament/:tournament_id/team/:team_id", component: ParticipantScreen },
+    { path: "/tournament/:tournament_id/team/:team_id/reject", component: RejectParticipation },
+    { path: "/tournament/:tournament_id/team/:team_id/cancel", component: ParticipationCancellation },
+    { path: "/tournament/:tournament_id/team/:team_id/participant", component: ParticipantDetail },
+    { path: "/tournament/:tournament_id/team/:team_id/participant/reject", component: ParticipantCancellation },
+    { path: "/tournament/:id/team/add", component: AddTeamPage },
+  ];
+
+
   return (
     <Provider store={configureStore}>
-      <AuthProvider>
-        <div
-          className="flex justify-center items-center bg-black min-h-screen bg-cover relative"
-          style={{ backgroundImage: `url("${pitstop_bg}")` }}
-        >
-          <div className="w-full max-w-md rounded-lg bg-white min-h-screen">
-            <Router>
+      <div
+        className="flex justify-center items-center bg-black min-h-screen bg-cover relative"
+        style={{ backgroundImage: `url("${pitstop_bg}")` }}
+      >
+        <div className="w-full max-w-md rounded-lg bg-white min-h-screen">
+          <Router>
+            <AuthProvider>
               <Routes>
-                <Route path="/signup" element={<UserSigninView />}></Route>
-                <Route path="/verify" element={<VerifyMobileOTP />}></Route>
-                <Route path="/login" element={<UserLoginView />}></Route>
-                <Route path="/logout" element={<UserLogout />}></Route>
-                <Route path="/test" element={<Test />}></Route>
-                <Route path="/testSub" element={<TestSub />}></Route>
+                {nonProtectedRoutes.map((route, idx) => (
+                  <Route key={idx} path={route.path} element={<route.component />}></Route>
+                ))}
 
-                <Route
-                  exact
-                  path="/"
-                  element={
-                    <RequireAuth>
-                      <Home />
-                    </RequireAuth>
-                  }
-                />
-                <Route
-                  exact
-                  path="/tournament/wrapper/:id"
-                  element={
-                    <RequireAuth>
-                      <TournamentCategories />
-                    </RequireAuth>
-                  }
-                />
-                <Route
-                  exact
-                  path="/tournament/:id"
-                  element={
-                    <RequireAuth>
-                      <DisplayForm />
-                    </RequireAuth>
-                  }
-                />
-                <Route
-                  exact
-                  path="/tournament/:tournament_id/cancel"
-                  element={<EventCancellation />}
-                />
-                <Route
-                  exact
-                  path="/tournament/add"
-                  element={
-                    <RequireAuth>
-                      <AddTournament />
-                    </RequireAuth>
-                  }
-                />
-                <Route
-                  exact
-                  path="/tournament/add/:id/categories"
-                  element={
-                    <AddournamentCategories />
-                    // <RequireAuth>
-                    // </RequireAuth>
-                  }
-                />
-                <Route
-                  exact
-                  path="/tournament/edit/:id"
-                  element={<EditTournamentForm />}
-                />
-
-                <Route
-                  exact
-                  path="/tournament/:tournament_id/team/:team_id"
-                  element={<ParticipantScreen />}
-                />
-                <Route
-                  exact
-                  path="/tournament/:tournament_id/team/:team_id/reject"
-                  element={<RejectParticipation />}
-                />
-                <Route
-                  exact
-                  path="/tournament/:tournament_id/team/:team_id/cancel"
-                  element={<ParticipationCancellation />}
-                />
-                <Route
-                  exact
-                  path="/tournament/:tournament_id/team/:team_id/participant"
-                  element={<ParticipantDetail />}
-                />
-                <Route
-                  exact
-                  path="/tournament/:tournament_id/team/:team_id/participant/reject"
-                  element={<ParticipantCancellation />}
-                />
-
-                <Route
-                  exact
-                  path="/tournament/:id/team/add"
-                  element={<AddTeamPage />}
-                />
-                {/* <Route exact path="/tournament/:tournament_id/team/:team_id/edit" element={ <ParticipantForm /> } /> */}
-
-                <Route
-                  exact
-                  path="/profile"
-                  element={
-                    <RequireAuth>
-                      <Profile />
-                    </RequireAuth>
-                  }
-                />
+                <Route element={<PrivateRoutes />}>
+                  {protectedRoutes.map((route, idx) => (
+                    <Route key={idx} exact path={route.path} element={<route.component />} />
+                  ))}
+                </Route>
               </Routes>
-            </Router>
-          </div>
-          {/* <PaymentPage /> */}
+            </AuthProvider>
+          </Router>
         </div>
-      </AuthProvider>
+      </div>
     </Provider>
   );
 }

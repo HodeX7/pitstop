@@ -67,9 +67,6 @@ const Profile = () => {
 
         fetchUser();
         setEditMode(false);
-      } else {
-        navigate("/logout");
-        return;
       }
     } catch (error) {
       console.error(error);
