@@ -8,8 +8,14 @@ import { capacitorHTTPClient } from "../services/api.service";
 import { Toast } from "@capacitor/toast";
 import { Device } from "@capacitor/device";
 
-
-const Menu = ({ seed, isMenuVisible, setMenuVisibility, menuPage, group, refreshRounds }) => {
+const Menu = ({
+  seed,
+  isMenuVisible,
+  setMenuVisibility,
+  menuPage,
+  group,
+  refreshRounds,
+}) => {
   const [type, setType] = useState(menuPage ? "menu" : "edit");
   const [title, setTitle] = useState(false);
   const [winner, setWinner] = useState("");
@@ -29,53 +35,53 @@ const Menu = ({ seed, isMenuVisible, setMenuVisibility, menuPage, group, refresh
   };
 
   const formattedDateTime = () => {
-    const date = new Date(selectedDate + ' ' + selectedTime);
+    const date = new Date(selectedDate + " " + selectedTime);
     const options = {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
       hour12: true,
     };
     return date.toLocaleString(undefined, options);
   };
 
   const handleWinnerSubmit = async () => {
-    const res = capacitorHTTPClient('tournament/update_winner/', {
-      method: 'post',
-      data: { seed_id: seed.id, details: group.id, winner: winner }
+    const res = capacitorHTTPClient("tournament/update_winner/", {
+      method: "post",
+      data: { seed_id: seed.id, details: group.id, winner: winner },
     });
 
     if (res) {
       Toast.show({
         text: "Winner was updated successfully.",
-        duration: "long"
+        duration: "long",
       });
       refreshRounds();
     }
   };
 
   const handleEditFixtureSubmit = async () => {
-    let data = seed
+    let data = seed;
     data.date = formattedDateTime();
     data.teams[0].name = selectedTeams.team1;
     data.teams[1].name = selectedTeams.team2;
 
-    const res = await capacitorHTTPClient('tournament/update_seed/', {
-      method: 'post',
-      data: { seed_id: seed.id, details: group.id, updated_fixture: data }
-    })
+    const res = await capacitorHTTPClient("tournament/update_seed/", {
+      method: "post",
+      data: { seed_id: seed.id, details: group.id, updated_fixture: data },
+    });
 
     if (res) {
       Toast.show({
         text: "Fixture was updated.",
-        duration: "long"
-      })
+        duration: "long",
+      });
       refreshRounds();
     }
-  }
+  };
 
   useEffect(() => {
     if (!isMenuVisible) {
@@ -86,8 +92,9 @@ const Menu = ({ seed, isMenuVisible, setMenuVisibility, menuPage, group, refresh
 
   return (
     <div
-      className={`w-full flex z-40 items-center flex-col ${isMenuVisible ? "" : "hidden"
-        } bg-white absolute rounded-t-3xl bottom-0 py-4`}
+      className={`w-full flex z-40 items-center flex-col ${
+        isMenuVisible ? "" : "hidden"
+      } bg-white absolute rounded-t-3xl bottom-0 py-4`}
     >
       <div className="ruler w-12 h-1 bg-gray-400 rounded-xl mb-3"></div>
       {seed ? (
@@ -141,10 +148,11 @@ const Menu = ({ seed, isMenuVisible, setMenuVisibility, menuPage, group, refresh
                     <div
                       key={idx}
                       onClick={() => setWinner(team.name)}
-                      className={`w-full p-2 my-4 cursor-pointer flex justify-between ${winner === team.name
-                        ? "border-2 bg-gray-200 font-semibold text-[#50A5AF] border-[#50A5AF] rounded-xl"
-                        : "bg-gray-200 border-2 rounded-xl"
-                        }`}
+                      className={`w-full p-2 my-4 cursor-pointer flex justify-between ${
+                        winner === team.name
+                          ? "border-2 bg-gray-200 font-semibold text-[#50A5AF] border-[#50A5AF] rounded-xl"
+                          : "bg-gray-200 border-2 rounded-xl"
+                      }`}
                     >
                       {team.name}
                       {winner === team.name && (
@@ -165,7 +173,7 @@ const Menu = ({ seed, isMenuVisible, setMenuVisibility, menuPage, group, refresh
                   <button
                     className="bg-orange-500 text-white border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
                     onClick={() => {
-                      handleWinnerSubmit()
+                      handleWinnerSubmit();
                     }}
                   >
                     Submit
@@ -176,24 +184,42 @@ const Menu = ({ seed, isMenuVisible, setMenuVisibility, menuPage, group, refresh
               <div className="px-4">
                 {/* Idhar Yup ka form daldo jaisa apko image bheja hai waisa and uska jo bhi submit hoke values aayeag toh func mai console log karado mai backend mardega */}
                 <div className="form">
-                  <select className="bg-gray-200 w-full p-2 my-4 rounded-xl cursor-pointer"
-                    onChange={() => setSelectedTeams({ ...selectedTeams, team1: event.target.value })}>
-                    {group?.participatingTeams?.map(item => item.name).map((teams, idx) => (
-                      <option value={teams} key={idx}>
-                        {teams}
-                      </option>
-                    ))}
+                  <select
+                    className="bg-gray-200 w-full p-2 my-4 rounded-xl cursor-pointer"
+                    onChange={() =>
+                      setSelectedTeams({
+                        ...selectedTeams,
+                        team1: event.target.value,
+                      })
+                    }
+                  >
+                    {group?.participatingTeams
+                      ?.map((item) => item.name)
+                      .map((teams, idx) => (
+                        <option value={teams} key={idx}>
+                          {teams}
+                        </option>
+                      ))}
                   </select>
                   <h4 className="flex justify-center items-center font-bold">
                     VS
                   </h4>
-                  <select className="bg-gray-200 w-full p-2 my-4 rounded-xl cursor-pointer"
-                    onChange={() => setSelectedTeams({ ...selectedTeams, team2: event.target.value })}>
-                    {group?.participatingTeams?.map(item => item.name).map((teams, idx) => (
-                      <option value={teams} key={idx}>
-                        {teams}
-                      </option>
-                    ))}
+                  <select
+                    className="bg-gray-200 w-full p-2 my-4 rounded-xl cursor-pointer"
+                    onChange={() =>
+                      setSelectedTeams({
+                        ...selectedTeams,
+                        team2: event.target.value,
+                      })
+                    }
+                  >
+                    {group?.participatingTeams
+                      ?.map((item) => item.name)
+                      .map((teams, idx) => (
+                        <option value={teams} key={idx}>
+                          {teams}
+                        </option>
+                      ))}
                   </select>
                   <div className="flex ">
                     <div className="bg-gray-200 w-full p-3 rounded-xl cursor-pointer my-2 mr-1">
@@ -274,7 +300,7 @@ const CustomSeed = ({
           alignItems: "center",
           justifyContent: "center",
           // width: "fit-content",
-          paddingInline: "3rem"
+          paddingInline: "3rem",
         }}
         onClick={() => handleFixtureEdit(seed)}
       >
@@ -286,7 +312,13 @@ const CustomSeed = ({
               alignItems: "center",
             }}
           >
-            <span className={`${(seed.winner === seed.teams[0].name && !seed.hasBye) ? 'font-bold' : ''}`}>
+            <span
+              className={`${
+                seed.winner === seed.teams[0].name && !seed.hasBye
+                  ? "font-bold"
+                  : ""
+              }`}
+            >
               {seed.teams[0].name ? seed.teams[0].name : <strong>BYE</strong>}
             </span>
           </SeedTeam>
@@ -298,7 +330,13 @@ const CustomSeed = ({
               alignItems: "center",
             }}
           >
-            <span className={`${(seed.winner === seed.teams[1].name && !seed.hasBye) ? 'font-bold' : ''}`}>
+            <span
+              className={`${
+                seed.winner === seed.teams[1].name && !seed.hasBye
+                  ? "font-bold"
+                  : ""
+              }`}
+            >
               {seed.teams[1].name ? seed.teams[1].name : <strong>BYE</strong>}
             </span>
           </SeedTeam>
@@ -315,9 +353,10 @@ const CustomSeed = ({
 const FixturesComponent = ({ groupDetails, isHost }) => {
   const [isMenuVisible, setMenuVisibility] = useState(false);
   const [seed, setSeed] = useState(false);
-  const [rounds, setRounds] = useState(false)
+  const [rounds, setRounds] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
   const [isHandset, setisHandset] = useState();
+  const [fixtureType, setFixtureType] = useState("default");
 
   const handleTabIndexChange = (index) => () => setTabIndex(index);
 
@@ -325,30 +364,39 @@ const FixturesComponent = ({ groupDetails, isHost }) => {
 
   const isMobile = async () => {
     const info = await Device.getInfo();
-    setisHandset(info.platform === "android" || info.platform === "ios" || (info.platform === "web" && window.innerWidth < 995) )
-  }
+    setisHandset(
+      info.platform === "android" ||
+        info.platform === "ios" ||
+        (info.platform === "web" && window.innerWidth < 995)
+    );
+  };
 
   const refreshRounds = async () => {
-    const res = await capacitorHTTPClient(`tourney_details/${groupDetails?.id}/`, {
-      method: 'get'
-    })
+    const res = await capacitorHTTPClient(
+      `tourney_details/${groupDetails?.id}/`,
+      {
+        method: "get",
+      }
+    );
 
     if (res) {
       setRounds(res.data.fixtures);
-      setMenuVisibility(false)
+      setMenuVisibility(false);
     }
-  }
+  };
+
+  //dhruv set the fixtureType state in the UseEffect call from the backend.
 
   useEffect(() => {
     isMobile();
     refreshRounds();
     setTabIndex(0);
-    document.addEventListener('click', () => {
+    document.addEventListener("click", () => {
       if (isMenuVisible) {
         setMenuVisibility(!isMenuVisible);
       }
-    })
-  }, [groupDetails])
+    });
+  }, [groupDetails]);
 
   const toggleMenu = (seed) => {
     if (isHost) {
@@ -359,43 +407,79 @@ const FixturesComponent = ({ groupDetails, isHost }) => {
 
   return (
     <div className="root-container relative">
-      {/* make this hidden and not on the basis of animated menu  */}
-      <div
-        className={`absolute w-full h-full bg-black opacity-50 pointer-events-none z-20 ${isMenuVisible ? "" : "hidden"
-          }`}
-      ></div>
-
-      <div className="h-screen overflow-x-auto py-8 flex">
-        {rounds?.length > 0 || rounds?.seeds?.length > 0 ? (
-          <div className="App flex justify-center items-center flex-col w-full">
-            
-            {isHandset ? (
-              <div className="tabs">
-                {Array.from({length: rounds.length}).map((_, index) => (
-                  <button className="mx-4 border border-black p-2 mb-10" onClick={handleTabIndexChange(index)}>Round {index+1}</button>
-                ))}
+      {fixtureType === "default" ? (
+        //dhruv need to make a check from the backend if the host is viewing the component, give 2 button options orelse set it to what host has set it.
+        <div className="">
+          <button
+            className="bg-orange-500 text-white border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
+            onClick={() => {
+              // make an api call to set the fixture type and set the state to "pitstop"
+            }}
+          >
+            Generate Fixtures using PITSTOP
+          </button>
+          <button
+            className="bg-orange-500 text-white border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
+            onClick={() => {
+              // make an api call to set the fixture type and set the state to "host"
+            }}
+          >
+            Generate your own fixtures
+          </button>
+        </div>
+      ) : fixtureType === "host" ? (
+        <div> Contact Host for Fixtures </div>
+      ) : (
+        <div>
+          <div
+            className={`absolute w-full h-full bg-black opacity-50 pointer-events-none z-20 ${
+              isMenuVisible ? "" : "hidden"
+            }`}
+          ></div>
+          <div className="h-screen overflow-x-auto py-8 flex">
+            {rounds?.length > 0 || rounds?.seeds?.length > 0 ? (
+              <div className="App flex justify-center items-center flex-col w-full">
+                {isHandset ? (
+                  <div className="tabs">
+                    {Array.from({ length: rounds.length }).map((_, index) => (
+                      <button
+                        className="mx-4 border border-black p-2 mb-10"
+                        onClick={handleTabIndexChange(index)}
+                      >
+                        Round {index + 1}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+                <Bracket
+                  rounds={rounds ? rounds : groupDetails?.fixtures}
+                  renderSeedComponent={(props) => (
+                    <CustomSeed {...props} toggleMenu={toggleMenu} />
+                  )}
+                  bracketClassName="max-w-[25rem]"
+                  swipeableProps={{
+                    enableMouseEvents: true,
+                    animateHeight: true,
+                    index: tabIndex,
+                    onChangeIndex: handleSwipeChange,
+                  }}
+                />
               </div>
-            ) : (null)}
-            <Bracket
-              rounds={rounds ? rounds : groupDetails?.fixtures}
-              renderSeedComponent={(props) => (
-                <CustomSeed {...props} toggleMenu={toggleMenu} />
-              )}
-              bracketClassName="max-w-[25rem]"
-              swipeableProps={{
-                enableMouseEvents: true,
-                animateHeight: true,
-                index: tabIndex,
-                onChangeIndex: handleSwipeChange
-              }} />
+            ) : (
+              <h1>No Fixtures Available.</h1>
+            )}
           </div>
-        ) : (
-          <h1>No Fixtures Available.</h1>
-        )}
-      </div>
-
-      {/* Animated Menu Component */}
-      <Menu seed={seed} isMenuVisible={isMenuVisible} setMenuVisibility={setMenuVisibility} menuPage={true} group={groupDetails} refreshRounds={refreshRounds} />
+          {/* Animated Menu Component */}
+          <Menu
+            seed={seed}
+            isMenuVisible={isMenuVisible}
+            setMenuVisibility={setMenuVisibility}
+            menuPage={true}
+            group={groupDetails}
+            refreshRounds={refreshRounds}
+          />
+        </div>
+      )}
     </div>
   );
 };

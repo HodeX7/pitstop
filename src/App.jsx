@@ -1,6 +1,11 @@
-import { BrowserRouter as Router, Routes, Route, Outlet, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+  Navigate,
+} from "react-router-dom";
 
-import EventForm from "./components/tournament/EventForm";
 import DisplayForm from "./components/tournament/DisplayForm";
 import EditTournamentForm from "./components/tournament/EditTournamentForm";
 
@@ -21,33 +26,28 @@ import Home from "./components/Home";
 import pitstop_bg from "./assets/pitstop_bg.png";
 
 import { AuthProvider, useAuth } from "./utils/auth";
-import { RequireAuth } from "./utils/RequireAuth";
 import { UserLogout } from "./services/api.service";
 import { Provider } from "react-redux";
 import configureStore from "./store/configureStore";
 import ParticipationCancellation from "./components/cancellation/ParticipationCancellation";
-import Test from "./Test";
-import TestSub from "./TestSub";
 import TournamentCategories from "./components/tournament/TournamentCategories";
 import AddTournament from "./components/tournament/AddTournament";
 import AddournamentCategories from "./components/tournament/AddournamentCategories";
+import EditTournamentWrapper from "./components/tournament/EditTournamentWrapper";
 
 const PrivateRoutes = () => {
   let auth = useAuth();
 
-  return (
-    auth.user ? <Outlet /> : <Navigate to='/login' />
-  )
-}
+  return auth.user ? <Outlet /> : <Navigate to="/login" />;
+};
 
 function App() {
-
   const nonProtectedRoutes = [
     { path: "/signup", component: UserSigninView },
     { path: "/verify", component: VerifyMobileOTP },
     { path: "/login", component: UserLoginView },
     { path: "/logout", component: UserLogout },
-  ]
+  ];
 
   const protectedRoutes = [
     { path: "/", component: Home },
@@ -55,18 +55,37 @@ function App() {
 
     { path: "/tournament/:id", component: DisplayForm },
     { path: "/tournament/add", component: AddTournament },
-    { path: "/tournament/add/:id/categories", component: AddournamentCategories },
+    //edit tournament wrapper route.
+    { path: "/tournament/wrapper/edit/:id", component: EditTournamentWrapper },
+    {
+      path: "/tournament/add/:id/categories",
+      component: AddournamentCategories,
+    },
     { path: "/tournament/wrapper/:id", component: TournamentCategories },
     { path: "/tournament/:tournament_id/cancel", component: EventCancellation },
     { path: "/tournament/edit/:id", component: EditTournamentForm },
-    { path: "/tournament/:tournament_id/team/:team_id", component: ParticipantScreen },
-    { path: "/tournament/:tournament_id/team/:team_id/reject", component: RejectParticipation },
-    { path: "/tournament/:tournament_id/team/:team_id/cancel", component: ParticipationCancellation },
-    { path: "/tournament/:tournament_id/team/:team_id/participant", component: ParticipantDetail },
-    { path: "/tournament/:tournament_id/team/:team_id/participant/reject", component: ParticipantCancellation },
+    {
+      path: "/tournament/:tournament_id/team/:team_id",
+      component: ParticipantScreen,
+    },
+    {
+      path: "/tournament/:tournament_id/team/:team_id/reject",
+      component: RejectParticipation,
+    },
+    {
+      path: "/tournament/:tournament_id/team/:team_id/cancel",
+      component: ParticipationCancellation,
+    },
+    {
+      path: "/tournament/:tournament_id/team/:team_id/participant",
+      component: ParticipantDetail,
+    },
+    {
+      path: "/tournament/:tournament_id/team/:team_id/participant/reject",
+      component: ParticipantCancellation,
+    },
     { path: "/tournament/:id/team/add", component: AddTeamPage },
   ];
-
 
   return (
     <Provider store={configureStore}>
@@ -79,12 +98,21 @@ function App() {
             <AuthProvider>
               <Routes>
                 {nonProtectedRoutes.map((route, idx) => (
-                  <Route key={idx} path={route.path} element={<route.component />}></Route>
+                  <Route
+                    key={idx}
+                    path={route.path}
+                    element={<route.component />}
+                  ></Route>
                 ))}
 
                 <Route element={<PrivateRoutes />}>
                   {protectedRoutes.map((route, idx) => (
-                    <Route key={idx} exact path={route.path} element={<route.component />} />
+                    <Route
+                      key={idx}
+                      exact
+                      path={route.path}
+                      element={<route.component />}
+                    />
                   ))}
                 </Route>
               </Routes>

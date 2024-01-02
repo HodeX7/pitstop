@@ -10,23 +10,23 @@ import { NavigationHeaderComponent } from "../../services/header.service";
 import { FORM_OPTIONS } from "../../services/misc.services";
 import useCamera from "../../utils/useCamera";
 import FileInput from "../../utils/FileInput";
-import logo from "../../assets/ParticipantsFormLogo.png"
+import logo from "../../assets/ParticipantsFormLogo.png";
 import { axiosAuthRequest } from "../../services/api.service";
-
 
 export default () => {
   const navigate = useNavigate();
 
   const ref = useRef(null);
 
-  const today = `${new Date().getFullYear()}-${`${new Date().getMonth() +
-    1}`.padStart(2, 0)}-${`${new Date().getDate()}`.padStart(
-      2,
-      0
-    )}T${`${new Date().getHours()}`.padStart(
-      2,
-      0
-    )}:${`${new Date().getMinutes()}`.padStart(2, 0)}`
+  const today = `${new Date().getFullYear()}-${`${
+    new Date().getMonth() + 1
+  }`.padStart(2, 0)}-${`${new Date().getDate()}`.padStart(
+    2,
+    0
+  )}T${`${new Date().getHours()}`.padStart(
+    2,
+    0
+  )}:${`${new Date().getMinutes()}`.padStart(2, 0)}`;
 
   const initialValues = {
     title: "",
@@ -35,8 +35,6 @@ export default () => {
 
     fromDate: today,
     toDate: today,
-    // fromTime: formattedTime,
-    // toTime: formattedTime,
   };
 
   const validationSchema = Yup.object().shape({
@@ -78,7 +76,7 @@ export default () => {
         },
         true
       );
-      
+
       if (res.status == 201) {
         Toast.show({
           text: "Your Tournament request was received. Proceed to add categories.",
@@ -177,7 +175,9 @@ export default () => {
             </div>
 
             <div className="mt-5 p-3 flex flex-col">
-              <label htmlFor="fromDate" className="font-semibold">Start Date & Time</label>
+              <label htmlFor="fromDate" className="font-semibold">
+                Start Date & Time
+              </label>
               <div className="bg-gray-100 flex p-3 rounded-lg items-center ">
                 <Field
                   className="outline-none flex-1 bg-gray-100"
@@ -194,7 +194,9 @@ export default () => {
               />
             </div>
             <div className="mt-5 p-3 flex flex-col">
-              <label htmlFor="toDate" className="font-semibold">End Date & Time</label>
+              <label htmlFor="toDate" className="font-semibold">
+                End Date & Time
+              </label>
               <div className="bg-gray-100 flex p-3 rounded-lg items-center ">
                 <Field
                   className="outline-none flex-1 bg-gray-100"
@@ -260,7 +262,9 @@ export default () => {
               </div>
             </div>
 
-            <p className="text-center text-xs text-gray-500 my-2">( Tournaments can have multiple categories* )</p>
+            <p className="text-center text-xs text-gray-500 my-2">
+              ( Tournaments can have multiple categories* )
+            </p>
             <button
               type="submit"
               className="bg-orange-500 text-white flex p-3 rounded-lg w-full justify-center"

@@ -41,7 +41,7 @@ const UserLoginView = () => {
       contact_number: "+91" + values.contact_number,
     });
 
-    console.log("ye aaya bhai", JSON.stringify(res))
+    console.log("ye aaya bhai", JSON.stringify(res));
 
     if (res.status === 200) {
       let uid = res.data.data.id;
@@ -52,7 +52,7 @@ const UserLoginView = () => {
       navigate("/verify", { state: state });
     } else {
       Toast.show({
-        text: "Something went wrong. Please try again",
+        text: `${res.data.message} Please try again`,
         duration: "long",
       });
       setFieldValue("contact_number", "");
