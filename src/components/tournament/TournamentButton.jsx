@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-export default ({ status, is_host, is_over }) => {
+export default ({ tournament_id,status, is_host, is_over }) => {
 
     const navigate = useNavigate()
 
@@ -8,7 +8,7 @@ export default ({ status, is_host, is_over }) => {
         <button
             type="submit"
             className="bg-white text-orange-500 border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
-            onClick={() => navigate("cancel/", { state: { tournament_id: tournament?.id } })}
+            onClick={() => navigate("cancel/", { state: { tournament_id: tournament_id } })}
         >
             Cancel
         </button>
@@ -18,7 +18,7 @@ export default ({ status, is_host, is_over }) => {
         <button
             type="submit"
             className="text-white bg-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
-            onClick={() => navigate(`/tournament/edit/${tournament?.id}/`)}
+            onClick={() => navigate(`/tournament/wrapper/edit/${tournament_id}/`)}
         >
             Edit
         </button>
@@ -28,7 +28,7 @@ export default ({ status, is_host, is_over }) => {
         <button
             type="submit"
             className="bg-white text-orange-500 border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
-            onClick={() => navigate(`/tournament/end/${tournament?.id}/`)}
+            onClick={() => navigate(`/tournament/end/${tournament_id}/`)}
         >
             End Tournament
         </button>
@@ -51,16 +51,6 @@ export default ({ status, is_host, is_over }) => {
             disabled
         >
             Your request was rejected by the host.
-        </button>
-    );
-
-    const renderTournamentEndedButton = () => (
-        <button
-            type="button"
-            className="bg-orange-500 text-white border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
-            disabled
-        >
-            Tournament has ended
         </button>
     );
 
@@ -91,7 +81,7 @@ export default ({ status, is_host, is_over }) => {
     return (
         <div className="flex justify-between">
             {is_over ? (
-                renderTournamentEndedButton()
+                null
             ) : status === "Pending" ? (
                 renderPendingButton()
             ) : status === "Rejected" ? (

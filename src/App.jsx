@@ -34,6 +34,7 @@ import TournamentCategories from "./components/tournament/TournamentCategories";
 import AddTournament from "./components/tournament/AddTournament";
 import AddournamentCategories from "./components/tournament/AddournamentCategories";
 import EditTournamentWrapper from "./components/tournament/EditTournamentWrapper";
+import EditEventForm from "./components/tournament/EditEventForm";
 
 const PrivateRoutes = () => {
   let auth = useAuth();
@@ -56,7 +57,7 @@ function App() {
     { path: "/tournament/:id", component: DisplayForm },
     { path: "/tournament/add", component: AddTournament },
     //edit tournament wrapper route.
-    { path: "/tournament/wrapper/edit/:id", component: EditTournamentWrapper },
+    { path: "/tournament/wrapper/edit/:id", component: EditEventForm },
     {
       path: "/tournament/add/:id/categories",
       component: AddournamentCategories,

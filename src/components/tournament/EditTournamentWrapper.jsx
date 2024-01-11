@@ -16,8 +16,6 @@ const EditTournamentWrapper = () => {
 
   return (
     <div>
-      {console.log("first")}
-      <h2>Edit Event</h2>
       <EditEventForm initialValues={eventDetails} onSubmit={handleSubmit} />
     </div>
   );

@@ -4,7 +4,7 @@ import { rounds } from "../services/misc.services";
 import "../App.css";
 import DoneIcon from "@mui/icons-material/Done";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { capacitorHTTPClient } from "../services/api.service";
+import { axiosAuthRequest, capacitorHTTPClient } from "../services/api.service";
 import { Toast } from "@capacitor/toast";
 import { Device } from "@capacitor/device";
 
@@ -92,9 +92,8 @@ const Menu = ({
 
   return (
     <div
-      className={`w-full flex z-40 items-center flex-col ${
-        isMenuVisible ? "" : "hidden"
-      } bg-white absolute rounded-t-3xl bottom-0 py-4`}
+      className={`w-full flex z-40 items-center flex-col ${isMenuVisible ? "" : "hidden"
+        } bg-white absolute rounded-t-3xl bottom-0 py-4`}
     >
       <div className="ruler w-12 h-1 bg-gray-400 rounded-xl mb-3"></div>
       {seed ? (
@@ -148,11 +147,10 @@ const Menu = ({
                     <div
                       key={idx}
                       onClick={() => setWinner(team.name)}
-                      className={`w-full p-2 my-4 cursor-pointer flex justify-between ${
-                        winner === team.name
-                          ? "border-2 bg-gray-200 font-semibold text-[#50A5AF] border-[#50A5AF] rounded-xl"
-                          : "bg-gray-200 border-2 rounded-xl"
-                      }`}
+                      className={`w-full p-2 my-4 cursor-pointer flex justify-between ${winner === team.name
+                        ? "border-2 bg-gray-200 font-semibold text-[#50A5AF] border-[#50A5AF] rounded-xl"
+                        : "bg-gray-200 border-2 rounded-xl"
+                        }`}
                     >
                       {team.name}
                       {winner === team.name && (
@@ -313,11 +311,10 @@ const CustomSeed = ({
             }}
           >
             <span
-              className={`${
-                seed.winner === seed.teams[0].name && !seed.hasBye
-                  ? "font-bold"
-                  : ""
-              }`}
+              className={`${seed.winner === seed.teams[0].name && !seed.hasBye
+                ? "font-bold"
+                : ""
+                }`}
             >
               {seed.teams[0].name ? seed.teams[0].name : <strong>BYE</strong>}
             </span>
@@ -331,11 +328,10 @@ const CustomSeed = ({
             }}
           >
             <span
-              className={`${
-                seed.winner === seed.teams[1].name && !seed.hasBye
-                  ? "font-bold"
-                  : ""
-              }`}
+              className={`${seed.winner === seed.teams[1].name && !seed.hasBye
+                ? "font-bold"
+                : ""
+                }`}
             >
               {seed.teams[1].name ? seed.teams[1].name : <strong>BYE</strong>}
             </span>
@@ -356,7 +352,8 @@ const FixturesComponent = ({ groupDetails, isHost }) => {
   const [rounds, setRounds] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
   const [isHandset, setisHandset] = useState();
-  const [fixtureType, setFixtureType] = useState("default");
+
+  const [fixtureData, setFixtureData] = useState([])
 
   const handleTabIndexChange = (index) => () => setTabIndex(index);
 
@@ -366,8 +363,8 @@ const FixturesComponent = ({ groupDetails, isHost }) => {
     const info = await Device.getInfo();
     setisHandset(
       info.platform === "android" ||
-        info.platform === "ios" ||
-        (info.platform === "web" && window.innerWidth < 995)
+      info.platform === "ios" ||
+      (info.platform === "web" && window.innerWidth < 995)
     );
   };
 
@@ -381,11 +378,27 @@ const FixturesComponent = ({ groupDetails, isHost }) => {
 
     if (res) {
       setRounds(res.data.fixtures);
+      setFixtureData(res.data)
       setMenuVisibility(false);
     }
   };
 
-  //dhruv set the fixtureType state in the UseEffect call from the backend.
+  const setFixtureState = async (by_pitstop) => {
+    const res = await axiosAuthRequest(`tourney_details/${fixtureData?.id}/`, {
+      method: "PATCH",
+      data: {
+        fixtures_by_pitstop: by_pitstop
+      }
+    }, false);
+
+    if (res.status === 200) {
+      refreshRounds()
+      Toast.show({
+        text: "Fixtures are now updated.",
+        duration: "long",
+      });
+    }
+  }
 
   useEffect(() => {
     isMobile();
@@ -407,34 +420,18 @@ const FixturesComponent = ({ groupDetails, isHost }) => {
 
   return (
     <div className="root-container relative">
-      {fixtureType === "default" ? (
-        //dhruv need to make a check from the backend if the host is viewing the component, give 2 button options orelse set it to what host has set it.
-        <div className="">
-          <button
-            className="bg-orange-500 text-white border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
-            onClick={() => {
-              // make an api call to set the fixture type and set the state to "pitstop"
-            }}
-          >
-            Generate Fixtures using PITSTOP
-          </button>
-          <button
-            className="bg-orange-500 text-white border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
-            onClick={() => {
-              // make an api call to set the fixture type and set the state to "host"
-            }}
-          >
-            Generate your own fixtures
-          </button>
-        </div>
-      ) : fixtureType === "host" ? (
-        <div> Contact Host for Fixtures </div>
-      ) : (
-        <div>
+
+      {/* 
+        agar default hai and host hai -> toh change kar sakta hai (default)
+        agar default hai and host ni hai || agar false hai toh -> contact host for fixtures 
+        agar true hai toh -> fixtures dikhao
+      */}
+
+      {fixtureData?.fixtures_by_pitstop === 1 ? (
+        <div className="main-fixtures-component">
           <div
-            className={`absolute w-full h-full bg-black opacity-50 pointer-events-none z-20 ${
-              isMenuVisible ? "" : "hidden"
-            }`}
+            className={`absolute w-full h-full bg-black opacity-50 pointer-events-none z-20 ${isMenuVisible ? "" : "hidden"
+              }`}
           ></div>
           <div className="h-screen overflow-x-auto py-8 flex">
             {rounds?.length > 0 || rounds?.seeds?.length > 0 ? (
@@ -466,7 +463,7 @@ const FixturesComponent = ({ groupDetails, isHost }) => {
                 />
               </div>
             ) : (
-              <h1>No Fixtures Available.</h1>
+              <h1 className="p-4 text-center">No Fixtures Available.</h1>
             )}
           </div>
           {/* Animated Menu Component */}
@@ -478,6 +475,24 @@ const FixturesComponent = ({ groupDetails, isHost }) => {
             group={groupDetails}
             refreshRounds={refreshRounds}
           />
+        </div>
+      ) : fixtureData?.fixtures_by_pitstop === 2 ? (
+        <h1 className="p-5 text-center">Contact Host for Fixtures</h1>
+      ) : (
+        <div className="px-5">
+          <button
+            type="button"
+            className="my-4 bg-orange-500 text-white border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
+            onClick={() => setFixtureState("true")}
+          >
+            Generate Fixtures using PITSTOP
+          </button>
+          <button
+            className="bg-orange-500 text-white border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
+            onClick={() => setFixtureState("false")}
+          >
+            Generate your own Fixtures
+          </button>
         </div>
       )}
     </div>

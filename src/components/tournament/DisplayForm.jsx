@@ -240,7 +240,8 @@ const DisplayForm = () => {
 
                 <h1 className="font-semibold ">Participation Type</h1>
                 <h1 className="font-light mb-5">
-                  {CONSTANTS.PARTICIPATION[tournament?.participationType]}
+                  {/* {CONSTANTS.PARTICIPATION[tournament?.participationType]} */}
+                  {tournament?.participationType}
                 </h1>
 
                 <h1 className="font-semibold">Age Groups</h1>
@@ -308,7 +309,7 @@ const DisplayForm = () => {
                   </div> */}
                 </div>
 
-                <TournamentButton is_host={tournament?.user_is_host} is_over={tournament?.isOver} status={tournament?.user_status} />
+                <TournamentButton tournament_id={tournament?.tournament_wrapper?.id} is_host={tournament?.user_is_host} is_over={tournament?.isOver} status={tournament?.user_status} />
               </div>
             </>
           ) : (

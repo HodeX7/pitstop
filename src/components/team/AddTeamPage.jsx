@@ -11,7 +11,7 @@ import Shimmer from "../Shimmer";
 
 const AddTeamPage = () => {
   const { id } = useParams();
-  const [currentPage, setCurrentPage] = useState("team_pay");
+  const [currentPage, setCurrentPage] = useState("team_form");
   const [completedTabs, setCompletedTabs] = useState(["team_form"]);
   const [form, setForm] = useState({
     data: {
@@ -88,7 +88,12 @@ const AddTeamPage = () => {
             {currentPage == "team_form" ? (
               <ParticipantForm
                 tournament={tournament}
-                numberOfCards={tournament?.numOfPlayersPerTeam}
+                numberOfCards={tournament?.numOfPlayersPerTeam 
+                  ? tournament?.numOfPlayersPerTeam 
+                  : tournament.participationType === "singles" 
+                    ? 1 
+                    : 2 
+                }
                 ageGroups={tournament?.additionalDetails.map(
                   (item) => item.ageGroup
                 )}

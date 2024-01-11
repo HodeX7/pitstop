@@ -18,8 +18,12 @@ const PlayerPaymentPage = ({ tournament, continueNextPage, form, setForm }) => {
     type: "image",
   });
 
+  const numOfPlayers = tournament?.numOfPlayersPerTeam 
+  ? tournament?.numOfPlayersPerTeam 
+  : tournament.participationType === "singles" ? 1 : 2
+
   let toPay =
-    parseInt(tournament?.numOfPlayersPerTeam) *
+    parseInt(numOfPlayers) *
     parseInt(tournament?.player_register_fees);
 
   const handleContinue = () => {
@@ -54,7 +58,6 @@ const PlayerPaymentPage = ({ tournament, continueNextPage, form, setForm }) => {
 
   return (
     <div className="p-6">
-      {console.log(tournament)}
       <div className="flex flex-col items-center justify-center">
         <div className="flex justify-center mb-3">
           <img src={QR} alt="QR Code" className="w-3/4 " />
@@ -72,9 +75,8 @@ const PlayerPaymentPage = ({ tournament, continueNextPage, form, setForm }) => {
         <h1 className="text-3xl space-x-2 tracking-wider font-semibold mt-10">
           ₹{toPay}
         </h1>
-        <h1 className="tracking-tighter text-sm">
-          {tournament?.numOfPlayersPerTeam}
-          Players x ₹{tournament?.player_register_fees}
+        <h1 className="tracking-tighter text-sm mt-1">
+          ₹{tournament?.player_register_fees} <span className="ml-1">/ per player</span>
         </h1>
 
         <h1 className=" space-x-2 font-semibold mt-10">

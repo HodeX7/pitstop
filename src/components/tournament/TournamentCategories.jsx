@@ -44,7 +44,7 @@ const Events = ({ tournaments, loaded }) => {
                 </div>
                 <div className="flex justify-between items-center mb-2">
                   <h1 className="text-gray-500 font-semibold">
-                    Age Groups : {event.additionalDetails}
+                    Age Groups : {event.additionalDetails.join(', ')}
                   </h1>
                   <h1 className="text-gray-500 font-semibold">
                     {CONSTANTS.PARTICIPATION[event.participationType]} (
@@ -74,9 +74,15 @@ const Page = () => {
 
   return (
     <>
-      <NavigationHeaderComponent
-        title={tournamentCategories[0]?.tournament_wrapper?.title}
-      />
+      {tournamentCategories?.length > 0 ? (
+        <NavigationHeaderComponent
+          title={tournamentCategories[0]?.tournament_wrapper?.title}
+        />
+      ) : (
+        <NavigationHeaderComponent
+          title={"Tournament Categories"}
+        />
+      )}
       <div className="overflow-y-scroll maxh hide-scrollbar px-5">
         <div className="mt-7 mb-2 flex items-center justify-between">
           <h1 className="font-semibold">
@@ -84,15 +90,17 @@ const Page = () => {
             {tournamentCategories?.length ? tournamentCategories?.length : "0"}{" "}
             )
           </h1>
-          <button
-            onClick={() => {
-              navigate(`/tournament/add/${id}/categories`);
-            }}
-            className="text-orange-500 font-semibold space-x-2"
-          >
-            Add More Categories
-            <Add style={{ verticalAlign: "bottom" }} />
-          </button>
+          {tournamentCategories?.length > 0 && !tournamentCategories[0]?.details?.isOver && tournamentCategories[0]?.details?.isHost &&
+            <button
+              onClick={() => {
+                navigate(`/tournament/add/${id}/categories`);
+              }}
+              className="text-orange-500 font-semibold space-x-2"
+            >
+              Add More Categories
+              <Add style={{ verticalAlign: "bottom" }} />
+            </button>
+          }
         </div>
         <hr className="w-full h-[1px] bg-[#000] mb-4" />
         <Events tournaments={tournamentCategories} loaded={categoriesLoaded} />
