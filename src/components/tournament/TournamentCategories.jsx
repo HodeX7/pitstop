@@ -97,7 +97,7 @@ const Page = () => {
               }}
               className="text-orange-500 font-semibold space-x-2"
             >
-              Add More Categories
+              Add More or Edit Categories
               <Add style={{ verticalAlign: "bottom" }} />
             </button>
           }

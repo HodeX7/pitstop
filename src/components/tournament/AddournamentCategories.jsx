@@ -36,30 +36,6 @@ export default () => {
         }
     }, [added]);
 
-    // const playAsTeams = FORM_OPTIONS.ParticipationType.filter(
-    //     (item) =>
-    //         item.value != "1vs1" && item.value != "2vs2" && item.value != "both"
-    // );
-    // const playAsSingles = FORM_OPTIONS.ParticipationType.filter(
-    //     (item) => item.value === "1vs1"
-    // );
-    // const playAsBoth = FORM_OPTIONS.ParticipationType.filter(
-    //     (item) =>
-    //         item.value === "1vs1" || item.value === "2vs2" || item.value === "both"
-    // );
-
-    // const participationTypeOptions = {
-    //     football: playAsTeams,
-    //     basketball: playAsTeams,
-    //     cricket: playAsTeams,
-    //     badminton: playAsBoth,
-    //     skating: playAsSingles,
-    //     snooker: playAsSingles,
-    //     table_tennis: playAsBoth,
-    //     swimming: playAsBoth,
-    //     hockey: playAsTeams,
-    // };
-
     const initialSubValues = {
         gender: "",
         additionalDetails: [],
@@ -217,7 +193,7 @@ export default () => {
                     text: "Tournament Categories were added. Wait for the confirmation from pitstop.",
                     duration: "long",
                 });
-                navigate('/')
+                navigate(-1)
             } else {
                 alert(JSON.stringify("error", res));
             }
