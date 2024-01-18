@@ -33,12 +33,11 @@ import ParticipationCancellation from "./components/cancellation/ParticipationCa
 import TournamentCategories from "./components/tournament/TournamentCategories";
 import AddTournament from "./components/tournament/AddTournament";
 import AddournamentCategories from "./components/tournament/AddournamentCategories";
-import EditTournamentWrapper from "./components/tournament/EditTournamentWrapper";
 import EditEventForm from "./components/tournament/EditEventForm";
 
 const PrivateRoutes = () => {
   let auth = useAuth();
-
+  console.log("renders every refres", auth);
   return auth.user ? <Outlet /> : <Navigate to="/login" />;
 };
 
@@ -51,12 +50,10 @@ function App() {
   ];
 
   const protectedRoutes = [
-    { path: "/", component: Home },
     { path: "/profile", component: Profile },
 
     { path: "/tournament/:id", component: DisplayForm },
     { path: "/tournament/add", component: AddTournament },
-    //edit tournament wrapper route.
     { path: "/tournament/wrapper/edit/:id", component: EditEventForm },
     {
       path: "/tournament/add/:id/categories",
@@ -86,6 +83,7 @@ function App() {
       component: ParticipantCancellation,
     },
     { path: "/tournament/:id/team/add", component: AddTeamPage },
+    { path: "/", component: Home },
   ];
 
   return (
