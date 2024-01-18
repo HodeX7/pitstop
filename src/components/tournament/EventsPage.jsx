@@ -131,7 +131,7 @@ const EventsPage = () => {
   }
 
   return (
-    <div>
+    <>
       <div className="flex p-3 pb-0 justify-around">
         <h1
           className={`cursor-pointer w-1/2 pb-1 flex justify-center ${explore
@@ -154,7 +154,7 @@ const EventsPage = () => {
       </div>
       {explore ? (
         <div className="mt-3">
-          <div style={{ maxHeight: "30vh", overflowY: "auto" }}>
+          <div style={{  overflowY: "auto" }}>
             <Events tournaments={myTournaments} loaded={mtLoaded} />
           </div>
 
@@ -210,7 +210,7 @@ const EventsPage = () => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

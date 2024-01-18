@@ -36,7 +36,7 @@ const Home = () => {
       ) : currentPage === "events" ? (
         <>
           <NavigationHeaderComponent img={LOGO} />
-          <div className="p-6 flex justify-start flex-col">
+          <div className="p-6 flex justify-start flex-col ">
             <EventsPage />
           </div>
         </>
