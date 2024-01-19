@@ -13,10 +13,12 @@ export const formatDate = (dateString) => {
 
 export const formatTime = (dateString) => {
   const date = new Date(dateString);
-  console.log(date.getTime())
+  console.log(date.getTime());
 
   const formattedDate = date.toLocaleTimeString("en-US", {
-    hour12: true, hour: "2-digit", minute: "2-digit"
+    hour12: true,
+    hour: "2-digit",
+    minute: "2-digit",
   });
   return formattedDate;
 };
@@ -35,8 +37,8 @@ const AGE_GROUP = {
 };
 
 const PARTICIPATION = {
-  "singles": "Singles",
-  "doubles": "Doubles",
+  singles: "Singles",
+  doubles: "Doubles",
   both: "Both",
 
   "5vs5": "5 vs 5",
@@ -163,8 +165,7 @@ export function playerFees(sport, ParticipationType) {
   }
 }
 
-
-// TOURNAMENT FORM CONDITIONING LOGIC 
+// TOURNAMENT FORM CONDITIONING LOGIC
 // participationType
 // subCategories
 // Gender
@@ -173,57 +174,57 @@ export function playerFees(sport, ParticipationType) {
 export const FORM_CONDITIONS = {
   badminton: {
     participationType: [
-      { value: "singles", label: "singles" },
-      { value: "doubles", label: "doubles" },
-      { value: "both", label: "both" },
+      { value: "Singles", label: "Singles" },
+      { value: "Doubles", label: "Doubles" },
+      { value: "Both", label: "Both" },
     ],
     subCategories: false,
-    noOfPlayers: false
+    noOfPlayers: false,
   },
   table_tennis: {
     participationType: [
-      { value: "singles", label: "singles" },
-      { value: "doubles", label: "doubles" },
-      { value: "both", label: "both" },
+      { value: "Singles", label: "Singles" },
+      { value: "Doubles", label: "Doubles" },
+      { value: "Both", label: "Both" },
     ],
     subCategories: false,
-    noOfPlayers: false
+    noOfPlayers: false,
   },
 
   cricket: {
     participationType: false,
     subCategories: false,
-    noOfPlayers: true
+    noOfPlayers: true,
   },
   football: {
     participationType: false,
     subCategories: false,
-    noOfPlayers: true
+    noOfPlayers: true,
   },
   basketball: {
     participationType: false,
     subCategories: false,
-    noOfPlayers: true
+    noOfPlayers: true,
   },
 
   skating: {
     participationType: [
-      { value: "quad", label: "Quad" },
-      { value: "speedline", label: "Speedline" },
-      { value: "recreational", label: "Recreational" },
+      { value: "Quad", label: "Quad" },
+      { value: "Speedline", label: "Speedline" },
+      { value: "Recreational", label: "Recreational" },
     ],
-    subCategories: ["short race", "long race"],
-    noOfPlayers: true
-  }
-}
+    subCategories: ["Short race", "Long race"],
+    noOfPlayers: true,
+  },
+};
 
 export const CATEGORIES_GENERATION = {
   badminton: {
-    pt: ["singles", "doubles"],
-    sc: [null]
+    pt: ["Singles", "Doubles"],
+    sc: [null],
   },
   skating: {
-    pt: ["quad", "speedline", "recreational"],
-    sc: ["short race", "long race"]
-  }
+    pt: ["Quad", "Speedline", "Recreational"],
+    sc: ["Short race", "Long race"],
+  },
 };
