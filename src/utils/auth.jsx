@@ -19,7 +19,6 @@ export const AuthProvider = ({ children }) => {
           checkLogin?.value === "yes" &&
           !isExpired(access_token?.value) &&
           uid.value;
-
         setUser(isUserLoggedIn);
       } catch (error) {
         console.error("Error checking login status:", error);

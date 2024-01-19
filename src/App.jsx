@@ -32,7 +32,7 @@ import configureStore from "./store/configureStore";
 import ParticipationCancellation from "./components/cancellation/ParticipationCancellation";
 import TournamentCategories from "./components/tournament/TournamentCategories";
 import AddTournament from "./components/tournament/AddTournament";
-import AddournamentCategories from "./components/tournament/AddournamentCategories";
+import AddTournamentCategories from "./components/tournament/AddTournamentCategories";
 import EditEventForm from "./components/tournament/EditEventForm";
 
 const PrivateRoutes = () => {
@@ -57,7 +57,7 @@ function App() {
     { path: "/tournament/wrapper/edit/:id", component: EditEventForm },
     {
       path: "/tournament/add/:id/categories",
-      component: AddournamentCategories,
+      component: AddTournamentCategories,
     },
     { path: "/tournament/wrapper/:id", component: TournamentCategories },
     { path: "/tournament/:tournament_id/cancel", component: EventCancellation },
