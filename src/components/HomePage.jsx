@@ -1,10 +1,74 @@
-import React, { useEffect, useState } from "react";
-import data from "../assets/dummyTourneyData.json";
-import TournamentCard from "./TournamentCard";
+import { useEffect, useState } from "react";
 import "../styles/Home.css";
-import EditIcon from "@mui/icons-material/Edit";
 import { API_MEDIA, axiosAuthRequest } from "../services/api.service";
 
+const mockMedia = [
+  {
+    createdAt: "2024-01-29",
+    id: 18,
+    media_file: {
+      name: "Top_Goals_-_Commando_FC_seniors_UJTYOep.mp4",
+      url: "https://www.youtube.com/watch?v=cCQ8Xw1QHmE",
+    },
+    media_type: "video",
+    sport: "cricket",
+    title: "Top goals- Commandos FC seniors",
+    tournament_details: 34,
+    views: 0,
+  },
+  {
+    createdAt: "2024-01-29",
+    id: 118,
+    media_file: {
+      name: "Top_Goals_-_Commando_FC_seniors_UJTYOep.mp4",
+      url: "https://www.youtube.com/watch?v=cCQ8Xw1QHmE",
+    },
+    media_type: "video",
+    sport: "cricket",
+    title: "Top goals- Commandos FC seniors",
+    tournament_details: 34,
+    views: 0,
+  },
+  {
+    createdAt: "2024-01-29",
+    id: 183,
+    media_file: {
+      name: "Top_Goals_-_Commando_FC_seniors_UJTYOep.mp4",
+      url: "https://www.youtube.com/watch?v=cCQ8Xw1QHmE",
+    },
+    media_type: "video",
+    sport: "cricket",
+    title: "Top goals- Commandos FC seniors",
+    tournament_details: 34,
+    views: 0,
+  },
+  {
+    createdAt: "2024-01-29",
+    id: 19,
+    media_file: {
+      name: "reels 1",
+      url: "https://www.youtube.com/shorts/MxmPttZeja8",
+    },
+    media_type: "reel",
+    sport: "cricket",
+    title: "Top goals- Commandos FC seniors",
+    tournament_details: 34,
+    views: 0,
+  },
+  {
+    createdAt: "2024-01-29",
+    id: 12,
+    media_file: {
+      name: "reels 2",
+      url: "https://www.youtube.com/shorts/MxmPttZeja8",
+    },
+    media_type: "reel",
+    sport: "cricket",
+    title: "Top goals- Commandos FC seniors",
+    tournament_details: 34,
+    views: 0,
+  },
+];
 const HomePage = () => {
   const [selected, setSelected] = useState(null);
   const [filterMedia, setFilterMedia] = useState([]);
@@ -30,8 +94,8 @@ const HomePage = () => {
           },
           false
         );
-        // console.log(media);
         setMedia(media.data);
+        // setMedia(mockMedia);
         setFilterMedia(media.data);
       } catch (error) {
         console.error("Error fetching media:", error);
@@ -39,6 +103,45 @@ const HomePage = () => {
     };
     fetchData();
   }, []);
+  const getReels = () => {
+    const reels = filterMedia.filter((media) => media.media_type === "reel");
+    return reels.slice(0, 2).map((reel) => (
+      <div key={reel.id} className="w-1/2 mr-2">
+        <video controls className="w-full h-60">
+          <source src={API_MEDIA + reel.media_file.url} />
+        </video>
+      </div>
+    ));
+  };
+
+  const renderMedia = () => {
+    const result = [];
+    const reels = getReels();
+
+    for (let i = 0; i < filterMedia.length; i++) {
+      result.push(
+        <div key={`video-${i}`} className="my-5">
+          <div className="">
+            <video controls className="w-full">
+              <source src={API_MEDIA + filterMedia[i].media_file.url} />
+            </video>
+          </div>
+        </div>
+      );
+
+      if (i % 2 === 1 && reels.length > 0) {
+        result.push(
+          <div key={`reel-${i}`} className="flex">
+            {reels.shift()}
+            {reels.shift()}
+          </div>
+        );
+      }
+    }
+
+    return result;
+  };
+
   return (
     <>
       {console.log(filterMedia)}
@@ -135,31 +238,7 @@ const HomePage = () => {
         </div>
       </div>
       <div className="mt-2 overflow-y-scroll maxh hide-scrollbar">
-        {filterMedia?.length === null || filterMedia?.length === 0 ? (
-          <h1>Nothing to show currently</h1>
-        ) : (
-          <>
-            {filterMedia?.map((media, item) => (
-              <div key={item} className="mb-5">
-                {media.media_type === "image" ? (
-                  <img
-                    className=""
-                    src={API_MEDIA + media.media_file.url}
-                    alt={media.media_file.title}
-                  />
-                ) : (
-                  <video controls>
-                    <source src={API_MEDIA + media.media_file.url} />
-                  </video>
-                )}{" "}
-                <div className="flex mt-2 justify-between">
-                  <h1 className="font-semibold">{media.title}</h1>
-                  <h1>{media.createdAt}</h1>
-                </div>
-              </div>
-            ))}
-          </>
-        )}
+        {renderMedia()}
       </div>
     </>
   );
