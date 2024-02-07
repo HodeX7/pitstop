@@ -242,26 +242,69 @@ const AddTournamentCategories = () => {
   ) => {
     const categories = [];
 
-    if (gender === "all" && pt === "both") {
+    if (gender === "all" && pt === "Both") {
+      // Iterate over participation types and subcategories
       for (const _pt of CATEGORIES_GENERATION[sport].pt) {
         for (const _sc of CATEGORIES_GENERATION[sport].sc) {
+          // Generate categories for male and female
           categories.push(
-            getCategoryObject(_pt, _sc, "male", _pt === "singles" ? trs : trd)
+            getCategoryObject(_pt, _sc, "Male", _pt === "Singles" ? trs : trd)
           );
           categories.push(
-            getCategoryObject(_pt, _sc, "female", _pt === "singles" ? trs : trd)
+            getCategoryObject(_pt, _sc, "Female", _pt === "Singles" ? trs : trd)
           );
         }
       }
+      categories.push(
+        getCategoryObject("Doubles", sc, "Mixed", pt === "Singles" ? trs : trd)
+      );
     } else {
-      categories.push(getCategoryObject(pt, sc, "male", trf));
-      categories.push(getCategoryObject(pt, sc, "female", trf));
-    }
-
-    if (pt === "doubles" || pt === "both") {
-      categories.push(getCategoryObject("doubles", sc, "all", trd ? trd : trf));
-    } else {
-      categories.push(getCategoryObject(pt, sc, gender, trf));
+      // If PT is Both
+      if (pt === "Both") {
+        for (const _pt of CATEGORIES_GENERATION[sport].pt) {
+          for (const _sc of CATEGORIES_GENERATION[sport].sc) {
+            // Generate Both categories for the gender
+            categories.push(
+              getCategoryObject(_pt, _sc, gender, _pt === "Singles" ? trs : trd)
+            );
+          }
+        }
+      }
+      //if All genders but particular PT
+      else if (gender === "all") {
+        for (const _sc of CATEGORIES_GENERATION[sport].sc) {
+          categories.push(
+            getCategoryObject(
+              pt,
+              _sc,
+              "Male",
+              pt === "Singles" ? trs : pt === "Doubles" ? trd : trf
+            )
+          );
+          categories.push(
+            getCategoryObject(
+              pt,
+              _sc,
+              "Female",
+              pt === "Singles" ? trs : pt === "Doubles" ? trd : trf
+            )
+          );
+          if (pt === "Doubles") {
+            categories.push(
+              getCategoryObject(pt, _sc, "Mixed", pt === "Singles" ? trs : trd)
+            );
+          }
+        }
+      } else {
+        categories.push(
+          getCategoryObject(
+            pt,
+            sc,
+            gender,
+            pt === "Singles" ? trs : pt === "Doubles" ? trd : trf
+          )
+        );
+      }
     }
 
     return categories;
@@ -281,7 +324,7 @@ const AddTournamentCategories = () => {
         <div className="p-6 pt-2">
           <p className="text-xs text-center text-gray-500">
             Tournament can have multiple categories for example, badminton
-            tournament having 2 categories that is Single (male) and Doubles
+            tournament having 2 categories that is Single (Male) and Doubles
             (Mixed)
           </p>
           <Formik
@@ -363,8 +406,8 @@ const AddTournamentCategories = () => {
                         name="gender"
                       >
                         <option value="">Gender *</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
                         <option value="all">All Genders</option>
                       </Field>
                     </div>
