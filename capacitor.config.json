@@ -1,6 +1,6 @@
 {
   "appId": "com.ourpitstop",
-  "appName": "pitstop",
+  "appName": "Pitstop",
   "webDir": "dist",
   "server": {
     "androidScheme": "https"

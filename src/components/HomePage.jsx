@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import data from "../assets/dummyTourneyData.json";
 import TournamentCard from "./TournamentCard";
 import "../styles/Home.css";
@@ -6,6 +6,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import { API_MEDIA, axiosAuthRequest } from "../services/api.service";
 
 const HomePage = () => {
+
+  const videos = useRef({})
+
   const [selected, setSelected] = useState(null);
   const [filterMedia, setFilterMedia] = useState([]);
   const [media, setMedia] = useState([]);
@@ -17,7 +20,6 @@ const HomePage = () => {
       const filtered = media.filter((media) => media.sport === sport);
       setFilterMedia(filtered);
     }
-    console.log(filterMedia);
   };
 
   useEffect(() => {
@@ -30,7 +32,6 @@ const HomePage = () => {
           },
           false
         );
-        // console.log(media);
         setMedia(media.data);
         setFilterMedia(media.data);
       } catch (error) {
@@ -39,6 +40,21 @@ const HomePage = () => {
     };
     fetchData();
   }, []);
+
+  const handlePlay = (idx) => {
+    Object.keys(videos.current).map(v_key => {
+      let v = videos.current[v_key]
+      
+      if (parseInt(v_key) !== idx && !v.paused) {
+        v.pause()
+      }
+    })
+  }
+
+  const handlePause = (idx) => {
+    console.log("rukaya bhai ", videos.current[idx])
+  }
+
   return (
     <>
       {console.log(filterMedia)}
@@ -139,8 +155,8 @@ const HomePage = () => {
           <h1>Nothing to show currently</h1>
         ) : (
           <>
-            {filterMedia?.map((media, item) => (
-              <div key={item} className="mb-5">
+            {filterMedia?.map((media, idx) => (
+              <div key={idx} className="mb-5">
                 {media.media_type === "image" ? (
                   <img
                     className=""
@@ -148,7 +164,7 @@ const HomePage = () => {
                     alt={media.media_file.title}
                   />
                 ) : (
-                  <video controls>
+                  <video ref={(elem) => videos.current[idx] = elem} controls auto onPlay={() => handlePlay(idx)} onPause={() => handlePause(idx)} >
                     <source src={API_MEDIA + media.media_file.url} />
                   </video>
                 )}{" "}
