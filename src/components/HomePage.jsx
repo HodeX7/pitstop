@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../styles/Home.css";
 import { API_MEDIA, axiosAuthRequest } from "../services/api.service";
 
@@ -70,8 +70,7 @@ const mockMedia = [
   },
 ];
 const HomePage = () => {
-
-  const videos = useRef({})
+  const videos = useRef({});
 
   const [selected, setSelected] = useState(null);
   const [filterMedia, setFilterMedia] = useState([]);
@@ -107,18 +106,18 @@ const HomePage = () => {
   }, []);
 
   const handlePlay = (idx) => {
-    Object.keys(videos.current).map(v_key => {
-      let v = videos.current[v_key]
-      
+    Object.keys(videos.current).map((v_key) => {
+      let v = videos.current[v_key];
+
       if (parseInt(v_key) !== idx && !v.paused) {
-        v.pause()
+        v.pause();
       }
-    })
-  }
+    });
+  };
 
   const handlePause = (idx) => {
-    console.log("rukaya bhai ", videos.current[idx])
-  }
+    console.log("rukaya bhai ", videos.current[idx]);
+  };
   const getReels = () => {
     const reels = filterMedia.filter((media) => media.media_type === "reel");
     return reels.slice(0, 2).map((reel) => (
@@ -267,7 +266,13 @@ const HomePage = () => {
                     alt={media.media_file.title}
                   />
                 ) : (
-                  <video ref={(elem) => videos.current[idx] = elem} controls auto onPlay={() => handlePlay(idx)} onPause={() => handlePause(idx)} >
+                  <video
+                    ref={(elem) => (videos.current[idx] = elem)}
+                    controls
+                    auto
+                    onPlay={() => handlePlay(idx)}
+                    onPause={() => handlePause(idx)}
+                  >
                     <source src={API_MEDIA + media.media_file.url} />
                   </video>
                 )}{" "}
