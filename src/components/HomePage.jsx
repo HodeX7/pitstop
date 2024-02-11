@@ -136,6 +136,26 @@ const HomePage = () => {
         </div>
         <div
           className={`mr-2 ${
+            selected === "badminton"
+              ? "bg-orange-500 text-white border-2 border-orange-500"
+              : "bg-white text-orange-500 border-2 border-orange-500"
+          } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
+          onClick={() => handleDivClick("badminton")}
+        >
+          Badminton
+        </div>
+        <div
+          className={`mr-2 ${
+            selected === "skating"
+              ? "bg-orange-500 text-white border-2 border-orange-500"
+              : "bg-white text-orange-500 border-2 border-orange-500"
+          } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
+          onClick={() => handleDivClick("skating")}
+        >
+          Skating
+        </div>
+        <div
+          className={`mr-2 ${
             selected === "football"
               ? "bg-orange-500 text-white border-2 border-orange-500"
               : "bg-white text-orange-500 border-2 border-orange-500"
@@ -144,6 +164,7 @@ const HomePage = () => {
         >
           Football
         </div>
+
         <div
           className={`mr-2 ${
             selected === "cricket"
@@ -173,16 +194,6 @@ const HomePage = () => {
           onClick={() => handleDivClick("basketball")}
         >
           Basketball
-        </div>
-        <div
-          className={`mr-2 ${
-            selected === "skating"
-              ? "bg-orange-500 text-white border-2 border-orange-500"
-              : "bg-white text-orange-500 border-2 border-orange-500"
-          } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
-          onClick={() => handleDivClick("skating")}
-        >
-          Skating
         </div>
         <div
           className={`mr-2 ${
