@@ -98,6 +98,7 @@ const HomePage = () => {
         setMedia(media.data);
         // setMedia(mockMedia);
         setFilterMedia(media.data);
+        // setFilterMedia(mockMedia);
       } catch (error) {
         console.error("Error fetching media:", error);
       }
@@ -118,6 +119,7 @@ const HomePage = () => {
   const handlePause = (idx) => {
     console.log("rukaya bhai ", videos.current[idx]);
   };
+
   const getReels = () => {
     const reels = filterMedia.filter((media) => media.media_type === "reel");
     return reels.slice(0, 2).map((reel) => (
@@ -134,16 +136,17 @@ const HomePage = () => {
     const reels = getReels();
 
     for (let i = 0; i < filterMedia.length; i++) {
-      result.push(
-        <div key={`video-${i}`} className="my-5">
-          <div className="">
-            <video controls className="w-full">
-              <source src={API_MEDIA + filterMedia[i].media_file.url} />
-            </video>
+      if (filterMedia[i].media_type !== "reel") {
+        result.push(
+          <div key={`video-${i}`} className="my-5">
+            <div>
+              <video controls className="w-full">
+                <source src={API_MEDIA + filterMedia[i].media_file.url} />
+              </video>
+            </div>
           </div>
-        </div>
-      );
-
+        );
+      }
       if (i % 2 === 1 && reels.length > 0) {
         result.push(
           <div key={`reel-${i}`} className="flex">
@@ -256,35 +259,8 @@ const HomePage = () => {
         {filterMedia?.length === null || filterMedia?.length === 0 ? (
           <h1>Nothing to show currently</h1>
         ) : (
-          <>
-            {filterMedia?.map((media, idx) => (
-              <div key={idx} className="mb-5">
-                {media.media_type === "image" ? (
-                  <img
-                    className=""
-                    src={API_MEDIA + media.media_file.url}
-                    alt={media.media_file.title}
-                  />
-                ) : (
-                  <video
-                    ref={(elem) => (videos.current[idx] = elem)}
-                    controls
-                    auto
-                    onPlay={() => handlePlay(idx)}
-                    onPause={() => handlePause(idx)}
-                  >
-                    <source src={API_MEDIA + media.media_file.url} />
-                  </video>
-                )}{" "}
-                <div className="flex mt-2 justify-between">
-                  <h1 className="font-semibold">{media.title}</h1>
-                  <h1>{media.createdAt}</h1>
-                </div>
-              </div>
-            ))}
-          </>
+          <>{renderMedia()}</>
         )}
-        {renderMedia()}
       </div>
     </>
   );
