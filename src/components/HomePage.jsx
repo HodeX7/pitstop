@@ -1,47 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "../styles/Home.css";
 import { API_MEDIA, axiosAuthRequest } from "../services/api.service";
 
 const mockMedia = [
-  {
-    createdAt: "2024-01-29",
-    id: 18,
-    media_file: {
-      name: "Top_Goals_-_Commando_FC_seniors_UJTYOep.mp4",
-      url: "https://www.youtube.com/watch?v=cCQ8Xw1QHmE",
-    },
-    media_type: "video",
-    sport: "cricket",
-    title: "Top goals- Commandos FC seniors",
-    tournament_details: 34,
-    views: 0,
-  },
-  {
-    createdAt: "2024-01-29",
-    id: 118,
-    media_file: {
-      name: "Top_Goals_-_Commando_FC_seniors_UJTYOep.mp4",
-      url: "https://www.youtube.com/watch?v=cCQ8Xw1QHmE",
-    },
-    media_type: "video",
-    sport: "cricket",
-    title: "Top goals- Commandos FC seniors",
-    tournament_details: 34,
-    views: 0,
-  },
-  {
-    createdAt: "2024-01-29",
-    id: 183,
-    media_file: {
-      name: "Top_Goals_-_Commando_FC_seniors_UJTYOep.mp4",
-      url: "https://www.youtube.com/watch?v=cCQ8Xw1QHmE",
-    },
-    media_type: "video",
-    sport: "cricket",
-    title: "Top goals- Commandos FC seniors",
-    tournament_details: 34,
-    views: 0,
-  },
   {
     createdAt: "2024-01-29",
     id: 19,
@@ -51,7 +12,7 @@ const mockMedia = [
     },
     media_type: "reel",
     sport: "cricket",
-    title: "Top goals- Commandos FC seniors",
+    title: "Top goals - Commandos FC seniors",
     tournament_details: 34,
     views: 0,
   },
@@ -64,7 +25,7 @@ const mockMedia = [
     },
     media_type: "reel",
     sport: "cricket",
-    title: "Top goals- Commandos FC seniors",
+    title: "Top goals - Commandos FC seniors",
     tournament_details: 34,
     views: 0,
   },
@@ -119,6 +80,7 @@ const HomePage = () => {
   const handlePause = (idx) => {
     console.log("rukaya bhai ", videos.current[idx])
   }
+  
   const getReels = () => {
     const reels = filterMedia.filter((media) => media.media_type === "reel");
     return reels.slice(0, 2).map((reel) => (
@@ -160,7 +122,6 @@ const HomePage = () => {
 
   return (
     <>
-      {console.log(filterMedia)}
       <div className="overflow-x-auto whitespace-nowrap flex hide-scrollbar ">
         <div
           className={`mr-2 ${
