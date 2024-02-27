@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "../styles/Home.css";
 import { API_MEDIA, axiosAuthRequest } from "../services/api.service";
 
+
 const mockMedia = [
   {
     createdAt: "2024-01-29",
@@ -30,12 +31,14 @@ const mockMedia = [
     views: 0,
   },
 ];
+
 const HomePage = () => {
   const videos = useRef({});
 
   const [selected, setSelected] = useState(null);
   const [filterMedia, setFilterMedia] = useState([]);
   const [media, setMedia] = useState([]);
+
   const handleDivClick = (sport) => {
     setSelected(sport);
     if (sport === "all") {
@@ -83,10 +86,13 @@ const HomePage = () => {
 
   const getReels = () => {
     const reels = filterMedia.filter((media) => media.media_type === "reel");
+
     return reels.slice(0, 2).map((reel) => (
       <div key={reel.id} className="w-1/2 mr-2">
-        <video controls className="w-full h-60">
-          <source src={API_MEDIA + reel.media_file.url} />
+        <video controls className="w-full h-60" onPlay={(e) => e.target.requestFullscreen()}
+          poster={reel.thumbnail ? API_MEDIA + reel.thumbnail : null}
+        >
+          <source src={reel.thumbnail ? API_MEDIA + reel.media_file.url : API_MEDIA + reel.media_file.url + "#t=0.1"} type="video/mp4" />
         </video>
       </div>
     ));
@@ -98,11 +104,16 @@ const HomePage = () => {
 
     for (let i = 0; i < filterMedia.length; i++) {
       if (filterMedia[i].media_type !== "reel") {
+
+        let videoUrl = filterMedia[i].thumbnail ? API_MEDIA + filterMedia[i].media_file.url : API_MEDIA + filterMedia[i].media_file.url + "#t=0.1" 
+
         result.push(
           <div key={`video-${i}`} className="my-5">
             <div>
-              <video controls className="w-full">
-                <source src={API_MEDIA + filterMedia[i].media_file.url} />
+              <video ref={(elem) => videos.current[i] = elem} controls className="w-full" onPlay={() => handlePlay(i)}
+                poster={filterMedia[i].thumbnail ? API_MEDIA + filterMedia[i].thumbnail : null}
+              >
+                <source src={videoUrl} type="video/mp4" />
               </video>
             </div>
           </div>
@@ -125,91 +136,82 @@ const HomePage = () => {
     <>
       <div className="overflow-x-auto whitespace-nowrap flex hide-scrollbar ">
         <div
-          className={`mr-2 ${
-            selected === "all"
+          className={`mr-2 ${selected === "all"
               ? "bg-orange-500 text-white border-2 border-orange-500"
               : "bg-white text-orange-500 border-2 border-orange-500"
-          } flex rounded-full p-2 px-6 w-full justify-center cursor-pointer mr-4`}
+            } flex rounded-full p-2 px-6 w-full justify-center cursor-pointer mr-4`}
           onClick={() => handleDivClick("all")}
         >
           All
         </div>
         <div
-          className={`mr-2 ${
-            selected === "football"
+          className={`mr-2 ${selected === "football"
               ? "bg-orange-500 text-white border-2 border-orange-500"
               : "bg-white text-orange-500 border-2 border-orange-500"
-          } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
+            } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
           onClick={() => handleDivClick("football")}
         >
           Football
         </div>
         <div
-          className={`mr-2 ${
-            selected === "cricket"
+          className={`mr-2 ${selected === "cricket"
               ? "bg-orange-500 text-white border-2 border-orange-500"
               : "bg-white text-orange-500 border-2 border-orange-500"
-          } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
+            } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
           onClick={() => handleDivClick("cricket")}
         >
           Cricket
         </div>
         <div
-          className={`mr-2 ${
-            selected === "volleyball"
+          className={`mr-2 ${selected === "volleyball"
               ? "bg-orange-500 text-white border-2 border-orange-500"
               : "bg-white text-orange-500 border-2 border-orange-500"
-          } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
+            } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
           onClick={() => handleDivClick("volleyball")}
         >
           Volleyball
         </div>
         <div
-          className={`mr-2 ${
-            selected === "basketball"
+          className={`mr-2 ${selected === "basketball"
               ? "bg-orange-500 text-white border-2 border-orange-500"
               : "bg-white text-orange-500 border-2 border-orange-500"
-          } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
+            } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
           onClick={() => handleDivClick("basketball")}
         >
           Basketball
         </div>
         <div
-          className={`mr-2 ${
-            selected === "skating"
+          className={`mr-2 ${selected === "skating"
               ? "bg-orange-500 text-white border-2 border-orange-500"
               : "bg-white text-orange-500 border-2 border-orange-500"
-          } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
+            } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
           onClick={() => handleDivClick("skating")}
         >
           Skating
         </div>
         <div
-          className={`mr-2 ${
-            selected === "snooker"
+          className={`mr-2 ${selected === "snooker"
               ? "bg-orange-500 text-white border-2 border-orange-500"
               : "bg-white text-orange-500 border-2 border-orange-500"
-          } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
+            } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
           onClick={() => handleDivClick("snooker")}
         >
           Snooker
         </div>
         <div
-          className={`mr-2 ${
-            selected === "table_tennis"
+          className={`mr-2 ${selected === "table_tennis"
               ? "bg-orange-500 text-white border-2 border-orange-500"
               : "bg-white text-orange-500 border-2 border-orange-500"
-          } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
+            } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
           onClick={() => handleDivClick("table_tennis")}
         >
           Table Tennis
         </div>
         <div
-          className={`mr-2 ${
-            selected === "swimming"
+          className={`mr-2 ${selected === "swimming"
               ? "bg-orange-500 text-white border-2 border-orange-500"
               : "bg-white text-orange-500 border-2 border-orange-500"
-          } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
+            } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
           onClick={() => handleDivClick("swimming")}
         >
           Swimming

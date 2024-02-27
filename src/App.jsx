@@ -35,6 +35,19 @@ import AddTournament from "./components/tournament/AddTournament";
 import AddTournamentCategories from "./components/tournament/AddTournamentCategories";
 import EditEventForm from "./components/tournament/EditEventForm";
 
+// import { IonApp, IonRouterOutlet } from "@ionic/react";
+// import { IonReactRouter } from '@ionic/react-router';
+
+import { App as CapApp } from "@capacitor/app";
+
+CapApp.addListener('backButton', ({ canGoBack }) => {
+  window.history.back();
+  // if (canGoBack) {
+  // } else {
+  //   CapApp.exitApp();
+  // }
+});
+
 const PrivateRoutes = () => {
   let auth = useAuth();
   console.log("renders every refres", auth);
@@ -117,6 +130,8 @@ function App() {
               </Routes>
             </AuthProvider>
           </Router>
+          {/* <Router>
+              </Router> */}
         </div>
       </div>
     </Provider>
