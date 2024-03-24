@@ -20,7 +20,6 @@ const TeamPaymentPage = ({ tournament, form, setForm }) => {
   let toPay = tournament?.teamRegistrationFees;
 
   const handleSubmit = async () => {
-    console.log(form.data);
     setForm((prevState) => ({
       ...prevState,
       teamPayment: picture,
@@ -66,17 +65,21 @@ const TeamPaymentPage = ({ tournament, form, setForm }) => {
         await teamBlob.blob(),
         form.teamPayment.name
       );
-      // for (const pair of formData.entries()) {
-      //   console.log(pair[0] + ": ->" + pair[1]);
-      // }
-      // for(const i in formData.)
-      const response = await TeamAPI.addTeam(formData);
-      if (response) {
+
+      try {
+        const response = await TeamAPI.addTeam(formData);
+        if (response) {
+          Toast.show({
+            text: "Request was sent! Wait for the host to accept your participation.",
+            duration: "long",
+          });
+          navigate(`/tournament/${tournament?.id}`);
+        }
+      } catch (err) {
         Toast.show({
-          text: "Request was sent! Wait for the host to accept your participation.",
+          text: err.response.data.detail ? err.response.data.detail : "Something went wrong, please try again.",
           duration: "long",
         });
-        navigate(`/tournament/${tournament?.id}`);
       }
     }
   };

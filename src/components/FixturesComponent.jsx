@@ -7,6 +7,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { axiosAuthRequest, capacitorHTTPClient } from "../services/api.service";
 import { Toast } from "@capacitor/toast";
 import { Device } from "@capacitor/device";
+import { Refresh } from "@mui/icons-material";
 
 const Menu = ({
   seed,
@@ -346,14 +347,14 @@ const CustomSeed = ({
   );
 };
 
-const FixturesComponent = ({ groupDetails, isHost }) => {
-  const [isMenuVisible, setMenuVisibility] = useState(false);
+const RenderFixtures = ({ isHost, groupDetails, fixtureData, refreshRounds }) => {
+
   const [seed, setSeed] = useState(false);
   const [rounds, setRounds] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
-  const [isHandset, setisHandset] = useState();
 
-  const [fixtureData, setFixtureData] = useState([])
+  const [isMenuVisible, setMenuVisibility] = useState(false);
+  const [isHandset, setisHandset] = useState();
 
   const handleTabIndexChange = (index) => () => setTabIndex(index);
 
@@ -368,6 +369,104 @@ const FixturesComponent = ({ groupDetails, isHost }) => {
     );
   };
 
+  const regenerateFixtures = async () => {
+    const res = await capacitorHTTPClient(
+      `tourney_details/${groupDetails?.id}/regenerate_fixtures/`,
+      {
+        method: "post",
+      }
+    );
+
+    if (res) {
+      setRounds(res.data.fixtures);
+      setFixtureData(res.data)
+    }
+  }
+
+  const toggleMenu = (seed) => {
+    if (isHost) {
+      setSeed(seed);
+      setMenuVisibility(!isMenuVisible);
+    }
+  };
+
+  useEffect(() => {
+    setRounds(fixtureData?.fixtures)
+    setTabIndex(0)
+    setMenuVisibility(false)
+  }, [fixtureData])
+
+  useEffect(() => {
+    isMobile();
+
+    document.addEventListener("click", () => {
+      if (isMenuVisible) {
+        setMenuVisibility(!isMenuVisible);
+      }
+    });
+  }, [])
+
+  return (
+    <div className="main-fixtures-component relative">
+      {isHost && (
+        <button className="absolute bottom-10 right-10 flex items-center justify-center text-white w-[4rem] h-[4rem] bg-orange-500 rounded-full" onClick={regenerateFixtures}>
+          <Refresh />
+        </button>
+      )}
+      <div
+        className={`absolute w-full h-full bg-black opacity-50 pointer-events-none z-20 ${isMenuVisible ? "" : "hidden"
+          }`}
+      ></div>
+      <div className="h-screen overflow-x-auto py-8 flex">
+        {rounds?.length > 0 || rounds?.seeds?.length > 0 ? (
+          <div className="App flex justify-center items-center flex-col w-full">
+            {isHandset ? (
+              <div className="tabs">
+                {Array.from({ length: rounds.length }).map((_, index) => (
+                  <button
+                    className="mx-4 border border-black p-2 mb-10"
+                    onClick={handleTabIndexChange(index)}
+                  >
+                    Round {index + 1}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+            <Bracket
+              rounds={rounds ? rounds : groupDetails?.fixtures}
+              renderSeedComponent={(props) => (
+                <CustomSeed {...props} toggleMenu={toggleMenu} />
+              )}
+              bracketClassName="max-w-[25rem]"
+              swipeableProps={{
+                enableMouseEvents: true,
+                animateHeight: true,
+                index: tabIndex,
+                onChangeIndex: handleSwipeChange,
+              }}
+            />
+          </div>
+        ) : (
+          <h1 className="p-4 text-center">No Fixtures Available.</h1>
+        )}
+      </div>
+      {/* Animated Menu Component */}
+      <Menu
+        seed={seed}
+        isMenuVisible={isMenuVisible}
+        setMenuVisibility={setMenuVisibility}
+        menuPage={true}
+        group={groupDetails}
+        refreshRounds={refreshRounds}
+      />
+    </div>
+  )
+}
+
+const FixturesComponent = ({ groupDetails, isHost }) => {
+
+  const [fixtureData, setFixtureData] = useState([])
+
   const refreshRounds = async () => {
     const res = await capacitorHTTPClient(
       `tourney_details/${groupDetails?.id}/`,
@@ -377,9 +476,7 @@ const FixturesComponent = ({ groupDetails, isHost }) => {
     );
 
     if (res) {
-      setRounds(res.data.fixtures);
       setFixtureData(res.data)
-      setMenuVisibility(false);
     }
   };
 
@@ -401,22 +498,8 @@ const FixturesComponent = ({ groupDetails, isHost }) => {
   }
 
   useEffect(() => {
-    isMobile();
     refreshRounds();
-    setTabIndex(0);
-    document.addEventListener("click", () => {
-      if (isMenuVisible) {
-        setMenuVisibility(!isMenuVisible);
-      }
-    });
   }, [groupDetails]);
-
-  const toggleMenu = (seed) => {
-    if (isHost) {
-      setSeed(seed);
-      setMenuVisibility(!isMenuVisible);
-    }
-  };
 
   return (
     <div className="root-container relative">
@@ -427,73 +510,44 @@ const FixturesComponent = ({ groupDetails, isHost }) => {
         agar true hai toh -> fixtures dikhao
       */}
 
-      {fixtureData?.fixtures_by_pitstop === 1 ? (
-        <div className="main-fixtures-component">
-          <div
-            className={`absolute w-full h-full bg-black opacity-50 pointer-events-none z-20 ${isMenuVisible ? "" : "hidden"
-              }`}
-          ></div>
-          <div className="h-screen overflow-x-auto py-8 flex">
-            {rounds?.length > 0 || rounds?.seeds?.length > 0 ? (
-              <div className="App flex justify-center items-center flex-col w-full">
-                {isHandset ? (
-                  <div className="tabs">
-                    {Array.from({ length: rounds.length }).map((_, index) => (
-                      <button
-                        className="mx-4 border border-black p-2 mb-10"
-                        onClick={handleTabIndexChange(index)}
-                      >
-                        Round {index + 1}
-                      </button>
-                    ))}
-                  </div>
-                ) : null}
-                <Bracket
-                  rounds={rounds ? rounds : groupDetails?.fixtures}
-                  renderSeedComponent={(props) => (
-                    <CustomSeed {...props} toggleMenu={toggleMenu} />
-                  )}
-                  bracketClassName="max-w-[25rem]"
-                  swipeableProps={{
-                    enableMouseEvents: true,
-                    animateHeight: true,
-                    index: tabIndex,
-                    onChangeIndex: handleSwipeChange,
-                  }}
-                />
-              </div>
-            ) : (
-              <h1 className="p-4 text-center">No Fixtures Available.</h1>
-            )}
-          </div>
-          {/* Animated Menu Component */}
-          <Menu
-            seed={seed}
-            isMenuVisible={isMenuVisible}
-            setMenuVisibility={setMenuVisibility}
-            menuPage={true}
-            group={groupDetails}
-            refreshRounds={refreshRounds}
-          />
-        </div>
-      ) : fixtureData?.fixtures_by_pitstop === 2 ? (
-        <h1 className="p-5 text-center">Contact Host for Fixtures</h1>
+      {isHost ? (
+        <>
+          {fixtureData?.fixtures_by_pitstop === 0 ? (
+            <div className="px-5">
+              <button
+                type="button"
+                className="my-4 bg-orange-500 text-white border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
+                onClick={() => setFixtureState(1)}
+              >
+                Generate Fixtures using PITSTOP
+              </button>
+              <button
+                className="bg-orange-500 text-white border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
+                onClick={() => setFixtureState(2)}
+              >
+                Generate your own Fixtures
+              </button>
+            </div>
+          ) : fixtureData?.fixtures_by_pitstop === 1 ? (
+            <RenderFixtures
+              refreshRounds={refreshRounds}
+              isHost={isHost}
+              groupDetails={groupDetails}
+              fixtureData={fixtureData}
+            />
+          ) : (<h1 className="p-5 text-center">You are handling the fixtures for this tournament manually.</h1>)}
+        </>
       ) : (
-        <div className="px-5">
-          <button
-            type="button"
-            className="my-4 bg-orange-500 text-white border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
-            onClick={() => setFixtureState("true")}
-          >
-            Generate Fixtures using PITSTOP
-          </button>
-          <button
-            className="bg-orange-500 text-white border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
-            onClick={() => setFixtureState("false")}
-          >
-            Generate your own Fixtures
-          </button>
-        </div>
+        <>
+          {fixtureData?.fixtures_by_pitstop === 1 ? (
+            <RenderFixtures
+              refreshRounds={refreshRounds}
+              isHost={isHost}
+              groupDetails={groupDetails}
+              fixtureData={fixtureData}
+            />
+          ) : (<h1 className="p-5 text-cener">Contact Host for the fixtures.</h1>)}
+        </>
       )}
     </div>
   );

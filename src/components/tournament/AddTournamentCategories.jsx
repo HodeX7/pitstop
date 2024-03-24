@@ -154,14 +154,15 @@ const AddTournamentCategories = () => {
       // If not editing, add a new sub-tournament
 
       const generatedCategories = generateCategoriesCombinations(
-        values.participationType,
+        values.participationType.toLowerCase(),
         values.subCategories,
-        values.gender,
+        values.gender.toLowerCase(),
         tournamentWrapper?.sport,
         values.singlesRegistrationFees,
         values.doublesRegistrationFees,
         values.teamRegistrationFees
       );
+      console.log(generatedCategories)
 
       // generatedCategories.map(category => {
       //     setSubTournaments([...subTournaments, {
@@ -224,7 +225,7 @@ const AddTournamentCategories = () => {
 
   const getCategoryObject = (pc, sc, g, trf = null) =>
     new Object({
-      participationType: pc || null,
+      participationType: pc.toLowerCase() || null,
       subCategory: sc || null,
       gender: g,
       teamRegistrationFees: trf,
@@ -241,31 +242,32 @@ const AddTournamentCategories = () => {
     trf
   ) => {
     const categories = [];
+    console.log("ye ayaa form se pt : ", pt)
 
-    if (gender === "all" && pt === "Both") {
+    if (gender === "all" && pt === "both") {
       // Iterate over participation types and subcategories
       for (const _pt of CATEGORIES_GENERATION[sport].pt) {
         for (const _sc of CATEGORIES_GENERATION[sport].sc) {
           // Generate categories for male and female
           categories.push(
-            getCategoryObject(_pt, _sc, "Male", _pt === "Singles" ? trs : trd)
+            getCategoryObject(_pt, _sc, "male", _pt === "singles" ? trs : trd)
           );
           categories.push(
-            getCategoryObject(_pt, _sc, "Female", _pt === "Singles" ? trs : trd)
+            getCategoryObject(_pt, _sc, "female", _pt === "singles" ? trs : trd)
           );
         }
       }
       categories.push(
-        getCategoryObject("Doubles", sc, "Mixed", pt === "Singles" ? trs : trd)
+        getCategoryObject("doubles", sc, "mixed", pt === "singles" ? trs : trd)
       );
     } else {
       // If PT is Both
-      if (pt === "Both") {
+      if (pt === "both") {
         for (const _pt of CATEGORIES_GENERATION[sport].pt) {
           for (const _sc of CATEGORIES_GENERATION[sport].sc) {
             // Generate Both categories for the gender
             categories.push(
-              getCategoryObject(_pt, _sc, gender, _pt === "Singles" ? trs : trd)
+              getCategoryObject(_pt, _sc, gender, _pt === "singles" ? trs : trd)
             );
           }
         }
@@ -277,21 +279,21 @@ const AddTournamentCategories = () => {
             getCategoryObject(
               pt,
               _sc,
-              "Male",
-              pt === "Singles" ? trs : pt === "Doubles" ? trd : trf
+              "male",
+              pt === "singles" ? trs : pt === "doubles" ? trd : trf
             )
           );
           categories.push(
             getCategoryObject(
               pt,
               _sc,
-              "Female",
-              pt === "Singles" ? trs : pt === "Doubles" ? trd : trf
+              "female",
+              pt === "singles" ? trs : pt === "doubles" ? trd : trf
             )
           );
-          if (pt === "Doubles") {
+          if (pt === "doubles") {
             categories.push(
-              getCategoryObject(pt, _sc, "Mixed", pt === "Singles" ? trs : trd)
+              getCategoryObject(pt, _sc, "mixed", pt === "singles" ? trs : trd)
             );
           }
         }
@@ -301,7 +303,7 @@ const AddTournamentCategories = () => {
             pt,
             sc,
             gender,
-            pt === "Singles" ? trs : pt === "Doubles" ? trd : trf
+            pt === "singles" ? trs : pt === "doubles" ? trd : trf
           )
         );
       }
@@ -406,8 +408,8 @@ const AddTournamentCategories = () => {
                         name="gender"
                       >
                         <option value="">Gender *</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
                         <option value="all">All Genders</option>
                       </Field>
                     </div>

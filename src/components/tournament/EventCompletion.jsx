@@ -12,7 +12,7 @@ import { Directory, Filesystem } from "@capacitor/filesystem";
 
 const EventCompletion = ({ tournament_details_id, player_of_tourney, participants, fixtures }) => {
   const [winner, setWinner] = useState(null);
-  const [selectedPlayer, setSelectedPlayer] = useState("");
+  const [selectedPlayer, setSelectedPlayer] = useState(player_of_tourney);
   const [media, setMedia] = useState([]);
 
   const [teams, setTeams] = useState([]);
@@ -83,6 +83,7 @@ const EventCompletion = ({ tournament_details_id, player_of_tourney, participant
 
   useEffect(() => {
     refreshMedia();
+    console.log(player_of_tourney)
   }, [tournament_details_id]);
 
   useEffect(() => {

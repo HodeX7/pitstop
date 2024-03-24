@@ -174,18 +174,18 @@ export function playerFees(sport, ParticipationType) {
 export const FORM_CONDITIONS = {
   badminton: {
     participationType: [
-      { value: "Singles", label: "Singles" },
-      { value: "Doubles", label: "Doubles" },
-      { value: "Both", label: "Both" },
+      { value: "singles", label: "Singles" },
+      { value: "doubles", label: "Doubles" },
+      { value: "both", label: "Both" },
     ],
     subCategories: false,
     noOfPlayers: false,
   },
   table_tennis: {
     participationType: [
-      { value: "Singles", label: "Singles" },
-      { value: "Doubles", label: "Doubles" },
-      { value: "Both", label: "Both" },
+      { value: "singles", label: "Singles" },
+      { value: "doubles", label: "Doubles" },
+      { value: "both", label: "Both" },
     ],
     subCategories: false,
     noOfPlayers: false,
@@ -209,22 +209,22 @@ export const FORM_CONDITIONS = {
 
   skating: {
     participationType: [
-      { value: "Quad", label: "Quad" },
-      { value: "Speedline", label: "Speedline" },
-      { value: "Recreational", label: "Recreational" },
+      { value: "quad", label: "Quad" },
+      { value: "speedline", label: "Speedline" },
+      { value: "recreational", label: "Recreational" },
     ],
-    subCategories: ["Short race", "Long race"],
+    subCategories: ["short race", "long race"],
     noOfPlayers: true,
   },
 };
 
 export const CATEGORIES_GENERATION = {
   badminton: {
-    pt: ["Singles", "Doubles"],
+    pt: ["singles", "doubles"],
     sc: [null],
   },
   skating: {
-    pt: ["Quad", "Speedline", "Recreational"],
-    sc: ["Short race", "Long race"],
+    pt: ["quad", "speedline", "recreational"],
+    sc: ["short race", "long race"],
   },
 };
