@@ -43,7 +43,7 @@ const Home = () => {
       ) : currentPage === "profile" ? (
         <Profile />
       ) : null}
-      <footer className="flex justify-between z-10 px-6 pb-6 absolute bottom-0 w-full">
+      <footer className="flex justify-between z-10 px-6 pb-6 absolute bottom-0 w-full pt-2 border-box">
         <div
           className={`${
             selected1 === 10 ? "text-orange-500" : "text-gray-500"
