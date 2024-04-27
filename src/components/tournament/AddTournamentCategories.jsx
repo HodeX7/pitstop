@@ -298,12 +298,13 @@ const AddTournamentCategories = () => {
           }
         }
       } else {
+        console.log("idhar aaya when single of a gender")
         categories.push(
           getCategoryObject(
             pt,
             sc,
             gender,
-            pt === "singles" ? trs : pt === "doubles" ? trd : trf
+            trf
           )
         );
       }
