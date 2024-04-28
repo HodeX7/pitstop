@@ -7,14 +7,14 @@ import { CapacitorHttp } from "@capacitor/core";
 
 export const SITE_URL = "https://app.ourpitstop.in/";
 
-export const API_MEDIA = "http://192.168.0.109:8000";
-export const API_URL = "http://192.168.0.109:8000/api/";
+// export const API_MEDIA = "http://192.168.0.109:8000";
+// export const API_URL = "http://192.168.0.109:8000/api/";
 
 // export const API_URL = "http://127.0.0.1:8000/api/";
 // export const API_MEDIA = "http://127.0.0.1:8000";
 
-// export const API_URL = "https://api.ourpitstop.in/api/";
-// export const API_MEDIA = "https://api.ourpitstop.in";
+export const API_URL = "https://api.ourpitstop.in/api/";
+export const API_MEDIA = "https://api.ourpitstop.in";
 
 export const useAxios = (configParams) => {
   const [resData, setResData] = useState(null);
