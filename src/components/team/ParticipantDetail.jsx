@@ -8,30 +8,30 @@ const ParticipantDetail = () => {
   const location = useLocation();
   const data = location.state;
 
-  const [participant, setParticipant] = useState()
+  const [participant, setParticipant] = useState();
 
   const verifyParticipant = (status) => {
     if (participant) {
       const formdata = {
-        'name': participant.name,
-        'status': status
-      }
-    
+        name: participant.name,
+        status: status,
+      };
+
       TeamAPI.verifyParticipant(participant.tid, formdata)
-        .then(res => {
+        .then((res) => {
           if (res.status == 200) {
-            navigate(-1)
+            navigate(-1);
           }
         })
-        .catch(err => {
-          console.error(err.response.data)
-        })
+        .catch((err) => {
+          console.error(err.response.data);
+        });
     }
-  }
+  };
 
   useEffect(() => {
-    setParticipant(data)
-  }, [])
+    setParticipant(data);
+  }, []);
 
   return (
     <>
@@ -51,21 +51,29 @@ const ParticipantDetail = () => {
             <h1 className="text-xl font-semibold mb-2">
               Government Identification Document
             </h1>
-            <img className="mb-8" src={API_URL.slice(0, -4) + participant.id_proof} alt="" />
+            <img
+              className="mb-8"
+              src={API_URL.slice(0, -5) + participant.id_proof}
+              alt="Govt. ID PROOF"
+            />
             {participant.is_host ? (
               <>
-                <button className="bg-white text-orange-500 border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
-                  onClick={() => navigate('reject/', {state: {participant: participant}})}
+                <button
+                  className="bg-white text-orange-500 border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
+                  onClick={() =>
+                    navigate("reject/", { state: { participant: participant } })
+                  }
                 >
                   Reject
                 </button>
-                <button className="bg-orange-500 text-white border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
+                <button
+                  className="bg-orange-500 text-white border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
                   onClick={() => verifyParticipant(true)}
                 >
                   Accept
                 </button>
               </>
-            ) : (null)}
+            ) : null}
           </div>
         ) : (
           <h1>Couldn't find the info you're looking for</h1>
