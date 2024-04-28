@@ -52,7 +52,6 @@ const Profile = () => {
       if (uid.value !== null) {
         const res = await capacitorHTTPClient(`user/${uid.value}/`, {
           method: "patch",
-          method: "patch",
           data: values,
         });
         if (res.status === 200) {
