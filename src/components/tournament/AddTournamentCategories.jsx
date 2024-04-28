@@ -242,6 +242,7 @@ const AddTournamentCategories = () => {
     trf
   ) => {
     const categories = [];
+    console.log("ye ayaa form se pt : ", pt);
 
     if (gender === "all" && pt === "both") {
       // Iterate over participation types and subcategories
@@ -256,9 +257,7 @@ const AddTournamentCategories = () => {
           );
         }
       }
-      categories.push(
-        getCategoryObject("doubles", sc, "all", pt === "singles" ? trs : trd)
-      );
+      categories.push(getCategoryObject("doubles", sc, "all", trd));
     } else {
       // If PT is Both
       if (pt === "both") {
@@ -274,22 +273,8 @@ const AddTournamentCategories = () => {
       //if All genders but particular PT
       else if (gender === "all") {
         for (const _sc of CATEGORIES_GENERATION[sport].sc) {
-          categories.push(
-            getCategoryObject(
-              pt,
-              _sc,
-              "male",
-              pt === "singles" ? trs : pt === "doubles" ? trd : trf
-            )
-          );
-          categories.push(
-            getCategoryObject(
-              pt,
-              _sc,
-              "female",
-              pt === "singles" ? trs : pt === "doubles" ? trd : trf
-            )
-          );
+          categories.push(getCategoryObject(pt, _sc, "male", trf));
+          categories.push(getCategoryObject(pt, _sc, "female", trf));
           if (pt === "doubles") {
             categories.push(
               getCategoryObject(pt, _sc, "all", pt === "singles" ? trs : trd)
@@ -297,14 +282,8 @@ const AddTournamentCategories = () => {
           }
         }
       } else {
-        categories.push(
-          getCategoryObject(
-            pt,
-            sc,
-            gender,
-            trf
-          )
-        );
+        console.log("idhar aaya when single of a gender");
+        categories.push(getCategoryObject(pt, sc, gender, trf));
       }
     }
 
