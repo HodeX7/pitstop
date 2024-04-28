@@ -47,7 +47,8 @@ const Events = ({ tournaments, loaded }) => {
                   Age Groups : {event.additionalDetails.join(', ')}
                 </h1>
                 <h1 className="text-gray-500 font-semibold">
-                  {CONSTANTS.PARTICIPATION[event.participationType]} (
+                  {console.log(event)}
+                  {CONSTANTS.PARTICIPATION[event.participationType] || event.participationType} (
                   {event.gender})
                 </h1>
               </div>

@@ -254,7 +254,7 @@ const HomePage = () => {
           Swimming
         </div>
       </div>
-      <div className="mt-2 overflow-y-scroll maxh hide-scrollbar">
+      <div className="mt-2 overflow-y-scroll maxh hide-scrollbar pb-12">
         {filterMedia?.length === null || filterMedia?.length === 0 ? (
           <h1>Nothing to show currently</h1>
         ) : (

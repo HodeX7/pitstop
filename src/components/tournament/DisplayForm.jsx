@@ -127,7 +127,7 @@ const DisplayForm = () => {
 
   useEffect(() => {
     if (isReady) {
-      setAgeGroup(tournament.additionalDetails[0]);
+      setAgeGroup(tournament?.additionalDetails[0]);
     }
   }, [isReady]);
 
@@ -162,6 +162,7 @@ const DisplayForm = () => {
                 </h1>
                 {tournament.user_status != "None" || tournament.user_is_host ? (
                   <>
+                    {console.log(tournament)}
                     <h1
                       className={`cursor-pointer w-1/3 pb-1 flex justify-center ${
                         isDetail == "participants"
@@ -171,9 +172,9 @@ const DisplayForm = () => {
                       onClick={() =>
                         tournament.user_is_host
                           ? setIsDetail("participants")
-                          : navigate(
-                              `/tournament/${id}/team/${tournament.team_id}`
-                            )
+                          : tournament?.team_id ? navigate(
+                              `/tournament/${id}/team/${tournament?.team_id}`
+                            ) : null
                       }
                     >
                       Participants

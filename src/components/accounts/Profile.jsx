@@ -55,10 +55,10 @@ const Profile = () => {
   const handleSubmit = async (values) => {
     try {
       const uid = await Storage.get({ key: "uid" });
-
+      console.log(values)
       if (uid.value !== null) {
         const res = await capacitorHTTPClient(`user/${uid.value}/`, {
-          method: "put",
+          method: "patch",
           data: values,
         });
         if (res.status === 200) {
@@ -226,6 +226,7 @@ const Profile = () => {
                     className="bg-white m-1 text-orange-500 border-orange-500 border flex p-3 rounded-lg mt-6 w-full justify-center"
                     //dhruv make api call to edit the user info here.
                     onClick={() => {
+                      handleSubmit();
                       setEditMode(false);
                     }}
                   >
