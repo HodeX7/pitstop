@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { Navigate, useNavigate } from "react-router-dom";
-import {
-  API_URL,
-  UserAPI,
-  axiosAuthorized,
-  capacitorHTTPClient,
-  useAxios,
-} from "../../services/api.service";
+import { useNavigate } from "react-router-dom";
+import { capacitorHTTPClient } from "../../services/api.service";
 import { NavigationHeaderComponent } from "../../services/header.service";
 import { Storage } from "@capacitor/storage";
-import { CapacitorHttp } from "@capacitor/core";
 import Shimmer from "../Shimmer";
 
 const Profile = () => {
@@ -58,7 +51,7 @@ const Profile = () => {
 
       if (uid.value !== null) {
         const res = await capacitorHTTPClient(`user/${uid.value}/`, {
-          method: "put",
+          method: "patch",
           data: values,
         });
         if (res.status === 200) {
@@ -226,7 +219,7 @@ const Profile = () => {
                     className="bg-white m-1 text-orange-500 border-orange-500 border flex p-3 rounded-lg mt-6 w-full justify-center"
                     //dhruv make api call to edit the user info here.
                     onClick={() => {
-                      setEditMode(false);
+                      handleSubmit();
                     }}
                   >
                     Save

@@ -162,7 +162,7 @@ const AddTournamentCategories = () => {
         values.doublesRegistrationFees,
         values.teamRegistrationFees
       );
-      console.log(generatedCategories)
+      console.log(generatedCategories);
 
       // generatedCategories.map(category => {
       //     setSubTournaments([...subTournaments, {
@@ -242,7 +242,7 @@ const AddTournamentCategories = () => {
     trf
   ) => {
     const categories = [];
-    console.log("ye ayaa form se pt : ", pt)
+    console.log("ye ayaa form se pt : ", pt);
 
     if (gender === "all" && pt === "both") {
       // Iterate over participation types and subcategories
@@ -258,7 +258,7 @@ const AddTournamentCategories = () => {
         }
       }
       categories.push(
-        getCategoryObject("doubles", sc, "mixed", pt === "singles" ? trs : trd)
+        getCategoryObject("doubles", sc, "all", pt === "singles" ? trs : trd)
       );
     } else {
       // If PT is Both
