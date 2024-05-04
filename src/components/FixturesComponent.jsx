@@ -407,9 +407,9 @@ const RenderFixtures = ({ isHost, groupDetails, fixtureData, refreshRounds }) =>
   }, [])
 
   return (
-    <div className="main-fixtures-component relative">
+    <div className="main-fixtures-component relative mt-4">
       {isHost && (
-        <button className="absolute bottom-10 right-10 flex items-center justify-center text-white w-[4rem] h-[4rem] bg-orange-500 rounded-full" onClick={regenerateFixtures}>
+        <button className="absolute z-[99] bottom-10 right-10 flex items-center justify-center text-white w-[4rem] h-[4rem] bg-orange-500 rounded-full" onClick={regenerateFixtures}>
           <Refresh />
         </button>
       )}

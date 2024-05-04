@@ -223,6 +223,10 @@ export const CATEGORIES_GENERATION = {
     pt: ["singles", "doubles"],
     sc: [null],
   },
+  table_tennis: {
+    pt: ["singles", "doubles"],
+    sc: [null],
+  },
   skating: {
     pt: ["quad", "speedline", "recreational"],
     sc: ["short race", "long race"],
