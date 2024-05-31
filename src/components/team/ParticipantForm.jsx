@@ -8,6 +8,8 @@ import { useParams } from "react-router-dom";
 import FileInput, { loadAndDisplayImage } from "../../utils/FileInput";
 import { useState, useEffect } from "react";
 import { FilePicker } from "@capawesome/capacitor-file-picker";
+import { useDispatch, useSelector } from "react-redux";
+import { update } from "../../features/formSlice";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Team name is required"),
@@ -26,12 +28,12 @@ const ParticipantForm = ({
   numberOfCards,
   ageGroups,
   continueNextPage,
-  form,
-  setForm,
 }) => {
   const { id } = useParams();
 
   const [cards, setCards] = useState(0);
+  const form = useSelector((state) => state.form);
+  const dispatch = useDispatch();
 
   // useEffect(() => {
   //   if (values.participationType === "2v2") {
@@ -56,7 +58,7 @@ const ParticipantForm = ({
     name: form.data.name,
     ageGroup: ageGroups[0],
     participationType: form.data.participationType || "1v1",
-    participantsDetails: participantsDetails,
+    participantsDetails: form.data.participantsDetails,
   };
 
   const [pictures, setPictures] = useState({});
@@ -114,13 +116,13 @@ const ParticipantForm = ({
   };
 
   const handleSubmit = (values) => {
-    // console.log("form", form); // idhar pe pura values bara bar aara
+    console.log("form", form); // idhar pe pura values bara bar aara
     setTimeout(() => {
-      // dispatch(update({ data: values }));
-      setForm((prevState) => ({
-        ...prevState,
-        data: values,
-      }));
+      dispatch(update({ data: values }));
+      // setForm((prevState) => ({
+      //   ...prevState,
+      //   data: values,
+      // }));
       continueNextPage("player_pay");
       // setSubmitting(false);
     }, 500);

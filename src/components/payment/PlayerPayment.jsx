@@ -6,11 +6,14 @@ import useCamera from "../../utils/useCamera";
 import FileInput from "../../utils/FileInput";
 import { Clipboard } from "@capacitor/clipboard";
 import { Toast } from "@capacitor/toast";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { update } from "../../features/formSlice";
 
-const PlayerPaymentPage = ({ tournament, continueNextPage, form, setForm }) => {
-  // const dispatch = useDispatch();
-  // const navigate = useNavigate();
-  // const form = useSelector((state) => state.form);
+const PlayerPaymentPage = ({ tournament, continueNextPage }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const form = useSelector((state) => state.form);
 
   const [file, setFile] = useState(null);
   const [picture, error, takePicture, removePicture] = useCamera({
@@ -18,21 +21,23 @@ const PlayerPaymentPage = ({ tournament, continueNextPage, form, setForm }) => {
     type: "image",
   });
 
-  const numOfPlayers = tournament?.numOfPlayersPerTeam 
-  ? tournament?.numOfPlayersPerTeam 
-  : tournament.participationType === "singles" ? 1 : 2
+  const numOfPlayers = tournament?.numOfPlayersPerTeam
+    ? tournament?.numOfPlayersPerTeam
+    : tournament.participationType === "singles"
+    ? 1
+    : 2;
 
   let toPay =
-    parseInt(numOfPlayers) *
-    parseInt(tournament?.player_register_fees);
+    parseInt(numOfPlayers) * parseInt(tournament?.player_register_fees);
 
   const handleContinue = () => {
     // console.log("form", form);
     if (picture) {
-      setForm((prevState) => ({
-        ...prevState,
-        playerPayment: picture,
-      }));
+      dispatch(update({ playerPayment: picture }));
+      // setForm((prevState) => ({
+      //   ...prevState,
+      //   playerPayment: picture,
+      // }));
       continueNextPage("team_pay");
     }
   };
@@ -76,7 +81,8 @@ const PlayerPaymentPage = ({ tournament, continueNextPage, form, setForm }) => {
           ₹{toPay}
         </h1>
         <h1 className="tracking-tighter text-sm mt-1">
-          ₹{tournament?.player_register_fees} <span className="ml-1">/ per player</span>
+          ₹{tournament?.player_register_fees}{" "}
+          <span className="ml-1">/ per player</span>
         </h1>
 
         <h1 className=" space-x-2 font-semibold mt-10">
