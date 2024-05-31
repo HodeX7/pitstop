@@ -8,27 +8,28 @@ import { NavigationHeaderComponent } from "../../services/header.service";
 import TeamPaymentPage from "../payment/TeamPayment";
 import PlayerPaymentPage from "../payment/PlayerPayment";
 import Shimmer from "../Shimmer";
+import { useSelector } from "react-redux";
 
 const AddTeamPage = () => {
   const { id } = useParams();
   const [currentPage, setCurrentPage] = useState("team_form");
   const [completedTabs, setCompletedTabs] = useState(["team_form"]);
-  const [form, setForm] = useState({
-    data: {
-      name: "",
-      ageGroup: "",
-      participantsDetails: [],
-    },
-    playerPayment: null,
-    teamPayment: null,
-  });
+  // const [form, setForm] = useState({
+  //   data: {
+  //     name: "",
+  //     ageGroup: "",
+  //     participantsDetails: [],
+  //   },
+  //   playerPayment: null,
+  //   teamPayment: null,
+  // });
 
   const [tournament, isReady] = useAxios({
     url: `tournament/${parseInt(id)}`,
     method: "get",
   });
 
-  //   const form = useSelector((state) => state.form);
+  const form = useSelector((state) => state.form);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Team name is required"),
@@ -88,18 +89,19 @@ const AddTeamPage = () => {
             {currentPage == "team_form" ? (
               <ParticipantForm
                 tournament={tournament}
-                numberOfCards={tournament?.numOfPlayersPerTeam 
-                  ? tournament?.numOfPlayersPerTeam 
-                  : tournament.participationType === "singles" 
-                    ? 1 
-                    : 2 
+                numberOfCards={
+                  tournament?.numOfPlayersPerTeam
+                    ? tournament?.numOfPlayersPerTeam
+                    : tournament.participationType === "singles"
+                    ? 1
+                    : 2
                 }
                 ageGroups={tournament?.additionalDetails.map(
                   (item) => item.ageGroup
                 )}
                 continueNextPage={handleContinueClick}
                 form={form}
-                setForm={setForm}
+                // setForm={setForm}
               />
             ) : currentPage == "player_pay" ? (
               <>
@@ -107,7 +109,7 @@ const AddTeamPage = () => {
                   tournament={tournament}
                   continueNextPage={handleContinueClick}
                   form={form}
-                  setForm={setForm}
+                  // setForm={setForm}
                 />
               </>
             ) : (
@@ -115,7 +117,7 @@ const AddTeamPage = () => {
                 <TeamPaymentPage
                   tournament={tournament}
                   form={form}
-                  setForm={setForm}
+                  // setForm={setForm}
                 />
               </>
             )}

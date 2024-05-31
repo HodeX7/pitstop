@@ -8,9 +8,13 @@ import { useNavigate } from "react-router-dom";
 import useCamera from "../../utils/useCamera";
 import FileInput, { base64ToBlob } from "../../utils/FileInput";
 import { Toast } from "@capacitor/toast";
+import { useDispatch, useSelector } from "react-redux";
+import { update } from "../../features/formSlice";
 
-const TeamPaymentPage = ({ tournament, form, setForm }) => {
+const TeamPaymentPage = ({ tournament }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const form = useSelector((state) => state.form);
 
   const [picture, error, takePicture, removePicture] = useCamera({
     filename: "teamPayment",
@@ -20,10 +24,11 @@ const TeamPaymentPage = ({ tournament, form, setForm }) => {
   let toPay = tournament?.teamRegistrationFees;
 
   const handleSubmit = async () => {
-    setForm((prevState) => ({
-      ...prevState,
-      teamPayment: picture,
-    }));
+    dispatch(update({ teamPayment: picture }));
+    // setForm((prevState) => ({
+    //   ...prevState,
+    //   teamPayment: picture,
+    // }));
 
     if (form.data && form.playerPayment && form.teamPayment) {
       // Create a new FormData object
@@ -77,7 +82,9 @@ const TeamPaymentPage = ({ tournament, form, setForm }) => {
         }
       } catch (err) {
         Toast.show({
-          text: err.response.data.detail ? err.response.data.detail : "Something went wrong, please try again.",
+          text: err.response.data.detail
+            ? err.response.data.detail
+            : "Something went wrong, please try again.",
           duration: "long",
         });
       }
@@ -88,7 +95,11 @@ const TeamPaymentPage = ({ tournament, form, setForm }) => {
     <div className="p-6">
       <div className="flex flex-col items-center justify-center">
         <div className="flex justify-center mb-3">
-          <img src={API_MEDIA + tournament?.tournament_wrapper?.host_QRCode} alt="QR Code" className="w-3/4 " />
+          <img
+            src={API_MEDIA + tournament?.tournament_wrapper?.host_QRCode}
+            alt="QR Code"
+            className="w-3/4 "
+          />
         </div>
         <h1>{tournament?.tournament_wrapper?.host.contact_number}</h1>
 
