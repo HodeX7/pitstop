@@ -119,20 +119,22 @@ const HomePage = () => {
 
         result.push(
           <div key={`video-${i}`} className="my-5">
-            <div>
-              <video
-                ref={(elem) => (videos.current[i] = elem)}
-                controls
-                className="w-full"
-                onPlay={() => handlePlay(i)}
-                poster={
-                  filterMedia[i].thumbnail
-                    ? API_MEDIA + filterMedia[i].thumbnail
-                    : null
-                }
-              >
-                <source src={videoUrl} type="video/mp4" />
-              </video>
+            <video
+              ref={(elem) => (videos.current[i] = elem)}
+              controls
+              className="w-full"
+              onPlay={() => handlePlay(i)}
+              poster={
+                filterMedia[i].thumbnail
+                  ? API_MEDIA + filterMedia[i].thumbnail
+                  : null
+              }
+            >
+              <source src={videoUrl} type="video/mp4" />
+            </video>
+            <div className="flex justify-between items-center mt-2 mb-4">
+              <h2 className="">{filterMedia[i].title}</h2>
+              <h4 className="font-semibold text-gray-400 text-sm">{filterMedia[i].sport}</h4>
             </div>
           </div>
         );
@@ -154,101 +156,91 @@ const HomePage = () => {
     <>
       <div className="overflow-x-auto whitespace-nowrap flex hide-scrollbar ">
         <div
-          className={`mr-2 ${
-            selected === "all"
+          className={`mr-2 ${selected === "all"
               ? "bg-orange-500 text-white border-2 border-orange-500"
               : "bg-white text-orange-500 border-2 border-orange-500"
-          } flex rounded-full p-2 px-6 w-full justify-center cursor-pointer mr-4`}
+            } flex rounded-full p-2 px-6 w-full justify-center cursor-pointer mr-4`}
           onClick={() => handleDivClick("all")}
         >
           All
         </div>
         <div
-          className={`mr-2 ${
-            selected === "football"
+          className={`mr-2 ${selected === "football"
               ? "bg-orange-500 text-white border-2 border-orange-500"
               : "bg-white text-orange-500 border-2 border-orange-500"
-          } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
+            } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
           onClick={() => handleDivClick("football")}
         >
           Football
         </div>
         <div
-          className={`mr-2 ${
-            selected === "badminton"
+          className={`mr-2 ${selected === "badminton"
               ? "bg-orange-500 text-white border-2 border-orange-500"
               : "bg-white text-orange-500 border-2 border-orange-500"
-          } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
+            } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
           onClick={() => handleDivClick("badminton")}
         >
           Badminton
         </div>
         <div
-          className={`mr-2 ${
-            selected === "cricket"
+          className={`mr-2 ${selected === "cricket"
               ? "bg-orange-500 text-white border-2 border-orange-500"
               : "bg-white text-orange-500 border-2 border-orange-500"
-          } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
+            } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
           onClick={() => handleDivClick("cricket")}
         >
           Cricket
         </div>
         <div
-          className={`mr-2 ${
-            selected === "volleyball"
+          className={`mr-2 ${selected === "volleyball"
               ? "bg-orange-500 text-white border-2 border-orange-500"
               : "bg-white text-orange-500 border-2 border-orange-500"
-          } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
+            } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
           onClick={() => handleDivClick("volleyball")}
         >
           Volleyball
         </div>
         <div
-          className={`mr-2 ${
-            selected === "basketball"
+          className={`mr-2 ${selected === "basketball"
               ? "bg-orange-500 text-white border-2 border-orange-500"
               : "bg-white text-orange-500 border-2 border-orange-500"
-          } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
+            } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
           onClick={() => handleDivClick("basketball")}
         >
           Basketball
         </div>
         <div
-          className={`mr-2 ${
-            selected === "skating"
+          className={`mr-2 ${selected === "skating"
               ? "bg-orange-500 text-white border-2 border-orange-500"
               : "bg-white text-orange-500 border-2 border-orange-500"
-          } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
+            } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
           onClick={() => handleDivClick("skating")}
         >
           Skating
         </div>
         <div
-          className={`mr-2 ${
-            selected === "snooker"
+          className={`mr-2 ${selected === "snooker"
               ? "bg-orange-500 text-white border-2 border-orange-500"
               : "bg-white text-orange-500 border-2 border-orange-500"
-          } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
+            } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
           onClick={() => handleDivClick("snooker")}
         >
           Snooker
         </div>
         <div
-          className={`mr-2 ${
-            selected === "table_tennis"
+          className={`mr-2 ${selected === "table_tennis"
               ? "bg-orange-500 text-white border-2 border-orange-500"
               : "bg-white text-orange-500 border-2 border-orange-500"
-          } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
+            } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
           onClick={() => handleDivClick("table_tennis")}
         >
           Table Tennis
         </div>
         <div
-          className={`mr-2 ${
-            selected === "swimming"
+          className={`mr-2 ${selected === "swimming"
               ? "bg-orange-500 text-white border-2 border-orange-500"
               : "bg-white text-orange-500 border-2 border-orange-500"
-          } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
+            } flex rounded-full p-2 w-full justify-center cursor-pointer mr-4`}
           onClick={() => handleDivClick("swimming")}
         >
           Swimming
