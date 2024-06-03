@@ -89,11 +89,11 @@ const VerifyMobileOTP = () => {
         <img src={logo} alt="Logo" />
         <div>
           <h1 className="text-lg font-semibold mt-2">
-            Verify your Mobile No. with OTP
+            Verify your mobile no. with OTP
           </h1>
-          <h1 className="text-sm">
-            OTP sent to <span className="font-semibold">{contact_number}</span>
-          </h1>
+          <span className="text-sm text-center">
+            You'll be receiving a call at <b>{contact_number}</b> for OTP
+          </span>
         </div>
       </div>
       <div className="flex flex-col justify-center items-center mt-8">
