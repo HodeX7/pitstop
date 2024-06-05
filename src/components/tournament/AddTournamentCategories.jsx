@@ -260,7 +260,8 @@ const AddTournamentCategories = () => {
       categories.push(getCategoryObject("doubles", sc, "all", trd));
     } else {
       // If PT is Both
-      if (pt === "both") { // for table tennis and badminton
+      if (pt === "both") {
+        // for table tennis and badminton
         for (const _pt of CATEGORIES_GENERATION[sport].pt) {
           for (const _sc of CATEGORIES_GENERATION[sport].sc) {
             // Generate Both categories for the gender
@@ -269,7 +270,8 @@ const AddTournamentCategories = () => {
             );
           }
         }
-      } else if (gender === "all" && pt) { // If All genders but particular PT
+      } else if (gender === "all" && pt) {
+        // If All genders but particular PT
         for (const _sc of CATEGORIES_GENERATION[sport].sc) {
           categories.push(getCategoryObject(pt, _sc, "male", trf));
           categories.push(getCategoryObject(pt, _sc, "female", trf));
@@ -280,7 +282,8 @@ const AddTournamentCategories = () => {
           }
         }
       } else {
-        if (!pt) { // cricket basketball football
+        if (!pt && gender === "all") {
+          // cricket basketball football
           categories.push(getCategoryObject(pt, sc, "male", trf));
           categories.push(getCategoryObject(pt, sc, "female", trf));
         } else {
@@ -321,33 +324,33 @@ const AddTournamentCategories = () => {
                 <div>
                   {FORM_CONDITIONS[tournamentWrapper?.sport]
                     .participationType && (
-                      <div className="mt-5">
-                        <div className="bg-gray-100 flex p-3 rounded-lg items-center">
-                          <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
-                          <Field
-                            className="outline-none flex-1 bg-gray-100 "
-                            placeholder="Participation Type"
-                            as="select"
-                            id="participationType"
-                            name="participationType"
-                          >
-                            <option value="">Participation Type *</option>
-                            {FORM_CONDITIONS[
-                              tournamentWrapper?.sport
-                            ].participationType.map((type, idx) => (
-                              <option key={idx} values={type.value}>
-                                {type.label}
-                              </option>
-                            ))}
-                          </Field>
-                        </div>
-                        <ErrorMessage
-                          className="error text-red-500"
+                    <div className="mt-5">
+                      <div className="bg-gray-100 flex p-3 rounded-lg items-center">
+                        <PeopleAltOutlinedIcon className="text-gray-600 mr-2" />
+                        <Field
+                          className="outline-none flex-1 bg-gray-100 "
+                          placeholder="Participation Type"
+                          as="select"
+                          id="participationType"
                           name="participationType"
-                          component="div"
-                        />
+                        >
+                          <option value="">Participation Type *</option>
+                          {FORM_CONDITIONS[
+                            tournamentWrapper?.sport
+                          ].participationType.map((type, idx) => (
+                            <option key={idx} values={type.value}>
+                              {type.label}
+                            </option>
+                          ))}
+                        </Field>
                       </div>
-                    )}
+                      <ErrorMessage
+                        className="error text-red-500"
+                        name="participationType"
+                        component="div"
+                      />
+                    </div>
+                  )}
 
                   {FORM_CONDITIONS[tournamentWrapper?.sport].subCategories && (
                     <div className="mt-5">
@@ -551,8 +554,9 @@ const AddTournamentCategories = () => {
 
                   <button
                     type="submit"
-                    className={`bg-white text-orange-500 flex p-3 rounded-lg w-full justify-center border-2 my-4 border-orange-500 ${isSubmitting ? "cursor-progress" : "cursor-pointer"
-                      }`}
+                    className={`bg-white text-orange-500 flex p-3 rounded-lg w-full justify-center border-2 my-4 border-orange-500 ${
+                      isSubmitting ? "cursor-progress" : "cursor-pointer"
+                    }`}
                     disabled={isSubmitting}
                   >
                     {editingIndex !== null
@@ -561,10 +565,11 @@ const AddTournamentCategories = () => {
                   </button>
                   <button
                     type="button"
-                    className={`text-white flex p-3 rounded-lg w-full justify-center border-2 my-4 bg-orange-500 border-orange-500 ${subTournaments.length === 0
+                    className={`text-white flex p-3 rounded-lg w-full justify-center border-2 my-4 bg-orange-500 border-orange-500 ${
+                      subTournaments.length === 0
                         ? "cursor-not-allowed"
                         : "cursor-pointer"
-                      }`}
+                    }`}
                     onClick={handleCategoriesSubmit}
                   >
                     Submit

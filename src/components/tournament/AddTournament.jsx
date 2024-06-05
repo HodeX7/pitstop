@@ -13,7 +13,7 @@ import FileInput from "../../utils/FileInput";
 import logo from "../../assets/ParticipantsFormLogo.png";
 import { axiosAuthRequest } from "../../services/api.service";
 
-export default () => {
+const AddTournament = () => {
   const navigate = useNavigate();
 
   const ref = useRef(null);
@@ -282,3 +282,5 @@ export default () => {
     </div>
   );
 };
+
+export default AddTournament;
