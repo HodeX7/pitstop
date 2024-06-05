@@ -9,16 +9,18 @@ const EventCancellation = () => {
   const cancelTournament = () => {
     TournamentAPI.deleteTournament(parseInt(tournament_id)).then((res) => {
       if (res) {
-        alert('Your tournament was cancelled.');
-        navigate('/');
+        alert("Your tournament was cancelled.");
+        navigate("/");
       }
-    })
-  }
+    });
+  };
 
   return (
     <div className="p-6">
       <h1 className="text-xl font-bold mb-3">Cancel Tournament</h1>
-      <h1 className="mb-5">Please select a reason for canceling your tournament.</h1>
+      <h1 className="mb-5">
+        Please select a reason for canceling your tournament.
+      </h1>
       <label className="flex items-center mb-3">
         <input type="checkbox" className="mr-2  w-5 h-5 cursor-pointer" />
         Not enough participants
@@ -40,6 +42,7 @@ const EventCancellation = () => {
         <button
           type="submit"
           className="bg-white text-orange-500 border-orange-500 border-2 m-1 flex p-3 rounded-lg font-semibold w-full justify-center"
+          onClick={cancelTournament}
         >
           Submit
         </button>

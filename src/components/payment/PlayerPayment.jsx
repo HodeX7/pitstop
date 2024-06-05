@@ -21,11 +21,7 @@ const PlayerPaymentPage = ({ tournament, continueNextPage }) => {
     type: "image",
   });
 
-  const numOfPlayers = tournament?.numOfPlayersPerTeam
-    ? tournament?.numOfPlayersPerTeam
-    : tournament.participationType === "singles"
-    ? 1
-    : 2;
+  const numOfPlayers = form?.data?.participantsDetails?.length;
 
   let toPay =
     parseInt(numOfPlayers) * parseInt(tournament?.player_register_fees);
