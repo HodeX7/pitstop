@@ -65,7 +65,21 @@ const VerifyMobileOTP = () => {
     }
   };
 
-  const handleResendOTP = () => {};
+  const handleResendOTP = async () => {
+    const res = await UserAPI.resendOTP(uid)
+    if (res.status === 200) {
+      Toast.show({
+        text: "You'll be receiving a call for OTP.",
+        duration: "long",
+      });
+    } else {
+      Toast.show({
+        text: "Something went wrong. Try again.",
+        duration: "long",
+      });
+    }
+  };
+
   const auth = useAuth();
   const submitOTP = async () => {
     const enteredOTP = parseInt(otp.join(""));
