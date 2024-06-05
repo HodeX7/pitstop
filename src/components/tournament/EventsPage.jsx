@@ -204,8 +204,8 @@ const EventsPage = () => {
         </h1>
       </div>
       {explore ? (
-        <div className="mt-3">
-          <div style={{ overflowY: "auto" }}>
+        <div className="mt-2 overflow-y-scroll maxh hide-scrollbar">
+          <div className="">
             <Events tournaments={myTourney} loaded={mtLoaded} />
           </div>
 
