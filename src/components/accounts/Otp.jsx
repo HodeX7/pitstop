@@ -12,6 +12,9 @@ const VerifyMobileOTP = () => {
   const location = useLocation();
   const { uid, contact_number } = location.state;
 
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
+  const [remainingTime, setRemainingTime] = useState(0);
+
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [inputIndex, setInputIndex] = useState(0);
   const inputRefs = useRef([]);
@@ -65,7 +68,22 @@ const VerifyMobileOTP = () => {
     }
   };
 
+  useEffect(() => {
+    let intervalId;
+    if (isButtonDisabled) {
+      intervalId = setInterval(() => {
+        setRemainingTime(prevTime => prevTime - 1);
+      }, 1000);
+    }
+    return () => clearInterval(intervalId);
+  }, [isButtonDisabled]);
+
   const handleResendOTP = async () => {
+    setButtonDisabled(true); // Disable the button
+    setRemainingTime(60); // Set the initial remaining time to 60 seconds
+    setTimeout(() => {
+      setButtonDisabled(false); // Enable the button after 60 seconds
+    }, 60000); // 60 seconds
     const res = await UserAPI.resendOTP(uid)
     if (res.status === 200) {
       Toast.show({
@@ -132,9 +150,13 @@ const VerifyMobileOTP = () => {
         <button
           className="ml-4 my-4 bg-orange-500 hover:bg-orange-400 text-white px-4 py-2 rounded"
           onClick={handleResendOTP}
+          disabled={isButtonDisabled}
         >
-          Resend OTP
+          {isButtonDisabled ? 'Wait before resending...' : 'Resend OTP'}
         </button>
+        {isButtonDisabled && (
+          <p className="text-gray-500 text-sm">Wait {remainingTime} seconds until you can request another OTP</p>
+        )}
       </div>
       <div className="grid grid-cols-3 gap-4 mt-4 ">
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, "<", 0, "Enter"].map((number, index) => (
